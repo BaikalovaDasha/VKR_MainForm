@@ -72,6 +72,17 @@
         qgAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="toolStripDropDownButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEISURBVEhL3ZErDsJAGIR7DlA47oArV8CDR9RiSDAQPBcA
+        Qx1BgUMQBEk1ooJAKE0I4Wlqf5gmu1n6oqW7hiZfthkx33aqeZ5HKvEFpmmSYRhSQScXINB1XSroDAke
+        96cUpAmupyPZsx7Z8x4drAnPpQmsgU7LdoHDJNIEYjnAlyBXJ3jPhVyaYLca8nLMhX+CPJXAOT+ouTj5
+        p5in4asApdWpS8XRwT+zShIFG/fOyxlZJbGC9f5G5bHzUf6LJFJQqTViyxlxEmRiHhLUW10qDbeRpUGC
+        ErwjE/OQoG9dIsviYGWsXMwxc24BYLcO5pgZc+cWJIG5MbsyAUDnHwlUAkFHJZraR9NeMVq3zi+WF/0A
+        AAAASUVORK5CYII=
+</value>
+  </data>
   <metadata name="editingTable.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 20</value>
   </metadata>
@@ -117,21 +128,18 @@
   <data name="OK.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAJ4SURBVHhe7ZlPaxNBGIdzEPTsuVLRQj+AVkGpO2uh9KTQ
-        JDtLPYgeFfSkQv0KXv0o7aXd7ATBmx57EqUteCm0vfaizm7ft9QyTTazMzszm/eBH4Hs5J3kyfxbtkMQ
-        BEEQBEEQBEHYY/lr73qU809M8C35+jnKn83ApekizvhtKWBXivh7lq3VwyhP70KT6SDO1maZ6P76TwTk
-        oeDHj4e9e9C03YwSgZkKIVVEYFotZBIRmFYK0RGBaZWQYtdgWXdP9UMnyFGc9eahZJgYElFGbsMbUDY8
-        TIooI88gUDosjIsokvW/Q/nxnB5tkxdsmL52Ob+siNjkf2KRPoEuRsMG6X22nfzGD8v5dcJE8gouN4Yt
-        EUykb6CL0cSD/p1iPikLCf4BmlmnzvZ5aQyKwFgXEooIjDUhoYnAGBcSqgiMMSHORTwSyUJxVlcWqpKy
-        M/4WymnjfNeI8ufXWMZ/KgtNkppClr6s3XIqoiAe8gfKQjrRFOKFiIJyrVAVq5fKa4jzNeI8UR5dkSfL
-        b8qiuqk4QrwZEecpFy6R7CuL62aMECsiZOQf+w660CfKe3NNCSmnhgUR8vu/hy7qI63eND5/T3O2hiwO
-        +Y1F0f2haFM369CFOWwKCUoEYm/KrB4or9WKwalxGRZHiMnYGxEX8VxIcyIQT4U0LwLxTIg7EYgnQtyL
-        QBwL8UcE4kiIfyKQhoV8hG79pSEh/otALAsJRwRiSUh4IhDDQsIVgZi5uWvgpqspao6Q8EfERTSFtE8E
-        MqGQ9opAKgppvwhkjJDpEYGUu0zW3UEJUtCJfNV+DBk8K5srV9mAP41F/2XxvATeJgiCIAiirXQ6/wCA
-        VG0amCcbIQAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAJ4SURBVHhe7ZlPaxNBGIdzEPTsWamo4AfQVrDUnVWQnhSa
+        ZGeph6JHBT2pYL9Cr34T9VI3O0Hw1h57Ki1twYugXntpnd2+b6llmmxmZ3ZmNu8DPwLZyTvJk/m3bIcg
+        CIIgCIIgCIKwx5MfvatRzteY4Ovy9VOUP78Gl6aLOOO3pIA9KeL4NOtLv6M8vQdNpoM4W55horv7nwjI
+        vOB/Hw17c9C03YwSgZkKIVVEYFotZBIRmFYK0RGBaZWQYtdgWXdf9UMnyJ84692BkmFiSEQZuQ1/gbLh
+        YVJEGXkGgdJhYVxEkay/CeXHc3K0TV6wYfra5fyyIuIzP4pF+hS6GA0bpPfZt+QnfljOr0MmkldwuTFs
+        iWAifQNdjCYe9O8W80lZSPAP0Mw6dbbPC2NQBMa6kFBEYKwJCU0ExriQUEVgjAlxLuKhSGaLs7qyUJWU
+        nfG3UE4b57tGlK9cYRnfURaaJDWFPP6+fNOpiIJ4yB8oC+lEU4gXIgrKtUJVrF4qryHO14izRHl0SZ4s
+        N5RFdVNxhHgzIs5SLlwiOVAW180YIVZEyMg/9h10oU+U9243JaScGhZEyO//Hrqoj7R6w/j8PcnpGrIw
+        5NcXRHdb0aZuPkIX5rApJCgRiL0ps/RLea1WDE6Ni7A4QkzG3og4j+dCmhOBeCqkeRGIZ0LciUA8EeJe
+        BOJYiD8iEEdC/BOBNCxkFbr1l4aE+C8CsSwkHBGIJSHhiUAMCwlXBGLm5q6Bm66mqDlCwh8R59EU0j4R
+        yIRC2isCqSik/SKQMUKmRwRS7jJZdwslSEGH8lX7MWTwLH5dvMwG/Fks+i+L5yXwNkEQBEEQbaXT+Qfo
+        gmz0esXU9QAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="solarPowerPlantBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>306, 24</value>
-  </metadata>
 </root>

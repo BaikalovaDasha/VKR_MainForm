@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             toolStrip1 = new ToolStrip();
             toolStripDropDownButton1 = new ToolStripDropDownButton();
@@ -47,27 +46,21 @@
             DeleteSPP = new ToolStripButton();
             OK = new ToolStripButton();
             dataGridView1 = new DataGridView();
-            numberSPPDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            nameSPPDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            statusSPPDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            nodeSPPDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            powerSystemDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            installedCapacityDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            uIDsppDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             tabControl1 = new TabControl();
-            solarPowerPlantBindingSource = new BindingSource(components);
+            toolStripDropDownButton2 = new ToolStripDropDownButton();
+            MenuItemStartCalculation = new ToolStripMenuItem();
+            остановитьРасчётToolStripMenuItem = new ToolStripMenuItem();
             toolStrip1.SuspendLayout();
             tabPage2.SuspendLayout();
             editingTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tabControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource).BeginInit();
             SuspendLayout();
             // 
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1 });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1, toolStripDropDownButton2 });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(951, 27);
@@ -88,7 +81,7 @@
             // 
             LoadFile.DropDownItems.AddRange(new ToolStripItem[] { LoadCalaulModel, LoadTableSPP, LoadFileExcel });
             LoadFile.Name = "LoadFile";
-            LoadFile.Size = new Size(166, 26);
+            LoadFile.Size = new Size(224, 26);
             LoadFile.Text = "Загрузить";
             // 
             // LoadCalaulModel
@@ -127,7 +120,7 @@
             // 
             сохранитьToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { Save_TableSPP });
             сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            сохранитьToolStripMenuItem.Size = new Size(166, 26);
+            сохранитьToolStripMenuItem.Size = new Size(224, 26);
             сохранитьToolStripMenuItem.Text = "Сохранить";
             // 
             // Save_TableSPP
@@ -202,73 +195,13 @@
             // 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.AutoGenerateColumns = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { numberSPPDataGridViewTextBoxColumn, nameSPPDataGridViewTextBoxColumn, statusSPPDataGridViewTextBoxColumn, nodeSPPDataGridViewTextBoxColumn, powerSystemDataGridViewTextBoxColumn, installedCapacityDataGridViewTextBoxColumn, uIDsppDataGridViewTextBoxColumn });
-            dataGridView1.DataSource = solarPowerPlantBindingSource;
             dataGridView1.Location = new Point(3, 33);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
             dataGridView1.Size = new Size(937, 380);
             dataGridView1.TabIndex = 0;
-            //dataGridView1.RowPostPaint += DataGridView1_RowPostPaint;
-            // 
-            // numberSPPDataGridViewTextBoxColumn
-            // 
-            numberSPPDataGridViewTextBoxColumn.DataPropertyName = "NumberSPP";
-            numberSPPDataGridViewTextBoxColumn.HeaderText = "№";
-            numberSPPDataGridViewTextBoxColumn.MinimumWidth = 6;
-            numberSPPDataGridViewTextBoxColumn.Name = "numberSPPDataGridViewTextBoxColumn";
-            numberSPPDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // nameSPPDataGridViewTextBoxColumn
-            // 
-            nameSPPDataGridViewTextBoxColumn.DataPropertyName = "NameSPP";
-            nameSPPDataGridViewTextBoxColumn.HeaderText = "Наименование СЭС";
-            nameSPPDataGridViewTextBoxColumn.MinimumWidth = 6;
-            nameSPPDataGridViewTextBoxColumn.Name = "nameSPPDataGridViewTextBoxColumn";
-            nameSPPDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // statusSPPDataGridViewTextBoxColumn
-            // 
-            statusSPPDataGridViewTextBoxColumn.DataPropertyName = "StatusSPP";
-            statusSPPDataGridViewTextBoxColumn.HeaderText = "Статус СЭС";
-            statusSPPDataGridViewTextBoxColumn.MinimumWidth = 6;
-            statusSPPDataGridViewTextBoxColumn.Name = "statusSPPDataGridViewTextBoxColumn";
-            statusSPPDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // nodeSPPDataGridViewTextBoxColumn
-            // 
-            nodeSPPDataGridViewTextBoxColumn.DataPropertyName = "NodeSPP";
-            nodeSPPDataGridViewTextBoxColumn.HeaderText = "Номер агрегата в РМ";
-            nodeSPPDataGridViewTextBoxColumn.MinimumWidth = 6;
-            nodeSPPDataGridViewTextBoxColumn.Name = "nodeSPPDataGridViewTextBoxColumn";
-            nodeSPPDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // powerSystemDataGridViewTextBoxColumn
-            // 
-            powerSystemDataGridViewTextBoxColumn.DataPropertyName = "PowerSystem";
-            powerSystemDataGridViewTextBoxColumn.HeaderText = "Энергосистема";
-            powerSystemDataGridViewTextBoxColumn.MinimumWidth = 6;
-            powerSystemDataGridViewTextBoxColumn.Name = "powerSystemDataGridViewTextBoxColumn";
-            powerSystemDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // installedCapacityDataGridViewTextBoxColumn
-            // 
-            installedCapacityDataGridViewTextBoxColumn.DataPropertyName = "InstalledCapacity";
-            installedCapacityDataGridViewTextBoxColumn.HeaderText = "Установленная мощность СЭС";
-            installedCapacityDataGridViewTextBoxColumn.MinimumWidth = 6;
-            installedCapacityDataGridViewTextBoxColumn.Name = "installedCapacityDataGridViewTextBoxColumn";
-            installedCapacityDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // uIDsppDataGridViewTextBoxColumn
-            // 
-            uIDsppDataGridViewTextBoxColumn.DataPropertyName = "UIDspp";
-            uIDsppDataGridViewTextBoxColumn.HeaderText = "UID СЭС в ОИК";
-            uIDsppDataGridViewTextBoxColumn.MinimumWidth = 6;
-            uIDsppDataGridViewTextBoxColumn.Name = "uIDsppDataGridViewTextBoxColumn";
-            uIDsppDataGridViewTextBoxColumn.Width = 125;
             // 
             // tabControl1
             // 
@@ -281,9 +214,28 @@
             tabControl1.Size = new Size(951, 452);
             tabControl1.TabIndex = 0;
             // 
-            // solarPowerPlantBindingSource
+            // toolStripDropDownButton2
             // 
-            solarPowerPlantBindingSource.DataSource = typeof(Model.SolarPowerPlant);
+            toolStripDropDownButton2.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripDropDownButton2.DropDownItems.AddRange(new ToolStripItem[] { MenuItemStartCalculation, остановитьРасчётToolStripMenuItem });
+            toolStripDropDownButton2.Image = (Image)resources.GetObject("toolStripDropDownButton2.Image");
+            toolStripDropDownButton2.ImageTransparentColor = Color.Magenta;
+            toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            toolStripDropDownButton2.Size = new Size(79, 24);
+            toolStripDropDownButton2.Text = "Расчёты";
+            // 
+            // MenuItemStartCalculation
+            // 
+            MenuItemStartCalculation.Name = "MenuItemStartCalculation";
+            MenuItemStartCalculation.Size = new Size(224, 26);
+            MenuItemStartCalculation.Text = "Начать расчёт";
+            MenuItemStartCalculation.Click += MenuItemStartCalculation_Click;
+            // 
+            // остановитьРасчётToolStripMenuItem
+            // 
+            остановитьРасчётToolStripMenuItem.Name = "остановитьРасчётToolStripMenuItem";
+            остановитьРасчётToolStripMenuItem.Size = new Size(224, 26);
+            остановитьРасчётToolStripMenuItem.Text = "Остановить расчёт";
             // 
             // Form1
             // 
@@ -303,7 +255,6 @@
             editingTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             tabControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -328,12 +279,8 @@
         private ToolStripButton DeleteSPP;
         private ToolStripButton OK;
         private DataGridViewTextBoxColumn numberSPPDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn nameSPPDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn statusSPPDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn nodeSPPDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn powerSystemDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn installedCapacityDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn uIDsppDataGridViewTextBoxColumn;
-        private BindingSource solarPowerPlantBindingSource;
+        private ToolStripDropDownButton toolStripDropDownButton2;
+        private ToolStripMenuItem MenuItemStartCalculation;
+        private ToolStripMenuItem остановитьРасчётToolStripMenuItem;
     }
 }

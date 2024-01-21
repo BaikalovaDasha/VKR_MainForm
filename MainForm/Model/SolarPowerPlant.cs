@@ -11,10 +11,6 @@ namespace Model
 {
     public class SolarPowerPlant
     {
-        /// <summary>
-        /// Номер СЭС.
-        /// </summary>
-        private int _numberSPP;
 
         /// <summary>
         /// Нименование СЭС.
@@ -40,23 +36,6 @@ namespace Model
         /// UID действующей СЭС.
         /// </summary>
         private string _uniqueID;
-
-        /// <summary>
-        /// Gets or sets номера СЭС.
-        /// </summary>
-        [DisplayName("№")]
-        public int NumberSPP
-        {
-            get
-            {
-                return _numberSPP;
-            }
-
-            set
-            {
-                _numberSPP = value;
-            }
-        }
 
         /// <summary>
         /// Gets or sets наименование СЭС.

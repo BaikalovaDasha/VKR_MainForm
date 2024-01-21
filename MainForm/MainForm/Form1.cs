@@ -259,16 +259,9 @@ namespace MainForm
             }
         }
 
-        ///// <summary>
-        ///// автоматическая нумерация в таблице СЭС.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
-        //{
-        //    this.dataGridView1.Rows[e.RowIndex].
-        //        Cells["numberSPPDataGridViewTextBoxColumn"].
-        //        Value = (e.RowIndex + 1).ToString();
-        //}
+        private void MenuItemStartCalculation_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -146,7 +146,6 @@ namespace MainForm
         {
             var spp = new SolarPowerPlant
             {
-                NumberSPP = (int)ControlText.CheckNumber(textBox1.Text),
                 NameSPP = textBoxNameSPP.Text,
                 StatusSPP = _statusSPP,
                 NodeSPP = (int)ControlText.CheckNumber(textBoxNumSPP.Text),

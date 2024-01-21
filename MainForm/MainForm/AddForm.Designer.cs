@@ -43,7 +43,6 @@
             comboBoxPowerSystem = new ComboBox();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             button_AddSPP = new Button();
-            textBox1 = new TextBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -68,7 +67,6 @@
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(textBox1);
             groupBox1.Controls.Add(textBoxUIDSPP);
             groupBox1.Controls.Add(labelUIDSPP);
             groupBox1.Controls.Add(textBoxInstallCapacity);
@@ -187,14 +185,6 @@
             button_AddSPP.UseVisualStyleBackColor = true;
             button_AddSPP.Click += Button_AddSPP_Click;
             // 
-            // textBox1
-            // 
-            textBox1.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Location = new Point(264, -3);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(184, 27);
-            textBox1.TabIndex = 13;
-            // 
             // AddForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -226,6 +216,5 @@
         private Label labelNumSPP;
         private TextBox textBoxNameSPP;
         private Label labelNameSPP;
-        private TextBox textBox1;
     }
 }
