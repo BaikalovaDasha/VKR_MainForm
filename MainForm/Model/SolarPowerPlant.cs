@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace Model
 {
@@ -83,7 +84,7 @@ namespace Model
             get
             {
                 return _statusSPP;
-            }
+            } 
 
             set
             {
@@ -104,7 +105,7 @@ namespace Model
 
             set
             {
-                _nodeSPP = (int)Utils.CheckingNumber(value);
+                _nodeSPP = value;
             }
         }
 
@@ -127,7 +128,7 @@ namespace Model
 
             set
             {
-                _installedCapacity = Utils.CheckingNumber(value); ;
+                _installedCapacity = value;
             }
         }
 
@@ -147,7 +148,5 @@ namespace Model
                 _uniqueID = value;  
             }
         }
-
-
     }
 }

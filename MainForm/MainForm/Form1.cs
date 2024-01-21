@@ -16,12 +16,19 @@ namespace MainForm
         private BindingList<SolarPowerPlant> _sppDataList;
 
         /// <summary>
+        /// Для файлов.
+        /// </summary>
+        private readonly XmlSerializer _serializer = new(typeof(BindingList<SolarPowerPlant>));
+
+        /// <summary>
         /// Запуск формы.
         /// </summary>
         public Form1()
         {
             InitializeComponent();
 
+            var source = new BindingSource(_sppDataList, null);
+            dataGridView1.DataSource = source;
             //string[] powerSystem = { "Забайкальская", "Новосибирская", "Омская", "Башкортостана" };
 
             //ChoosEnergySystem_Combobox.Items.AddRange(new string[]
@@ -33,15 +40,15 @@ namespace MainForm
             //});
         }
 
-        /// <summary>
-        /// Контроль ввода значения исходной мощности.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ControlValue_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            ControlText.CheckInputDouble(e);
-        }
+        ///// <summary>
+        ///// Контроль ввода значения исходной мощности.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void ControlValue_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    ControlText.CheckInputDouble(e);
+        //}
 
         ///// <summary>
         ///// Присваивание искомого слова в класс где происходит работа с Excel.
@@ -126,15 +133,17 @@ namespace MainForm
 
             var saveFileDialog = new SaveFileDialog
             {
-                Filter = "Json files (*.json)|*.json"
+                Filter = "Файлы (*.json)|*.json"
             };
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var json = JsonSerializer.Serialize(_sppDataList);
+                var path = saveFileDialog.FileName.ToString();
 
-                File.WriteAllText(saveFileDialog.FileName, json);
-
+                using (FileStream file = File.Create(path))
+                {
+                    _serializer.Serialize(file, _sppDataList);
+                }
                 MessageBox.Show("Файл успешно сохранён.",
                     "Сохранение завершено", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -150,23 +159,25 @@ namespace MainForm
         {
             var openFileDialog = new OpenFileDialog
             {
-                Filter = "Json files (*.json)|*.json"
+                Filter = "Файлы (*.json)|*.json"
             };
 
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
 
             var path = openFileDialog.FileName.ToString();
+
             try
             {
-                string jsonString = File.ReadAllText(path);
-                List<SolarPowerPlant> listFromJson =
-                    JsonSerializer.Deserialize<List<SolarPowerPlant>>(jsonString);
+                using (var file = new StreamReader(path))
+                {
+                    _sppDataList = (BindingList<SolarPowerPlant>)_serializer.Deserialize(file);
+                }
 
-                _sppDataList = new BindingList<SolarPowerPlant>(listFromJson);
                 dataGridView1.DataSource = _sppDataList;
                 dataGridView1.CurrentCell = null;
                 MessageBox.Show("Файл успешно загружен.", "Загрузка завершена",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             }
             catch (Exception)
             {
@@ -248,16 +259,16 @@ namespace MainForm
             }
         }
 
-        /// <summary>
-        /// автоматическая нумерация в таблице СЭС.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
-        {
-            this.dataGridView1.Rows[e.RowIndex].
-                Cells["numberSPPDataGridViewTextBoxColumn"].
-                Value = (e.RowIndex + 1).ToString();
-        }
+        ///// <summary>
+        ///// автоматическая нумерация в таблице СЭС.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        //{
+        //    this.dataGridView1.Rows[e.RowIndex].
+        //        Cells["numberSPPDataGridViewTextBoxColumn"].
+        //        Value = (e.RowIndex + 1).ToString();
+        //}
     }
 }
