@@ -33,13 +33,13 @@
             labelMeasurementValues = new Label();
             textBoxMeasurementValues = new TextBox();
             groupBox1 = new GroupBox();
-            label1 = new Label();
             textBox1 = new TextBox();
+            label1 = new Label();
             groupBox2 = new GroupBox();
+            comboBox1 = new ComboBox();
             labelPowerSystem = new Label();
             label_InitPower = new Label();
             textBoxInitPower = new TextBox();
-            comboBox1 = new ComboBox();
             buttonOK = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -92,6 +92,13 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Настройки для получения данных от ОИК СК-11";
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(235, 100);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(164, 27);
+            textBox1.TabIndex = 5;
+            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -100,13 +107,6 @@
             label1.Size = new Size(177, 20);
             label1.TabIndex = 4;
             label1.Text = "Наименование сервера";
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(235, 100);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(164, 27);
-            textBox1.TabIndex = 5;
             // 
             // groupBox2
             // 
@@ -120,6 +120,14 @@
             groupBox2.TabIndex = 6;
             groupBox2.TabStop = false;
             groupBox2.Text = "Исходные данные для расчёта потребления мощности";
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(235, 70);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(164, 28);
+            comboBox1.TabIndex = 3;
             // 
             // labelPowerSystem
             // 
@@ -146,14 +154,6 @@
             textBoxInitPower.Size = new Size(164, 27);
             textBoxInitPower.TabIndex = 1;
             // 
-            // comboBox1
-            // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(235, 70);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(164, 28);
-            comboBox1.TabIndex = 3;
-            // 
             // buttonOK
             // 
             buttonOK.Location = new Point(12, 304);
@@ -162,6 +162,7 @@
             buttonOK.TabIndex = 7;
             buttonOK.Text = "ОК";
             buttonOK.UseVisualStyleBackColor = true;
+            buttonOK.Click += ButtonOK_Click;
             // 
             // SettingsForm
             // 
