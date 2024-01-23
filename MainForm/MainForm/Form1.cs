@@ -11,9 +11,26 @@ namespace MainForm
     public partial class Form1 : Form
     {
         /// <summary>
-        /// 
+        /// Список параметров СЭС.
         /// </summary>
         private BindingList<SolarPowerPlant> _sppDataList;
+
+        public BindingList<SolarPowerPlant> SPPDataList 
+        {
+            get
+            { 
+                return _sppDataList;
+            }
+            set 
+            {
+                _sppDataList = value;
+            }
+        }
+
+        /// <summary>
+        /// Список коэффициентов средней выработки в каждый час.
+        /// </summary>
+        private BindingList<AverageOutputPerHour> _koefDataList;
 
         /// <summary>
         /// Для файлов.
@@ -27,7 +44,7 @@ namespace MainForm
         {
             InitializeComponent();
 
-            var source = new BindingSource(_sppDataList, null);
+            var source = new BindingSource(SPPDataList, null);
             dataGridView1.DataSource = source;
         }
 
@@ -38,7 +55,7 @@ namespace MainForm
         /// <param name="e"></param>
         private void Save_TableSPP_Click(object sender, EventArgs e)
         {
-            if (_sppDataList.Count == 0)
+            if (SPPDataList.Count == 0)
             {
                 MessageBox.Show("Отсутствуют данные для сохранения.",
                     "Данные не сохранены", MessageBoxButtons.OK,
@@ -57,7 +74,7 @@ namespace MainForm
 
                 using (FileStream file = File.Create(path))
                 {
-                    _serializer.Serialize(file, _sppDataList);
+                    _serializer.Serialize(file, SPPDataList);
                 }
                 MessageBox.Show("Файл успешно сохранён.",
                     "Сохранение завершено", MessageBoxButtons.OK,
@@ -85,10 +102,10 @@ namespace MainForm
             {
                 using (var file = new StreamReader(path))
                 {
-                    _sppDataList = (BindingList<SolarPowerPlant>)_serializer.Deserialize(file);
+                    SPPDataList = (BindingList<SolarPowerPlant>)_serializer.Deserialize(file);
                 }
 
-                dataGridView1.DataSource = _sppDataList;
+                dataGridView1.DataSource = SPPDataList;
                 dataGridView1.CurrentCell = null;
                 MessageBox.Show("Файл успешно загружен.", "Загрузка завершена",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -109,8 +126,11 @@ namespace MainForm
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
-            _sppDataList = new BindingList<SolarPowerPlant>();
-            CreateTable(_sppDataList, dataGridView1);
+            SPPDataList = new BindingList<SolarPowerPlant>();
+            CreateTable(SPPDataList, dataGridView1);
+            CreateTable(SPPDataList, dataGridViewSPP);
+            CreateTableWithKoef(_koefDataList, dataGridView_TimeForKoefAverage);
+            CreateTableWithKoef(_koefDataList, dataGridViewKoefAverage);
         }
 
         /// <summary>
@@ -142,6 +162,34 @@ namespace MainForm
         }
 
         /// <summary>
+        /// Создание таблицы DataGrid.
+        /// </summary>
+        /// <param name="koefList">Список СЭС.</param>
+        /// <param name="dataGridView">таблица СЭС.</param>
+        public static void CreateTableWithKoef(BindingList<AverageOutputPerHour> koefList,
+            DataGridView dataGridView)
+        {
+            dataGridView.AllowUserToResizeColumns = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.RowHeadersVisible = false;
+
+            var source = new BindingSource(koefList, null);
+            dataGridView.DataSource = source;
+
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            dataGridView.DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleCenter;
+            dataGridView.ColumnHeadersDefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleCenter;
+            dataGridView.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+
+        }
+
+        /// <summary>
         /// Добавление СЭС в таблицу.
         /// </summary>
         /// <param name="sender"></param>
@@ -152,7 +200,7 @@ namespace MainForm
 
             addForm.SPPAdded += (sender, SPPEventArgs) =>
             {
-                _sppDataList.Add(((SPPEventArgs)SPPEventArgs).SPP);
+                SPPDataList.Add(((SPPEventArgs)SPPEventArgs).SPP);
             };
 
             addForm.ShowDialog(this);
@@ -170,14 +218,27 @@ namespace MainForm
 
             for (int i = 0; i < countOfRows; i++)
             {
-                _sppDataList.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                SPPDataList.RemoveAt(dataGridView1.SelectedRows[0].Index);
             }
         }
 
+
+
+        /// <summary>
+        /// Открытие вкладки результатов расчёта.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItemStartCalculation_Click(object sender, EventArgs e)
         {
-            Form form = new SettingsForm();
+            SettingsForm form = new()
+            {
+                solarPowerPlant = SPPDataList
+            };
             form.ShowDialog();
+
+            tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
+
         }
     }
 }

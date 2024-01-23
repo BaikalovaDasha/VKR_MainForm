@@ -33,7 +33,7 @@
             labelMeasurementValues = new Label();
             textBoxMeasurementValues = new TextBox();
             groupBox1 = new GroupBox();
-            textBox1 = new TextBox();
+            textBoxNameServer = new TextBox();
             label1 = new Label();
             groupBox2 = new GroupBox();
             comboBox1 = new ComboBox();
@@ -41,6 +41,8 @@
             label_InitPower = new Label();
             textBoxInitPower = new TextBox();
             buttonOK = new Button();
+            labelUIDPowerConsump = new Label();
+            textBoxUIDPowerConsump = new TextBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
@@ -56,7 +58,7 @@
             // 
             // textBoxVersionAccess
             // 
-            textBoxVersionAccess.Location = new Point(235, 32);
+            textBoxVersionAccess.Location = new Point(240, 32);
             textBoxVersionAccess.Name = "textBoxVersionAccess";
             textBoxVersionAccess.Size = new Size(164, 27);
             textBoxVersionAccess.TabIndex = 1;
@@ -72,14 +74,16 @@
             // 
             // textBoxMeasurementValues
             // 
-            textBoxMeasurementValues.Location = new Point(235, 66);
+            textBoxMeasurementValues.Location = new Point(240, 66);
             textBoxMeasurementValues.Name = "textBoxMeasurementValues";
             textBoxMeasurementValues.Size = new Size(164, 27);
             textBoxMeasurementValues.TabIndex = 3;
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(textBox1);
+            groupBox1.Controls.Add(textBoxUIDPowerConsump);
+            groupBox1.Controls.Add(labelUIDPowerConsump);
+            groupBox1.Controls.Add(textBoxNameServer);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(textBoxMeasurementValues);
             groupBox1.Controls.Add(labelMeasurementValues);
@@ -87,17 +91,17 @@
             groupBox1.Controls.Add(textBoxVersionAccess);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(441, 141);
+            groupBox1.Size = new Size(441, 173);
             groupBox1.TabIndex = 4;
             groupBox1.TabStop = false;
             groupBox1.Text = "Настройки для получения данных от ОИК СК-11";
             // 
-            // textBox1
+            // textBoxNameServer
             // 
-            textBox1.Location = new Point(235, 100);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(164, 27);
-            textBox1.TabIndex = 5;
+            textBoxNameServer.Location = new Point(240, 100);
+            textBoxNameServer.Name = "textBoxNameServer";
+            textBoxNameServer.Size = new Size(164, 27);
+            textBoxNameServer.TabIndex = 5;
             // 
             // label1
             // 
@@ -114,7 +118,7 @@
             groupBox2.Controls.Add(labelPowerSystem);
             groupBox2.Controls.Add(label_InitPower);
             groupBox2.Controls.Add(textBoxInitPower);
-            groupBox2.Location = new Point(12, 172);
+            groupBox2.Location = new Point(12, 201);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(441, 114);
             groupBox2.TabIndex = 6;
@@ -156,7 +160,7 @@
             // 
             // buttonOK
             // 
-            buttonOK.Location = new Point(12, 304);
+            buttonOK.Location = new Point(12, 321);
             buttonOK.Name = "buttonOK";
             buttonOK.Size = new Size(441, 29);
             buttonOK.TabIndex = 7;
@@ -164,16 +168,33 @@
             buttonOK.UseVisualStyleBackColor = true;
             buttonOK.Click += ButtonOK_Click;
             // 
+            // labelUIDPowerConsump
+            // 
+            labelUIDPowerConsump.AutoSize = true;
+            labelUIDPowerConsump.Location = new Point(28, 141);
+            labelUIDPowerConsump.Name = "labelUIDPowerConsump";
+            labelUIDPowerConsump.Size = new Size(206, 20);
+            labelUIDPowerConsump.TabIndex = 6;
+            labelUIDPowerConsump.Text = "UID потребления мощности";
+            // 
+            // textBoxUIDPowerConsump
+            // 
+            textBoxUIDPowerConsump.Location = new Point(240, 134);
+            textBoxUIDPowerConsump.Name = "textBoxUIDPowerConsump";
+            textBoxUIDPowerConsump.Size = new Size(164, 27);
+            textBoxUIDPowerConsump.TabIndex = 7;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(470, 350);
+            ClientSize = new Size(470, 378);
             Controls.Add(buttonOK);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "SettingsForm";
             Text = "SettingsForm";
+            Load += SettingsForm_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
@@ -188,7 +209,7 @@
         private Label labelMeasurementValues;
         private TextBox textBoxMeasurementValues;
         private GroupBox groupBox1;
-        private TextBox textBox1;
+        private TextBox textBoxNameServer;
         private Label label1;
         private GroupBox groupBox2;
         private ComboBox comboBox1;
@@ -196,5 +217,7 @@
         private Label label_InitPower;
         private TextBox textBoxInitPower;
         private Button buttonOK;
+        private TextBox textBoxUIDPowerConsump;
+        private Label labelUIDPowerConsump;
     }
 }

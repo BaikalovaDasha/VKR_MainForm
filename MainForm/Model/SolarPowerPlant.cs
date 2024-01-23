@@ -127,5 +127,17 @@ namespace Model
                 _uniqueID = value;  
             }
         }
+
+        /// <summary>
+        /// Средняя выработка мощности СЭС.
+        /// </summary>
+        [DisplayName("Средняя выработка, МВт")]
+        public double AverageOutput { get; set; }
+
+        /// <summary>
+        /// Коэффициент средней выработки СЭС.
+        /// </summary>
+        [DisplayName("К_сэс, о.е.")]
+        public double KoefAveragepowerSPP { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.FileIO;
+using SCADAHandler.AccessAPI_CK11;
 using SCADAHandler.Object;
 using System;
 using System.Collections.Generic;
@@ -18,41 +19,46 @@ namespace CalculationModel
         /// </summary>
         public void CalculAverageCoefspp()
         {
-            var listPowerUTC9Summer = GetListUTC9(ValueSummer());
+            //AccessMesuremetValues meas = new();
+            //ListMeasurementValuesExtend valueSummer = meas.
+            //    GetMeasurementValuesArrayInRange().Result;
+
             var listPowerUTC9Winter = GetListUTC9(ValueWinter());
+            var listPowerUTC9Summer = GetListUTC9(ValueSummer());
 
             // Максимальные и минимальные режимы работы за лето и зиму.
-            var listMaxModeS = GetMaxMode(listPowerUTC9Summer);
             var listMaxModeW = GetMaxMode(listPowerUTC9Winter);
+            var listMaxModeS = GetMaxMode(listPowerUTC9Summer);
 
-            var listMinModeS = GetMinMode(listPowerUTC9Summer);
+
             var listMinModeW = GetMinMode(listPowerUTC9Winter);
+            var listMinModeS = GetMinMode(listPowerUTC9Summer);
 
             // Максимальные и минимальные часы работы в максимальных и минимальных р.р.
-            DateTime summerMaxH = GetMaxHour(listMaxModeS);
             DateTime winterMaxH = GetMaxHour(listMaxModeW);
+            DateTime summerMaxH = GetMaxHour(listMaxModeS);
 
-            DateTime summerMinH = GetMinHour(listMinModeS);
             DateTime winterMinH = GetMinHour(listMinModeW);
+            DateTime summerMinH = GetMinHour(listMinModeS);
 
             // Списки вырабатываемой мощности СЭС за лето и за зиму...
             // ... с меткой времени по Забайкалью.
-            var listSummerSPP = GetListSPPUTC9(ValueSummer(), listPowerUTC9Summer);
             var listWinterSPP = GetListSPPUTC9(ValueWinter(), listPowerUTC9Winter);
+            var listSummerSPP = GetListSPPUTC9(ValueSummer(), listPowerUTC9Summer);
 
             // Списки со средним коэффициентом выработки мощности каждой СЭС
-            List<double> averageSummerMaxSPP = GetAveragePowerSPP(listSummerSPP, summerMaxH);
             List<double> averageWinterMaxSPP = GetAveragePowerSPP(listWinterSPP, winterMaxH);
+            List<double> averageSummerMaxSPP = GetAveragePowerSPP(listSummerSPP, summerMaxH);
 
-            List<double> averageSummerMinSPP = GetAveragePowerSPP(listSummerSPP, summerMinH);
             List<double> averageWinterMinSPP = GetAveragePowerSPP(listWinterSPP, winterMinH);
+            List<double> averageSummerMinSPP = GetAveragePowerSPP(listSummerSPP, summerMinH);
 
             // коэффициент средней выработки СЭС.
-            double averagePowerSummerMaxSPP = averageSummerMaxSPP.Average();
             double averagePowerWinterMaxSPP = averageWinterMaxSPP.Average();
+            double averagePowerSummerMaxSPP = averageSummerMaxSPP.Average();
 
-            double averagePowerSummerMinSPP = averageSummerMinSPP.Average();
             double averagePowerWinterMinSPP = averageWinterMinSPP.Average();
+            double averagePowerSummerMinSPP = averageSummerMinSPP.Average();
         }
 
         /// <summary>

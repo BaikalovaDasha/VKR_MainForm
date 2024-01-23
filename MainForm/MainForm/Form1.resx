@@ -75,14 +75,26 @@
   <data name="toolStripDropDownButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEISURBVEhL3ZErDsJAGIR7DlA47oArV8CDR9RiSDAQPBcA
-        Qx1BgUMQBEk1ooJAKE0I4Wlqf5gmu1n6oqW7hiZfthkx33aqeZ5HKvEFpmmSYRhSQScXINB1XSroDAke
-        96cUpAmupyPZsx7Z8x4drAnPpQmsgU7LdoHDJNIEYjnAlyBXJ3jPhVyaYLca8nLMhX+CPJXAOT+ouTj5
-        p5in4asApdWpS8XRwT+zShIFG/fOyxlZJbGC9f5G5bHzUf6LJFJQqTViyxlxEmRiHhLUW10qDbeRpUGC
-        ErwjE/OQoG9dIsviYGWsXMwxc24BYLcO5pgZc+cWJIG5MbsyAUDnHwlUAkFHJZraR9NeMVq3zi+WF/0A
-        AAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEKSURBVEhL3ZG9DsFQHMXvczDZvIOtXsHObuhqkViI3Quw
+        6CYmNoMYJJ0NBiFFIoIytOuf0+TeXP3yde+iyS+3OcP53Z4y3/dJJ4HAsiwyTVMp6BQCBIZhKAWdEcHV
+        vSlBmeB82NFy1KLluEWOPRC5MoHdMWhazwi4RJlALgf4EuT6BI+5kCsTrGddUY658E+QvyXYHq9UnRyC
+        U87f4aUApcXhnrI9Jzg/laQKFntXlHM+lSQK5psL5fvbp/JvJLGCQqmSWM5JkiCT84igXGtSrruKLQ0T
+        luAdmZxHBG37FFuWBC/j5XKOmX8WAH7rcI6ZMffPgjQwN2bXJgDo/COBTpjneQ2dML0PY3cISreGe8HM
+        qgAAAABJRU5ErkJggg==
 </value>
   </data>
+  <metadata name="averageOutputPerHourBindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>331, 63</value>
+  </metadata>
+  <metadata name="solarPowerPlantBindingSource3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>653, 63</value>
+  </metadata>
+  <metadata name="averageOutputPerHourBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 63</value>
+  </metadata>
+  <metadata name="solarPowerPlantBindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>557, 20</value>
+  </metadata>
   <metadata name="editingTable.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 20</value>
   </metadata>
@@ -125,21 +137,10 @@
         gg==
 </value>
   </data>
-  <data name="OK.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAJ4SURBVHhe7ZlPaxNBGIdzEPTsWamo4AfQVrDUnVWQnhSa
-        ZGeph6JHBT2pYL9Cr34T9VI3O0Hw1h57Ki1twYugXntpnd2+b6llmmxmZ3ZmNu8DPwLZyTvJk/m3bIcg
-        CIIgCIIgCIKwx5MfvatRzteY4Ovy9VOUP78Gl6aLOOO3pIA9KeL4NOtLv6M8vQdNpoM4W55horv7nwjI
-        vOB/Hw17c9C03YwSgZkKIVVEYFotZBIRmFYK0RGBaZWQYtdgWXdf9UMnyJ84692BkmFiSEQZuQ1/gbLh
-        YVJEGXkGgdJhYVxEkay/CeXHc3K0TV6wYfra5fyyIuIzP4pF+hS6GA0bpPfZt+QnfljOr0MmkldwuTFs
-        iWAifQNdjCYe9O8W80lZSPAP0Mw6dbbPC2NQBMa6kFBEYKwJCU0ExriQUEVgjAlxLuKhSGaLs7qyUJWU
-        nfG3UE4b57tGlK9cYRnfURaaJDWFPP6+fNOpiIJ4yB8oC+lEU4gXIgrKtUJVrF4qryHO14izRHl0SZ4s
-        N5RFdVNxhHgzIs5SLlwiOVAW180YIVZEyMg/9h10oU+U9243JaScGhZEyO//Hrqoj7R6w/j8PcnpGrIw
-        5NcXRHdb0aZuPkIX5rApJCgRiL0ps/RLea1WDE6Ni7A4QkzG3og4j+dCmhOBeCqkeRGIZ0LciUA8EeJe
-        BOJYiD8iEEdC/BOBNCxkFbr1l4aE+C8CsSwkHBGIJSHhiUAMCwlXBGLm5q6Bm66mqDlCwh8R59EU0j4R
-        yIRC2isCqSik/SKQMUKmRwRS7jJZdwslSEGH8lX7MWTwLH5dvMwG/Fks+i+L5yXwNkEQBEEQbaXT+Qfo
-        gmz0esXU9QAAAABJRU5ErkJggg==
-</value>
-  </data>
+  <metadata name="solarPowerPlantBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>293, 20</value>
+  </metadata>
+  <metadata name="solarPowerPlantBindingSource2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>830, 20</value>
+  </metadata>
 </root>

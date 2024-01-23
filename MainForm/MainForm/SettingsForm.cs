@@ -11,6 +11,10 @@ using Newtonsoft.Json;
 using SCADAHandler.Object;
 using SCADAHandler.AccessAPI_CK11;
 using Microsoft.VisualBasic.FileIO;
+using static System.Windows.Forms.DataFormats;
+using System.Runtime.Intrinsics.Arm;
+using System.IO;
+using Model;
 
 namespace MainForm
 {
@@ -31,6 +35,8 @@ namespace MainForm
             //});
         }
 
+        public BindingList<SolarPowerPlant> solarPowerPlant;
+
         /// <summary>
         /// Подтверждение вносимых данных.
         /// </summary>
@@ -38,13 +44,62 @@ namespace MainForm
         /// <param name="e"></param>
         private void ButtonOK_Click(object sender, EventArgs e)
         {
+            //CalculationModel.CalculAveragePowerCoefSPP calculcoef = new();
+            //calculcoef.CalculAverageCoefspp();
 
-            AccessMesuremetValues meas = new();
-            ListMeasurementValuesExtend valueSummer = meas.
-                GetMeasurementValuesArrayInRange().Result;
+            GetUids(solarPowerPlant);
 
-            
+            //MyProperties? properties = new()
+            //{
+            //    VersionAccess = textBoxVersionAccess.Text,
+            //    VersionMeasure = textBoxMeasurementValues.Text,
+            //    NameServer = textBoxNameServer.Text
+            //};
+
+            //string jsonString = System.Text.Json.JsonSerializer.Serialize<MyProperties>(properties);
+
+            //StreamWriter SW = new StreamWriter(new FileStream("MySettings1.json", FileMode.OpenOrCreate, FileAccess.Write));
+            //SW.Write(jsonString);
+            //SW.Close();
+
+            //Close();
         }
+
+        private string[] GetUids(BindingList<SolarPowerPlant> listspp)
+        {
+            List<string> list = new();
+
+            foreach (var item in listspp)
+            {
+                if (item.StatusSPP == StatusSPP.operating)
+                {
+                    list.Add(item.UIDspp);
+                }
+            }
+
+            string[] uids = new string[list.Count];
+
+            for (int i = 0; i < uids.Length; i++)
+            {
+                uids[i] += i;
+            }
+            return uids;
+        }
+
+        /// <summary>
+        /// Автозаполнение в полях настроек для подключения к БДРВ.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SettingsForm_Load(object sender, EventArgs e)
+        {
+            string jsonString = File.ReadAllText("MySettings.json");
+            MyProperties? properties = System.Text.Json.JsonSerializer.Deserialize<MyProperties>(jsonString);
+            textBoxVersionAccess.Text = properties.VersionAccess;
+            textBoxMeasurementValues.Text = properties.VersionMeasure;
+            textBoxNameServer.Text = properties.NameServer;
+        }
+
 
         ///// <summary>
         ///// Контроль ввода значения исходной мощности.
@@ -122,6 +177,6 @@ namespace MainForm
         //    }
         //}
 
-        
+
     }
 }
