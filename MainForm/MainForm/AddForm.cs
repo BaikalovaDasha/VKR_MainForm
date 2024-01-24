@@ -17,7 +17,7 @@ namespace MainForm
     public partial class AddForm : Form
     {
         /// <summary>
-        /// Событие добавления упражнения.
+        /// Событие добавления параметров СЭС.
         /// </summary>
         public EventHandler<EventArgs> SPPAdded;
 
@@ -173,7 +173,7 @@ namespace MainForm
         {
             try
             {
-                var eventArgs = new SPPEventArgs(AddSPP());
+                var eventArgs = new EventArgsAdded(AddSPP());
                 SPPAdded.Invoke(this, eventArgs);
                 DialogResult = DialogResult.OK;
             }

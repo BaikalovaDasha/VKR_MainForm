@@ -15,6 +15,9 @@ namespace MainForm
         /// </summary>
         private BindingList<SolarPowerPlant> _sppDataList;
 
+        /// <summary>
+        /// Список параметров СЭС.
+        /// </summary>
         public BindingList<SolarPowerPlant> SPPDataList 
         {
             get
@@ -26,6 +29,8 @@ namespace MainForm
                 _sppDataList = value;
             }
         }
+
+        public BindingList<SolarPowerPlant> SPPDataListWithKoefs;
 
         /// <summary>
         /// Список коэффициентов средней выработки в каждый час.
@@ -128,9 +133,6 @@ namespace MainForm
         {
             SPPDataList = new BindingList<SolarPowerPlant>();
             CreateTable(SPPDataList, dataGridView1);
-            CreateTable(SPPDataList, dataGridViewSPP);
-            CreateTableWithKoef(_koefDataList, dataGridView_TimeForKoefAverage);
-            CreateTableWithKoef(_koefDataList, dataGridViewKoefAverage);
         }
 
         /// <summary>
@@ -200,7 +202,7 @@ namespace MainForm
 
             addForm.SPPAdded += (sender, SPPEventArgs) =>
             {
-                SPPDataList.Add(((SPPEventArgs)SPPEventArgs).SPP);
+                SPPDataList.Add(((EventArgsAdded)SPPEventArgs).SPP);
             };
 
             addForm.ShowDialog(this);
@@ -225,19 +227,23 @@ namespace MainForm
 
 
         /// <summary>
-        /// Открытие вкладки результатов расчёта.
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void MenuItemStartCalculation_Click(object sender, EventArgs e)
         {
-            SettingsForm form = new()
+
+            SettingsForm form = new(this)
             {
                 solarPowerPlant = SPPDataList
             };
             form.ShowDialog();
 
+            CreateTable(SPPDataListWithKoefs, dataGridViewSPP);
+
             tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
+
 
         }
     }

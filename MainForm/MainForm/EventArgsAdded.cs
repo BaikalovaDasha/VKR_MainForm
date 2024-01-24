@@ -10,10 +10,10 @@ namespace MainForm
     /// <summary>
     /// Класс события добавления СЭС.
     /// </summary>
-    public class SPPEventArgs : EventArgs
+    public class EventArgsAdded : EventArgs
     {
         /// <summary>
-        /// Упражнение.
+        /// СЭС.
         /// </summary>
         public SolarPowerPlant SPP { get; private set; }
 
@@ -21,7 +21,7 @@ namespace MainForm
         /// Конструктор события добавления СЭС в таблицу СЭС.
         /// </summary>
         /// <param name="exercises"></param>
-        public SPPEventArgs(SolarPowerPlant spp)
+        public EventArgsAdded(SolarPowerPlant spp)
         {
             SPP = spp;
         }

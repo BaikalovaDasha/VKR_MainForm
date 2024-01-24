@@ -3,6 +3,7 @@ using SCADAHandler.AccessAPI_CK11;
 using SCADAHandler.Object;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +16,42 @@ namespace CalculationModel
     public class CalculAveragePowerCoefSPP
     {
         /// <summary>
-        /// 
+        /// Определение средней выработки каждой СЭС для каждого часа.
         /// </summary>
-        public void CalculAverageCoefspp()
+        public List<List<double>> CalculAverageOutPutspp()
+        {
+            List<DateTime> listTimes = GetTime();
+
+            // Списки вырабатываемой мощности СЭС за лето и за зиму...
+            // ... с меткой времени по Забайкалью.
+            var listWinterSPP = GetListSPPUTC9(ValueWinter(), GetListUTC9(ValueWinter()));
+            var listSummerSPP = GetListSPPUTC9(ValueSummer(), GetListUTC9(ValueSummer()));
+
+            // Списки со средним выработкой мощности каждой СЭС
+            List<double> averageWinterMaxSPP = GetAveragePowerSPP(listWinterSPP, listTimes[0]);
+            List<double> averageSummerMaxSPP = GetAveragePowerSPP(listSummerSPP, listTimes[1]);
+
+            List<double> averageWinterMinSPP = GetAveragePowerSPP(listWinterSPP, listTimes[2]);
+            List<double> averageSummerMinSPP = GetAveragePowerSPP(listSummerSPP, listTimes[3]);
+
+            List<List<double>> verageOutputSPP = new()
+            {
+                averageWinterMaxSPP,
+                averageSummerMaxSPP,
+                averageWinterMinSPP,
+                averageSummerMinSPP,
+            };
+
+            return verageOutputSPP;
+
+        }
+
+        /// <summary>
+        /// Получение меток времени для вычисления максимальных...
+        /// ...и минимальных часов по потреблению мощности.
+        /// </summary>
+        /// <returns></returns>
+        public List<DateTime> GetTime() 
         {
             //AccessMesuremetValues meas = new();
             //ListMeasurementValuesExtend valueSummer = meas.
@@ -30,7 +64,6 @@ namespace CalculationModel
             var listMaxModeW = GetMaxMode(listPowerUTC9Winter);
             var listMaxModeS = GetMaxMode(listPowerUTC9Summer);
 
-
             var listMinModeW = GetMinMode(listPowerUTC9Winter);
             var listMinModeS = GetMinMode(listPowerUTC9Summer);
 
@@ -41,24 +74,15 @@ namespace CalculationModel
             DateTime winterMinH = GetMinHour(listMinModeW);
             DateTime summerMinH = GetMinHour(listMinModeS);
 
-            // Списки вырабатываемой мощности СЭС за лето и за зиму...
-            // ... с меткой времени по Забайкалью.
-            var listWinterSPP = GetListSPPUTC9(ValueWinter(), listPowerUTC9Winter);
-            var listSummerSPP = GetListSPPUTC9(ValueSummer(), listPowerUTC9Summer);
+            List<DateTime> listTimes = new()
+            {
+                winterMaxH,
+                summerMaxH, 
+                winterMinH, 
+                summerMinH,
+            };
 
-            // Списки со средним коэффициентом выработки мощности каждой СЭС
-            List<double> averageWinterMaxSPP = GetAveragePowerSPP(listWinterSPP, winterMaxH);
-            List<double> averageSummerMaxSPP = GetAveragePowerSPP(listSummerSPP, summerMaxH);
-
-            List<double> averageWinterMinSPP = GetAveragePowerSPP(listWinterSPP, winterMinH);
-            List<double> averageSummerMinSPP = GetAveragePowerSPP(listSummerSPP, summerMinH);
-
-            // коэффициент средней выработки СЭС.
-            double averagePowerWinterMaxSPP = averageWinterMaxSPP.Average();
-            double averagePowerSummerMaxSPP = averageSummerMaxSPP.Average();
-
-            double averagePowerWinterMinSPP = averageWinterMinSPP.Average();
-            double averagePowerSummerMinSPP = averageSummerMinSPP.Average();
+            return listTimes;
         }
 
         /// <summary>
@@ -66,7 +90,7 @@ namespace CalculationModel
         /// </summary>
         /// <param name="list">запрошенный список по UID.</param>
         /// <returns>список с меткой времени по Забайкальскому часовому поясу.</returns>
-        public List<ValuesMeasurement> GetListUTC9(ListMeasurementValuesExtend list)
+        private List<ValuesMeasurement> GetListUTC9(ListMeasurementValuesExtend list)
         {
             var powerConsump = list.ListMeasurement.Last();
 
@@ -83,7 +107,7 @@ namespace CalculationModel
         /// <param name="listComsumpES">список из значений потребления ЭС.</param>
         /// <param name="indexMode">индекс для определения даты.</param>
         /// <returns></returns>
-        public static List<ValuesMeasurement> GetModeOperation
+        private static List<ValuesMeasurement> GetModeOperation
             (List<ValuesMeasurement> listComsumpES, int indexMode)
         {
             List<ValuesMeasurement> newlistComsumpES = new();
@@ -104,7 +128,7 @@ namespace CalculationModel
         /// </summary>
         /// <param name="listPowerUTC9"></param>
         /// <returns></returns>
-        public List<ValuesMeasurement> GetMaxMode(List<ValuesMeasurement> listPowerUTC9)
+        private List<ValuesMeasurement> GetMaxMode(List<ValuesMeasurement> listPowerUTC9)
         {
             // Максимальный режим работы
             var (maxMode, maxModeIndex) = listPowerUTC9.Select((x, i)
@@ -120,7 +144,7 @@ namespace CalculationModel
         /// </summary>
         /// <param name="listPowerUTC9"></param>
         /// <returns></returns>
-        public List<ValuesMeasurement> GetMinMode(List<ValuesMeasurement> listPowerUTC9)
+        private List<ValuesMeasurement> GetMinMode(List<ValuesMeasurement> listPowerUTC9)
         {
             // Минимальный режим работы.
             var (minMode, minModeIndex) = listPowerUTC9.Select((x, i)
@@ -136,7 +160,7 @@ namespace CalculationModel
         /// </summary>
         /// <param name="listMaxMode"></param>
         /// <returns></returns>
-        public DateTime GetMaxHour(List<ValuesMeasurement> listMaxMode)
+        private DateTime GetMaxHour(List<ValuesMeasurement> listMaxMode)
         {
             // максимальный час потребления в максимальный р.р.
             var (maxHour, maxHourIndex) = listMaxMode.Select((x, i)
@@ -153,7 +177,7 @@ namespace CalculationModel
         /// </summary>
         /// <param name="listMaxMode"></param>
         /// <returns></returns>
-        public DateTime GetMinHour(List<ValuesMeasurement> listMinMode)
+        private DateTime GetMinHour(List<ValuesMeasurement> listMinMode)
         {
             // минимальный час потребления в минимальный р.р.
             var (minHour, minHourIndex) = listMinMode.Select((x, i)
@@ -171,7 +195,7 @@ namespace CalculationModel
         /// ...изменяения без учёта последнего элемента в списке.</param>
         /// <param name="listPowerUTC9">список с часовым поясом по забайкалью.</param>
         /// <returns></returns>
-        public List<ValuesMeasurementExtend> GetListSPPUTC9
+        private List<ValuesMeasurementExtend> GetListSPPUTC9
             (ListMeasurementValuesExtend sppList,
             List<ValuesMeasurement> listPowerUTC9)
         {
@@ -189,7 +213,7 @@ namespace CalculationModel
         /// <param name="listSPP">список выработки мощности СЭС.</param>
         /// <param name="hours">Необходимый час для определения средней выработки.</param>
         /// <returns>список со среднеми значениями выработки каждой СЭС по определённому часу.</returns>
-        public static List<double> GetAveragePowerSPP(List<ValuesMeasurementExtend> listSPP, DateTime hours)
+        private static List<double> GetAveragePowerSPP(List<ValuesMeasurementExtend> listSPP, DateTime hours)
         {
             double sumPowerSPP = 0;
             List<double> averagePowerSPP = new();
@@ -235,7 +259,7 @@ namespace CalculationModel
         /// <param name="listSPP">список СЭС с исходной меткой времени.</param>
         /// <param name="listUTC9">список с необходимой методкой времени.</param>
         /// <returns>список СЭС с меткой времени по Забайкальской ЭС.</returns>
-        public static List<ValuesMeasurementExtend> GetListSPPModeITC9
+        private static List<ValuesMeasurementExtend> GetListSPPModeITC9
             (List<ValuesMeasurementExtend> listSPP, List<ValuesMeasurement> listUTC9)
         {
             foreach (var item in listSPP)
@@ -287,7 +311,7 @@ namespace CalculationModel
         /// <param name="paths">Пути к csv файлам
         /// (файлы располагаются в корне bin\Debug)</param>
         /// <returns>Список объектов из данных ОИК</returns>
-        public static ListMeasurementValuesExtend CreateOIKList(string[] paths)
+        private static ListMeasurementValuesExtend CreateOIKList(string[] paths)
         {
             ListMeasurementValuesExtend OIKList = new();
             foreach (string path in paths)

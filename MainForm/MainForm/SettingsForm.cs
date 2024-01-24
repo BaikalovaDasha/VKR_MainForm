@@ -15,14 +15,24 @@ using static System.Windows.Forms.DataFormats;
 using System.Runtime.Intrinsics.Arm;
 using System.IO;
 using Model;
+using CalculationModel;
 
 namespace MainForm
 {
     public partial class SettingsForm : Form
     {
-        public SettingsForm()
+
+        /// <summary>
+        /// Событие добавления полученных расчётов.
+        /// </summary>
+        public EventHandler<EventArgs> AddedCalcul;
+
+        Form1 ownerForm = null;
+
+        public SettingsForm(Form1 ownerForm)
         {
             InitializeComponent();
+            this.ownerForm = ownerForm;
 
             //string[] powerSystem = { "Забайкальская", "Новосибирская", "Омская", "Башкортостана" };
 
@@ -35,7 +45,15 @@ namespace MainForm
             //});
         }
 
+        /// <summary>
+        /// Ссылка на список СЭС из Form1.
+        /// </summary>
         public BindingList<SolarPowerPlant> solarPowerPlant;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public BindingList<SolarPowerPlant>? ResultSPPCalcul = new();
 
         /// <summary>
         /// Подтверждение вносимых данных.
@@ -44,28 +62,97 @@ namespace MainForm
         /// <param name="e"></param>
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            //CalculationModel.CalculAveragePowerCoefSPP calculcoef = new();
-            //calculcoef.CalculAverageCoefspp();
+            ownerForm.SPPDataListWithKoefs = AddSPPResultList();
 
-            GetUids(solarPowerPlant);
+            // проверить работу метода
+            //OverwiteFile();
 
-            //MyProperties? properties = new()
-            //{
-            //    VersionAccess = textBoxVersionAccess.Text,
-            //    VersionMeasure = textBoxMeasurementValues.Text,
-            //    NameServer = textBoxNameServer.Text
-            //};
-
-            //string jsonString = System.Text.Json.JsonSerializer.Serialize<MyProperties>(properties);
-
-            //StreamWriter SW = new StreamWriter(new FileStream("MySettings1.json", FileMode.OpenOrCreate, FileAccess.Write));
-            //SW.Write(jsonString);
-            //SW.Close();
-
-            //Close();
+            Close();
         }
 
-        private string[] GetUids(BindingList<SolarPowerPlant> listspp)
+        /// <summary>
+        /// Метод добавления СЭС на результирующую форму.
+        /// </summary>
+        /// <returns></returns>
+        public BindingList<SolarPowerPlant> AddSPPResultList()
+        {
+            CalculAveragePowerCoefSPP newlist = new();
+            List<List<double>> listOutput = newlist.CalculAverageOutPutspp();
+            List<SolarPowerPlant> operSPPList = new();
+
+            foreach (var item in solarPowerPlant)
+            {
+                if (item.StatusSPP == StatusSPP.operating)
+                {
+                    operSPPList.Add(item);
+                }
+
+            }
+
+            foreach (var itemOutput in listOutput)
+            {
+
+                foreach (var itemSPP in operSPPList)
+                {
+                    itemSPP.AverageOutput = Math.Round(itemOutput[operSPPList.IndexOf(itemSPP)], 5);
+                    itemSPP.KoefAveragepowerSPP = Math.Round(itemSPP.AverageOutput / itemSPP.InstalledCapacity, 5);
+                    ResultSPPCalcul.Add(itemSPP);
+
+                }
+            }
+
+            return ResultSPPCalcul;
+        }
+
+        /// <summary>
+        /// Метод перезаписывающий файл в котором хранятся...
+        /// ...настройки для получения токена.
+        /// </summary>
+        private void OverwiteFile()
+        {
+            string[] uidsSPP = GetUidsSPP(solarPowerPlant);
+            string[] uids = Append(uidsSPP, textBoxUIDPowerConsump.Text);
+
+            MyProperties? properties = new()
+            {
+                UIDs = uids,
+                VersionAccess = textBoxVersionAccess.Text,
+                VersionMeasure = textBoxMeasurementValues.Text,
+                TypeMeasure = textBoxTypeMeasure.Text,
+                NameServer = textBoxNameServer.Text
+            };
+
+            string jsonString = System.Text.Json.JsonSerializer.Serialize<MyProperties>(properties);
+
+            StreamWriter SW = new(new FileStream("MySettings1.json", FileMode.OpenOrCreate, FileAccess.Write));
+            SW.Write(jsonString);
+            SW.Close();
+        }
+
+        /// <summary>
+        /// Создание массива данных с UID потреблением.
+        /// </summary>
+        /// <param name="uidsSPP"></param>
+        /// <param name="uidsConsump"></param>
+        /// <returns></returns>
+        private static string[] Append(string[] uidsSPP, string uidsConsump)
+        {
+            if (uidsSPP == null)
+            {
+                return new string[] { uidsConsump };
+            }
+            string[] result = new string[uidsSPP.Length + 1];
+            uidsSPP.CopyTo(result, 0);
+            result[uidsSPP.Length] = uidsConsump;
+            return result;
+        }
+
+        /// <summary>
+        /// Формирование массива UID из Form1 таблицы СЭС.
+        /// </summary>
+        /// <param name="listspp"></param>
+        /// <returns></returns>
+        private string[] GetUidsSPP(BindingList<SolarPowerPlant> listspp)
         {
             List<string> list = new();
 
@@ -77,13 +164,28 @@ namespace MainForm
                 }
             }
 
-            string[] uids = new string[list.Count];
+            string[] uids = list.ToArray();
 
-            for (int i = 0; i < uids.Length; i++)
-            {
-                uids[i] += i;
-            }
             return uids;
+        }
+
+        /// <summary>
+        /// Получение списка установленной мощности действующих СЭС.
+        /// </summary>
+        /// <param name="listspp"></param>
+        /// <returns></returns>
+        public List<double> GetCapacityNum(BindingList<SolarPowerPlant> listspp)
+        {
+            List<double> list = new();
+
+            foreach (var item in listspp)
+            {
+                if (item.StatusSPP == StatusSPP.operating)
+                {
+                    list.Add(item.InstalledCapacity);
+                }
+            }
+            return list;
         }
 
         /// <summary>
@@ -93,11 +195,12 @@ namespace MainForm
         /// <param name="e"></param>
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            string jsonString = File.ReadAllText("MySettings.json");
+            string jsonString = File.ReadAllText("MySettings1.json");
             MyProperties? properties = System.Text.Json.JsonSerializer.Deserialize<MyProperties>(jsonString);
             textBoxVersionAccess.Text = properties.VersionAccess;
             textBoxMeasurementValues.Text = properties.VersionMeasure;
             textBoxNameServer.Text = properties.NameServer;
+            textBoxTypeMeasure.Text = properties.TypeMeasure;
         }
 
 
