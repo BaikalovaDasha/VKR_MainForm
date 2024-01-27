@@ -1,10 +1,6 @@
-using CalculationModel;
-using ExcelHandler;
 using System.ComponentModel;
 using Model;
-using System.Windows.Forms;
 using System.Xml.Serialization;
-using System.Text.Json;
 
 namespace MainForm
 {
@@ -18,13 +14,13 @@ namespace MainForm
         /// <summary>
         /// Список параметров СЭС.
         /// </summary>
-        public BindingList<SolarPowerPlant> SPPDataList 
+        public BindingList<SolarPowerPlant> SPPDataList
         {
             get
-            { 
+            {
                 return _sppDataList;
             }
-            set 
+            set
             {
                 _sppDataList = value;
             }
@@ -35,7 +31,7 @@ namespace MainForm
         /// <summary>
         /// Список коэффициентов средней выработки в каждый час.
         /// </summary>
-        private BindingList<AverageOutputPerHour> _koefDataList;
+        public BindingList<AverageOutputPerHour> KoefDataList;
 
         /// <summary>
         /// Для файлов.
@@ -51,6 +47,18 @@ namespace MainForm
 
             var source = new BindingSource(SPPDataList, null);
             dataGridView1.DataSource = source;
+
+            //tabControl1.TabPages["TabPage3"].Controls.Add(dataGridViewSPP);
+            //tabControl1.TabPages["TabPage3"].Controls.Add(dataGridView_TimeForKoefAverage);
+            //tabControl1.TabPages["TabPage3"].Controls.Add(dataGridViewKoefAverage);
+
+            //// Your code
+            //foreach (TabPage _Page in tabControl1.TabPages)
+            //{
+            //    _Page.AutoScroll = true;
+            //    _Page.AutoScrollMargin = new System.Drawing.Size(20, 20);
+            //    _Page.AutoScrollMinSize = new System.Drawing.Size(_Page.Width, _Page.Height);
+            //}
         }
 
         /// <summary>
@@ -150,6 +158,9 @@ namespace MainForm
             var source = new BindingSource(sppList, null);
             dataGridView.DataSource = source;
 
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dataGridView.ColumnHeadersHeight = 45;
+
             dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
@@ -164,12 +175,30 @@ namespace MainForm
         }
 
         /// <summary>
+        /// Получение списка действующих СЭС.
+        /// </summary>
+        /// <returns></returns>
+        public static List<SolarPowerPlant> OperSPP(BindingList<SolarPowerPlant> SPPDataList)
+        {
+            List<SolarPowerPlant> operSPPList = new();
+
+            foreach (var item in SPPDataList)
+            {
+                if (item.StatusSPP == StatusSPP.operating)
+                {
+                    operSPPList.Add(item);
+                }
+            }
+            return operSPPList;
+        }
+
+        /// <summary>
         /// Создание таблицы DataGrid.
         /// </summary>
         /// <param name="koefList">Список СЭС.</param>
         /// <param name="dataGridView">таблица СЭС.</param>
         public static void CreateTableWithKoef(BindingList<AverageOutputPerHour> koefList,
-            DataGridView dataGridView)
+            DataGridView dataGridView, BindingList<SolarPowerPlant> SPPDataList)
         {
             dataGridView.AllowUserToResizeColumns = false;
             dataGridView.AllowUserToResizeRows = false;
@@ -178,7 +207,11 @@ namespace MainForm
             var source = new BindingSource(koefList, null);
             dataGridView.DataSource = source;
 
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dataGridView.ColumnHeadersHeight = 45;
+
+            dataGridView.RowTemplate.Height = 23 * OperSPP(SPPDataList).Count;
+            //dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
@@ -224,8 +257,6 @@ namespace MainForm
             }
         }
 
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -233,7 +264,6 @@ namespace MainForm
         /// <param name="e"></param>
         private void MenuItemStartCalculation_Click(object sender, EventArgs e)
         {
-
             SettingsForm form = new(this)
             {
                 solarPowerPlant = SPPDataList
@@ -241,10 +271,10 @@ namespace MainForm
             form.ShowDialog();
 
             CreateTable(SPPDataListWithKoefs, dataGridViewSPP);
+            CreateTableWithKoef(KoefDataList, dataGridView_TimeForKoefAverage, SPPDataList);
+            CreateTableWithKoef(KoefDataList, dataGridViewKoefAverage, SPPDataList);
 
             tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
-
-
         }
     }
 }

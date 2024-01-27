@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Newtonsoft.Json;
+﻿using System.ComponentModel;
 using SCADAHandler.Object;
-using SCADAHandler.AccessAPI_CK11;
-using Microsoft.VisualBasic.FileIO;
-using static System.Windows.Forms.DataFormats;
-using System.Runtime.Intrinsics.Arm;
-using System.IO;
 using Model;
 using CalculationModel;
 
@@ -21,7 +7,6 @@ namespace MainForm
 {
     public partial class SettingsForm : Form
     {
-
         /// <summary>
         /// Событие добавления полученных расчётов.
         /// </summary>
@@ -53,7 +38,12 @@ namespace MainForm
         /// <summary>
         /// 
         /// </summary>
-        public BindingList<SolarPowerPlant>? ResultSPPCalcul = new();
+        public BindingList<SolarPowerPlant> ResultSPPCalcul = new();
+
+        /// <summary>
+        /// Список СЭС для Form1 с рассчитанным коэффициентом средней выработки.
+        /// </summary>
+        public BindingList<AverageOutputPerHour> ResultOutputPerHour = new();
 
         /// <summary>
         /// Подтверждение вносимых данных.
@@ -62,10 +52,11 @@ namespace MainForm
         /// <param name="e"></param>
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            ownerForm.SPPDataListWithKoefs = AddSPPResultList();
-
             // проверить работу метода
-            //OverwiteFile();
+            OverwiteFile();
+
+            ownerForm.SPPDataListWithKoefs = AddSPPResultList();
+            ownerForm.KoefDataList = AddKoefOutputResult();
 
             Close();
         }
@@ -78,6 +69,83 @@ namespace MainForm
         {
             CalculAveragePowerCoefSPP newlist = new();
             List<List<double>> listOutput = newlist.CalculAverageOutPutspp();
+
+            List<SolarPowerPlant> operSPPList = OperSPP();
+
+            foreach (var itemOutput in listOutput)
+            {
+                foreach (var itemSPP in operSPPList)
+                {
+                    SolarPowerPlant sppItem = new();
+
+                    sppItem.NameSPP = itemSPP.NameSPP;
+                    sppItem.NodeSPP = itemSPP.NodeSPP;
+                    sppItem.AverageOutput = Math.Round(itemOutput[operSPPList.IndexOf(itemSPP)], 5);
+                    sppItem.InstalledCapacity = itemSPP.InstalledCapacity;
+                    sppItem.KoefAveragepowerSPP = Math.Round(sppItem.AverageOutput / sppItem.InstalledCapacity, 5);
+                    ResultSPPCalcul.Add(sppItem);
+                }
+            }
+
+            return ResultSPPCalcul;
+        }
+
+        /// <summary>
+        /// Метод добавления времени и среднего коэффициента выработки СЭС на главную форму.
+        /// </summary>
+        /// <returns></returns>
+        public BindingList<AverageOutputPerHour> AddKoefOutputResult()
+        {
+            CalculAveragePowerCoefSPP newlist = new();
+            List<DateTime> listdateTime = newlist.GetTime();
+            List<SolarPowerPlant> operSPPList = OperSPP();
+
+            List<double> doubles = new();
+
+            foreach (var item in ResultSPPCalcul)
+            {
+                doubles.Add(item.KoefAveragepowerSPP);
+            }
+
+            List<double> koefAverageWinterMaxSPP = doubles.Skip(0).Take(operSPPList.Count).ToList();
+            List<double> koefAverageSummerMaxSPP = doubles.Skip(operSPPList.Count).Take(operSPPList.Count).ToList();
+
+            List<double> koefAverageWinterMinSPP = doubles.Skip(operSPPList.Count * 2).Take(operSPPList.Count).ToList();
+            List<double> koefAverageSummerMinSPP = doubles.Skip(operSPPList.Count * 3).Take(operSPPList.Count).ToList();
+
+            List<double> koefList = new()
+            {
+                koefAverageWinterMaxSPP.Average(),
+                koefAverageSummerMaxSPP.Average(),
+                koefAverageWinterMinSPP.Average(),
+                koefAverageSummerMinSPP.Average(),
+            };
+
+            foreach (var item in listdateTime)
+            {
+                AverageOutputPerHour dateTimeItem = new();
+                dateTimeItem.Time = item;
+                ResultOutputPerHour.Add(dateTimeItem);
+            }
+
+            foreach (var koefItem in koefList)
+            {
+                foreach (var item in ResultOutputPerHour)
+                {
+                    item.KoefAverageOutputPower = Math.Round(koefList[ResultOutputPerHour.IndexOf(item)], 5);
+                }
+            }
+
+
+            return ResultOutputPerHour;
+        }
+
+        /// <summary>
+        /// Получение списка действующих СЭС.
+        /// </summary>
+        /// <returns></returns>
+        private List<SolarPowerPlant> OperSPP()
+        {
             List<SolarPowerPlant> operSPPList = new();
 
             foreach (var item in solarPowerPlant)
@@ -86,22 +154,8 @@ namespace MainForm
                 {
                     operSPPList.Add(item);
                 }
-
             }
-
-            foreach (var itemOutput in listOutput)
-            {
-
-                foreach (var itemSPP in operSPPList)
-                {
-                    itemSPP.AverageOutput = Math.Round(itemOutput[operSPPList.IndexOf(itemSPP)], 5);
-                    itemSPP.KoefAveragepowerSPP = Math.Round(itemSPP.AverageOutput / itemSPP.InstalledCapacity, 5);
-                    ResultSPPCalcul.Add(itemSPP);
-
-                }
-            }
-
-            return ResultSPPCalcul;
+            return operSPPList;
         }
 
         /// <summary>
@@ -170,25 +224,6 @@ namespace MainForm
         }
 
         /// <summary>
-        /// Получение списка установленной мощности действующих СЭС.
-        /// </summary>
-        /// <param name="listspp"></param>
-        /// <returns></returns>
-        public List<double> GetCapacityNum(BindingList<SolarPowerPlant> listspp)
-        {
-            List<double> list = new();
-
-            foreach (var item in listspp)
-            {
-                if (item.StatusSPP == StatusSPP.operating)
-                {
-                    list.Add(item.InstalledCapacity);
-                }
-            }
-            return list;
-        }
-
-        /// <summary>
         /// Автозаполнение в полях настроек для подключения к БДРВ.
         /// </summary>
         /// <param name="sender"></param>
@@ -202,7 +237,6 @@ namespace MainForm
             textBoxNameServer.Text = properties.NameServer;
             textBoxTypeMeasure.Text = properties.TypeMeasure;
         }
-
 
         ///// <summary>
         ///// Контроль ввода значения исходной мощности.
@@ -279,7 +313,5 @@ namespace MainForm
         //            MessageBoxButtons.OK, MessageBoxIcon.Information);
         //    }
         //}
-
-
     }
 }

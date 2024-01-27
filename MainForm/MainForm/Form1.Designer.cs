@@ -45,7 +45,7 @@
             остановитьРасчётToolStripMenuItem = new ToolStripMenuItem();
             tabPage3 = new TabPage();
             dataGridViewKoefAverage = new DataGridView();
-            averageOutputPowerDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            koefAverageOutputPowerDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             averageOutputPerHourBindingSource1 = new BindingSource(components);
             dataGridViewSPP = new DataGridView();
             nameSPPDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
@@ -94,7 +94,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1, toolStripDropDownButton2 });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(951, 27);
+            toolStrip1.Size = new Size(970, 27);
             toolStrip1.TabIndex = 1;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -192,7 +192,7 @@
             tabPage3.Location = new Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(943, 419);
+            tabPage3.Size = new Size(958, 408);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Результаты расчёта";
             tabPage3.UseVisualStyleBackColor = true;
@@ -203,24 +203,24 @@
             dataGridViewKoefAverage.AllowUserToDeleteRows = false;
             dataGridViewKoefAverage.AutoGenerateColumns = false;
             dataGridViewKoefAverage.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewKoefAverage.Columns.AddRange(new DataGridViewColumn[] { averageOutputPowerDataGridViewTextBoxColumn });
+            dataGridViewKoefAverage.Columns.AddRange(new DataGridViewColumn[] { koefAverageOutputPowerDataGridViewTextBoxColumn });
             dataGridViewKoefAverage.DataSource = averageOutputPerHourBindingSource1;
-            dataGridViewKoefAverage.Location = new Point(720, 22);
+            dataGridViewKoefAverage.Location = new Point(792, 22);
             dataGridViewKoefAverage.Name = "dataGridViewKoefAverage";
             dataGridViewKoefAverage.ReadOnly = true;
             dataGridViewKoefAverage.RowHeadersWidth = 51;
             dataGridViewKoefAverage.RowTemplate.Height = 29;
-            dataGridViewKoefAverage.Size = new Size(167, 274);
+            dataGridViewKoefAverage.Size = new Size(125, 380);
             dataGridViewKoefAverage.TabIndex = 2;
             // 
-            // averageOutputPowerDataGridViewTextBoxColumn
+            // koefAverageOutputPowerDataGridViewTextBoxColumn
             // 
-            averageOutputPowerDataGridViewTextBoxColumn.DataPropertyName = "AverageOutputPower";
-            averageOutputPowerDataGridViewTextBoxColumn.HeaderText = "k_СЭС ср, о.е.";
-            averageOutputPowerDataGridViewTextBoxColumn.MinimumWidth = 6;
-            averageOutputPowerDataGridViewTextBoxColumn.Name = "averageOutputPowerDataGridViewTextBoxColumn";
-            averageOutputPowerDataGridViewTextBoxColumn.ReadOnly = true;
-            averageOutputPowerDataGridViewTextBoxColumn.Width = 125;
+            koefAverageOutputPowerDataGridViewTextBoxColumn.DataPropertyName = "KoefAverageOutputPower";
+            koefAverageOutputPowerDataGridViewTextBoxColumn.HeaderText = "K_СЭС ср, о.е.";
+            koefAverageOutputPowerDataGridViewTextBoxColumn.MinimumWidth = 6;
+            koefAverageOutputPowerDataGridViewTextBoxColumn.Name = "koefAverageOutputPowerDataGridViewTextBoxColumn";
+            koefAverageOutputPowerDataGridViewTextBoxColumn.ReadOnly = true;
+            koefAverageOutputPowerDataGridViewTextBoxColumn.Width = 125;
             // 
             // averageOutputPerHourBindingSource1
             // 
@@ -234,12 +234,12 @@
             dataGridViewSPP.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewSPP.Columns.AddRange(new DataGridViewColumn[] { nameSPPDataGridViewTextBoxColumn1, averageOutputDataGridViewTextBoxColumn, installedCapacityDataGridViewTextBoxColumn1, koefAveragepowerSPPDataGridViewTextBoxColumn });
             dataGridViewSPP.DataSource = solarPowerPlantBindingSource3;
-            dataGridViewSPP.Location = new Point(186, 22);
+            dataGridViewSPP.Location = new Point(145, 22);
             dataGridViewSPP.Name = "dataGridViewSPP";
             dataGridViewSPP.ReadOnly = true;
             dataGridViewSPP.RowHeadersWidth = 51;
             dataGridViewSPP.RowTemplate.Height = 29;
-            dataGridViewSPP.Size = new Size(528, 274);
+            dataGridViewSPP.Size = new Size(648, 380);
             dataGridViewSPP.TabIndex = 1;
             // 
             // nameSPPDataGridViewTextBoxColumn1
@@ -263,7 +263,7 @@
             // installedCapacityDataGridViewTextBoxColumn1
             // 
             installedCapacityDataGridViewTextBoxColumn1.DataPropertyName = "InstalledCapacity";
-            installedCapacityDataGridViewTextBoxColumn1.HeaderText = "Установленная мощность СЭС";
+            installedCapacityDataGridViewTextBoxColumn1.HeaderText = "Установленная мощность СЭС, МВт";
             installedCapacityDataGridViewTextBoxColumn1.MinimumWidth = 6;
             installedCapacityDataGridViewTextBoxColumn1.Name = "installedCapacityDataGridViewTextBoxColumn1";
             installedCapacityDataGridViewTextBoxColumn1.ReadOnly = true;
@@ -290,12 +290,12 @@
             dataGridView_TimeForKoefAverage.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView_TimeForKoefAverage.Columns.AddRange(new DataGridViewColumn[] { timeDataGridViewTextBoxColumn });
             dataGridView_TimeForKoefAverage.DataSource = averageOutputPerHourBindingSource;
-            dataGridView_TimeForKoefAverage.Location = new Point(26, 22);
+            dataGridView_TimeForKoefAverage.Location = new Point(21, 22);
             dataGridView_TimeForKoefAverage.Name = "dataGridView_TimeForKoefAverage";
             dataGridView_TimeForKoefAverage.ReadOnly = true;
             dataGridView_TimeForKoefAverage.RowHeadersWidth = 51;
             dataGridView_TimeForKoefAverage.RowTemplate.Height = 29;
-            dataGridView_TimeForKoefAverage.Size = new Size(154, 274);
+            dataGridView_TimeForKoefAverage.Size = new Size(125, 380);
             dataGridView_TimeForKoefAverage.TabIndex = 0;
             // 
             // timeDataGridViewTextBoxColumn
@@ -322,7 +322,7 @@
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(943, 419);
+            tabPage2.Size = new Size(958, 408);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Таблица СЭС";
             tabPage2.UseVisualStyleBackColor = true;
@@ -333,7 +333,7 @@
             editingTable.Items.AddRange(new ToolStripItem[] { AddNewSPP, DeleteSPP });
             editingTable.Location = new Point(3, 3);
             editingTable.Name = "editingTable";
-            editingTable.Size = new Size(937, 27);
+            editingTable.Size = new Size(952, 27);
             editingTable.TabIndex = 1;
             editingTable.Text = "toolStrip2";
             // 
@@ -369,7 +369,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(937, 380);
+            dataGridView1.Size = new Size(952, 367);
             dataGridView1.TabIndex = 0;
             // 
             // nameSPPDataGridViewTextBoxColumn
@@ -428,11 +428,11 @@
             // 
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
-            tabControl1.Location = new Point(0, 27);
+            tabControl1.Location = new Point(4, 27);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.ShowToolTips = true;
-            tabControl1.Size = new Size(951, 452);
+            tabControl1.Size = new Size(966, 441);
             tabControl1.TabIndex = 0;
             // 
             // solarPowerPlantBindingSource2
@@ -443,7 +443,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(951, 481);
+            ClientSize = new Size(970, 475);
             Controls.Add(toolStrip1);
             Controls.Add(tabControl1);
             Name = "Form1";
@@ -506,13 +506,14 @@
         private DataGridView dataGridView_TimeForKoefAverage;
         private DataGridViewTextBoxColumn averageOutputPowerDataGridViewTextBoxColumn;
         private BindingSource averageOutputPerHourBindingSource1;
-        private DataGridViewTextBoxColumn nameSPPDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn averageOutputDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn installedCapacityDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn koefAveragepowerSPPDataGridViewTextBoxColumn;
         private BindingSource solarPowerPlantBindingSource3;
         private DataGridViewTextBoxColumn timeDataGridViewTextBoxColumn;
         private BindingSource averageOutputPerHourBindingSource;
         private BindingSource solarPowerPlantBindingSource2;
+        private DataGridViewTextBoxColumn koefAverageOutputPowerDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn nameSPPDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn averageOutputDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn installedCapacityDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn koefAveragepowerSPPDataGridViewTextBoxColumn;
     }
 }

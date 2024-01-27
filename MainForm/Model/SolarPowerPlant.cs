@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
+﻿using System.ComponentModel;
 
 namespace Model
 {
     public class SolarPowerPlant
     {
-
         /// <summary>
         /// Нименование СЭС.
         /// </summary>
@@ -36,6 +28,11 @@ namespace Model
         /// UID действующей СЭС.
         /// </summary>
         private string _uniqueID;
+
+        /// <summary>
+        /// Средняя выработка СЭС.
+        /// </summary>
+        private double _averageOutput;
 
         /// <summary>
         /// Gets or sets наименование СЭС.
@@ -132,7 +129,17 @@ namespace Model
         /// Средняя выработка мощности СЭС.
         /// </summary>
         [DisplayName("Средняя выработка, МВт")]
-        public double AverageOutput { get; set; }
+        public double AverageOutput
+        {
+            get
+            {
+                return _averageOutput;
+            }
+            set
+            {
+                _averageOutput = value;
+            }
+        }
 
         /// <summary>
         /// Коэффициент средней выработки СЭС.

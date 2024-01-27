@@ -61,5 +61,7 @@ namespace MainForm
             }
             return double.Parse(number);
         }
+
+        
     }
 }

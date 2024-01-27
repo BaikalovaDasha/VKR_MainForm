@@ -16,6 +16,6 @@ namespace Model
         /// <summary>
         /// Коэффициент средней выработки мощности СЭС в ЭС.
         /// </summary>
-        public double AverageOutputPower { get; set; }
+        public double KoefAverageOutputPower { get; set; }
     }
 }

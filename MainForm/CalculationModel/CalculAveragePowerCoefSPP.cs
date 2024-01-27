@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.FileIO;
+using Newtonsoft.Json;
 using SCADAHandler.AccessAPI_CK11;
 using SCADAHandler.Object;
 using System;
@@ -15,6 +16,47 @@ namespace CalculationModel
     /// </summary>
     public class CalculAveragePowerCoefSPP
     {
+        /// <summary>
+        /// Метод позволяющий обращаться к данным из ОИК СК-11 в определённых интервалах
+        /// </summary>
+        /// <returns></returns>
+        public List<ListMeasurementValuesExtend> GetValueMesureWS()
+        {
+            List<ListMeasurementValuesExtend> listWinterSummer = new();
+
+            DateTime fromTimeStampDateW = new(2022, 11, 30, 15, 00, 00);
+            DateTime toTimeStampDateW = new(2023, 03, 01, 15, 00, 00);
+
+            DateTime fromTimeStampDateS = new(2023, 05, 31, 15, 00, 00);
+            DateTime toTimeStampDateS = new(2023, 09, 01, 15, 00, 00);
+
+            string fileName = "MySettings1.json";
+            string jsonString = File.ReadAllText(fileName);
+            MyProperties? properties = JsonConvert.DeserializeObject<MyProperties>(jsonString);
+
+            SettingAccessAPI setting = new(properties.NameServer, properties.VersionAccess);
+
+            SettingMeasurementAPI settingMeasure = new(properties.NameServer, properties.VersionMeasure);
+
+            AccessMesuremetValues measureWinter =
+                new(properties.UIDs, fromTimeStampDateW, toTimeStampDateW,
+                    setting, settingMeasure, properties.TypeMeasure);
+
+            AccessMesuremetValues measureSummer =
+                new(properties.UIDs, fromTimeStampDateS, toTimeStampDateS,
+                setting, settingMeasure, properties.TypeMeasure);
+
+            ListMeasurementValuesExtend winterList = measureWinter.ListMeasurementValuesExtend;
+
+            ListMeasurementValuesExtend sumerList = measureSummer.ListMeasurementValuesExtend;
+
+            listWinterSummer.Add(winterList);
+            listWinterSummer.Add(sumerList);
+
+            return listWinterSummer;
+
+        }
+
         /// <summary>
         /// Определение средней выработки каждой СЭС для каждого часа.
         /// </summary>

@@ -33,6 +33,8 @@
             labelMeasurementValues = new Label();
             textBoxMeasurementValues = new TextBox();
             groupBox1 = new GroupBox();
+            textBoxTypeMeasure = new TextBox();
+            label_TypeMeasure = new Label();
             textBoxUIDPowerConsump = new TextBox();
             labelUIDPowerConsump = new Label();
             textBoxNameServer = new TextBox();
@@ -43,10 +45,16 @@
             label_InitPower = new Label();
             textBoxInitPower = new TextBox();
             buttonOK = new Button();
-            textBoxTypeMeasure = new TextBox();
-            label_TypeMeasure = new Label();
+            groupBox3 = new GroupBox();
+            dateTimePicker2 = new DateTimePicker();
+            dateTimePicker1 = new DateTimePicker();
+            labelWinter = new Label();
+            dateTimePicker3 = new DateTimePicker();
+            dateTimePicker4 = new DateTimePicker();
+            label2 = new Label();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // labelVersionAccess
@@ -100,6 +108,22 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Настройки для получения данных от ОИК СК-11";
             // 
+            // textBoxTypeMeasure
+            // 
+            textBoxTypeMeasure.Location = new Point(240, 133);
+            textBoxTypeMeasure.Name = "textBoxTypeMeasure";
+            textBoxTypeMeasure.Size = new Size(214, 27);
+            textBoxTypeMeasure.TabIndex = 9;
+            // 
+            // label_TypeMeasure
+            // 
+            label_TypeMeasure.AutoSize = true;
+            label_TypeMeasure.Location = new Point(28, 140);
+            label_TypeMeasure.Name = "label_TypeMeasure";
+            label_TypeMeasure.Size = new Size(117, 20);
+            label_TypeMeasure.TabIndex = 8;
+            label_TypeMeasure.Text = "Тип измерения";
+            // 
             // textBoxUIDPowerConsump
             // 
             textBoxUIDPowerConsump.Location = new Point(240, 31);
@@ -138,9 +162,9 @@
             groupBox2.Controls.Add(labelPowerSystem);
             groupBox2.Controls.Add(label_InitPower);
             groupBox2.Controls.Add(textBoxInitPower);
-            groupBox2.Location = new Point(17, 236);
+            groupBox2.Location = new Point(12, 370);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(455, 114);
+            groupBox2.Size = new Size(460, 114);
             groupBox2.TabIndex = 6;
             groupBox2.TabStop = false;
             groupBox2.Text = "Исходные данные для расчёта потребления мощности";
@@ -175,12 +199,12 @@
             // 
             textBoxInitPower.Location = new Point(235, 32);
             textBoxInitPower.Name = "textBoxInitPower";
-            textBoxInitPower.Size = new Size(214, 27);
+            textBoxInitPower.Size = new Size(219, 27);
             textBoxInitPower.TabIndex = 1;
             // 
             // buttonOK
             // 
-            buttonOK.Location = new Point(17, 356);
+            buttonOK.Location = new Point(12, 490);
             buttonOK.Name = "buttonOK";
             buttonOK.Size = new Size(441, 29);
             buttonOK.TabIndex = 7;
@@ -188,37 +212,85 @@
             buttonOK.UseVisualStyleBackColor = true;
             buttonOK.Click += ButtonOK_Click;
             // 
-            // textBoxTypeMeasure
+            // groupBox3
             // 
-            textBoxTypeMeasure.Location = new Point(240, 133);
-            textBoxTypeMeasure.Name = "textBoxTypeMeasure";
-            textBoxTypeMeasure.Size = new Size(214, 27);
-            textBoxTypeMeasure.TabIndex = 9;
+            groupBox3.Controls.Add(label2);
+            groupBox3.Controls.Add(dateTimePicker3);
+            groupBox3.Controls.Add(dateTimePicker4);
+            groupBox3.Controls.Add(dateTimePicker2);
+            groupBox3.Controls.Add(dateTimePicker1);
+            groupBox3.Controls.Add(labelWinter);
+            groupBox3.Location = new Point(12, 231);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(460, 133);
+            groupBox3.TabIndex = 10;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Интервал времени";
             // 
-            // label_TypeMeasure
+            // dateTimePicker2
             // 
-            label_TypeMeasure.AutoSize = true;
-            label_TypeMeasure.Location = new Point(28, 140);
-            label_TypeMeasure.Name = "label_TypeMeasure";
-            label_TypeMeasure.Size = new Size(117, 20);
-            label_TypeMeasure.TabIndex = 8;
-            label_TypeMeasure.Text = "Тип измерения";
+            dateTimePicker2.Location = new Point(15, 84);
+            dateTimePicker2.Name = "dateTimePicker2";
+            dateTimePicker2.Size = new Size(214, 27);
+            dateTimePicker2.TabIndex = 8;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Location = new Point(15, 51);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(214, 27);
+            dateTimePicker1.TabIndex = 7;
+            // 
+            // labelWinter
+            // 
+            labelWinter.AutoSize = true;
+            labelWinter.Location = new Point(58, 28);
+            labelWinter.Name = "labelWinter";
+            labelWinter.Size = new Size(121, 20);
+            labelWinter.TabIndex = 6;
+            labelWinter.Text = "Зимние месяцы";
+            // 
+            // dateTimePicker3
+            // 
+            dateTimePicker3.Location = new Point(240, 84);
+            dateTimePicker3.Name = "dateTimePicker3";
+            dateTimePicker3.Size = new Size(214, 27);
+            dateTimePicker3.TabIndex = 10;
+            // 
+            // dateTimePicker4
+            // 
+            dateTimePicker4.Location = new Point(240, 51);
+            dateTimePicker4.Name = "dateTimePicker4";
+            dateTimePicker4.Size = new Size(214, 27);
+            dateTimePicker4.TabIndex = 9;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(288, 28);
+            label2.Name = "label2";
+            label2.Size = new Size(117, 20);
+            label2.TabIndex = 11;
+            label2.Text = "Летние месяцы";
             // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(484, 403);
+            ClientSize = new Size(484, 540);
+            Controls.Add(groupBox3);
             Controls.Add(buttonOK);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "SettingsForm";
             Text = "SettingsForm";
-            //Load += SettingsForm_Load;
+            Load += SettingsForm_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -241,5 +313,12 @@
         private Label labelUIDPowerConsump;
         private TextBox textBoxTypeMeasure;
         private Label label_TypeMeasure;
+        private GroupBox groupBox3;
+        private DateTimePicker dateTimePicker2;
+        private DateTimePicker dateTimePicker1;
+        private Label labelWinter;
+        private Label label2;
+        private DateTimePicker dateTimePicker3;
+        private DateTimePicker dateTimePicker4;
     }
 }
