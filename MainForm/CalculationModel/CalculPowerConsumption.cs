@@ -108,9 +108,13 @@ namespace CalculationModel
             return pInit * k;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="paramFromExcel"></param>
+        /// <returns></returns>
         public double[] CalculatePowerConsumption(GetParamFromExcel paramFromExcel)
         {
-            //ExcelHandler.GetParamFromExcel paramFromExcel = new();
 
             Dictionary<string, double> dictionaryKoef = paramFromExcel.GetkoefToES();
 

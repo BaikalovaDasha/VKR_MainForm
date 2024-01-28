@@ -146,5 +146,25 @@ namespace Model
         /// </summary>
         [DisplayName("К_сэс, о.е.")]
         public double KoefAveragepowerSPP { get; set; }
+
+        /// <summary>
+        /// Вводимая мощность СЭС в максимальный зимний период.
+        /// </summary>
+        public double EnteredOutputSPPMaxW { get; set; }
+
+        /// <summary>
+        /// Вводимая мощность СЭС в максимальный летний период.
+        /// </summary>
+        public double EnteredOutputSPPMaxS { get; set; }
+
+        /// <summary>
+        /// Вводимая мощность СЭС в минимальный зимний период.
+        /// </summary>
+        public double EnteredOutputSPPMinW { get; set; }
+
+        /// <summary>
+        /// Вводимая мощность СЭС в минимальный летний период.
+        /// </summary>
+        public double EnteredOutputSPPMinS { get; set; }
     }
 }

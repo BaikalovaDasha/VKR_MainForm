@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Model;
 using System.Xml.Serialization;
+using System.Windows.Forms;
 
 namespace MainForm
 {
@@ -29,6 +30,11 @@ namespace MainForm
         public BindingList<SolarPowerPlant> SPPDataListWithKoefs;
 
         /// <summary>
+        /// —писок вводимых —Ё— с рассчитанными вводимыми мощност€ми.
+        /// </summary>
+        public BindingList<SolarPowerPlant> ResultOutputPowerSPPCalcul;
+
+        /// <summary>
         /// —писок коэффициентов средней выработки в каждый час.
         /// </summary>
         public BindingList<AverageOutputPerHour> KoefDataList;
@@ -48,17 +54,20 @@ namespace MainForm
             var source = new BindingSource(SPPDataList, null);
             dataGridView1.DataSource = source;
 
-            //tabControl1.TabPages["TabPage3"].Controls.Add(dataGridViewSPP);
-            //tabControl1.TabPages["TabPage3"].Controls.Add(dataGridView_TimeForKoefAverage);
-            //tabControl1.TabPages["TabPage3"].Controls.Add(dataGridViewKoefAverage);
+            this.Controls.Add(tabControl1);
+            tabControl1.TabPages[0].Controls.Add(dataGridViewSPP);
+            tabControl1.TabPages[1].Controls.Add(dataGridViewSPP);
+            tabControl1.TabPages[1].Controls.Add(dataGridView_TimeForKoefAverage);
+            tabControl1.TabPages[1].Controls.Add(dataGridViewKoefAverage);
+            tabControl1.TabPages[1].Controls.Add(dataGridView2);
 
-            //// Your code
-            //foreach (TabPage _Page in tabControl1.TabPages)
-            //{
-            //    _Page.AutoScroll = true;
-            //    _Page.AutoScrollMargin = new System.Drawing.Size(20, 20);
-            //    _Page.AutoScrollMinSize = new System.Drawing.Size(_Page.Width, _Page.Height);
-            //}
+            // Your code
+            foreach (TabPage _Page in tabControl1.TabPages)
+            {
+                _Page.AutoScroll = true;
+                //_Page.AutoScrollMargin = new System.Drawing.Size(20, 20);
+                //_Page.AutoScrollMinSize = new System.Drawing.Size(_Page.Width, _Page.Height);
+            }
         }
 
         /// <summary>
@@ -184,7 +193,7 @@ namespace MainForm
 
             foreach (var item in SPPDataList)
             {
-                if (item.StatusSPP == StatusSPP.operating)
+                if (item.StatusSPP == StatusSPP.putIntoOperation)
                 {
                     operSPPList.Add(item);
                 }
@@ -258,7 +267,7 @@ namespace MainForm
         }
 
         /// <summary>
-        /// 
+        /// запуск расчЄта доли —Ё—.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -273,6 +282,7 @@ namespace MainForm
             CreateTable(SPPDataListWithKoefs, dataGridViewSPP);
             CreateTableWithKoef(KoefDataList, dataGridView_TimeForKoefAverage, SPPDataList);
             CreateTableWithKoef(KoefDataList, dataGridViewKoefAverage, SPPDataList);
+            CreateTable(ResultOutputPowerSPPCalcul, dataGridView2);
 
             tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
         }

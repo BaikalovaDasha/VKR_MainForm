@@ -2,6 +2,8 @@
 using SCADAHandler.Object;
 using Model;
 using CalculationModel;
+using System;
+using ExcelHandler;
 
 namespace MainForm
 {
@@ -19,15 +21,15 @@ namespace MainForm
             InitializeComponent();
             this.ownerForm = ownerForm;
 
-            //string[] powerSystem = { "Забайкальская", "Новосибирская", "Омская", "Башкортостана" };
+            string[] powerSystem = { "Забайкальская", "Новосибирская", "Омская", "Башкортостана" };
 
-            //ChoosEnergySystem_Combobox.Items.AddRange(new string[]
-            //{
-            //    powerSystem[0],
-            //    powerSystem[1],
-            //    powerSystem[2],
-            //    powerSystem[3]
-            //});
+            ChoosEnergySystemCombobox.Items.AddRange(new string[]
+            {
+                powerSystem[0],
+                powerSystem[1],
+                powerSystem[2],
+                powerSystem[3]
+            });
         }
 
         /// <summary>
@@ -36,7 +38,7 @@ namespace MainForm
         public BindingList<SolarPowerPlant> solarPowerPlant;
 
         /// <summary>
-        /// 
+        /// Список действующих СЭС с коэффициентами средней выработки по каждой СЭС.
         /// </summary>
         public BindingList<SolarPowerPlant> ResultSPPCalcul = new();
 
@@ -45,6 +47,8 @@ namespace MainForm
         /// </summary>
         public BindingList<AverageOutputPerHour> ResultOutputPerHour = new();
 
+        public double[] powerConsumption;
+
         /// <summary>
         /// Подтверждение вносимых данных.
         /// </summary>
@@ -52,17 +56,64 @@ namespace MainForm
         /// <param name="e"></param>
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            // проверить работу метода
-            OverwiteFile();
+            try
+            {
+                //if (string.IsNullOrEmpty(textBoxUIDPowerConsump.Text))
+                //{
+                //    MessageBox.Show("Вы не ввели UID потребления ЭС", "Внимание",
+                //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
 
-            ownerForm.SPPDataListWithKoefs = AddSPPResultList();
-            ownerForm.KoefDataList = AddKoefOutputResult();
+                //if (ChoosEnergySystemCombobox.SelectedIndex < 0)
+                //{
+                //    MessageBox.Show("Вы не выбрали ЭС для расчёта!", "Внимание",
+                //    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
+
+                //if (string.IsNullOrEmpty(textBoxInitPower.Text))
+                //{
+                //    MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
+                //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
+
+                OverwiteFile();
+
+                ownerForm.SPPDataListWithKoefs = AddSPPResultList();
+                ownerForm.KoefDataList = AddKoefOutputResult();
+
+                CalculInptPowerSPP outputPowerSPPCalcul = new();
+                ownerForm.ResultOutputPowerSPPCalcul = outputPowerSPPCalcul.
+                    GetInputPower(solarPowerPlant, ResultOutputPerHour);
+
+                powerConsumption = AddInitPower().CalculatePowerConsumption(AddFindText());
+
+                
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
+
+            
+
+            try
+            {
+                
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
             Close();
         }
 
         /// <summary>
-        /// Метод добавления СЭС на результирующую форму.
+        /// Создание списка со средней выработкой и коэффициентами СЭС для...
+        /// ...определения коэффициента средней выработки СЭС по ЭС.
         /// </summary>
         /// <returns></returns>
         public BindingList<SolarPowerPlant> AddSPPResultList()
@@ -128,14 +179,10 @@ namespace MainForm
                 ResultOutputPerHour.Add(dateTimeItem);
             }
 
-            foreach (var koefItem in koefList)
+            foreach (var item in ResultOutputPerHour)
             {
-                foreach (var item in ResultOutputPerHour)
-                {
-                    item.KoefAverageOutputPower = Math.Round(koefList[ResultOutputPerHour.IndexOf(item)], 5);
-                }
+                item.KoefAverageOutputPower = Math.Round(koefList[ResultOutputPerHour.IndexOf(item)], 5);
             }
-
 
             return ResultOutputPerHour;
         }
@@ -150,7 +197,7 @@ namespace MainForm
 
             foreach (var item in solarPowerPlant)
             {
-                if (item.StatusSPP == StatusSPP.operating)
+                if (item.StatusSPP == StatusSPP.putIntoOperation)
                 {
                     operSPPList.Add(item);
                 }
@@ -212,7 +259,7 @@ namespace MainForm
 
             foreach (var item in listspp)
             {
-                if (item.StatusSPP == StatusSPP.operating)
+                if (item.StatusSPP == StatusSPP.putIntoOperation)
                 {
                     list.Add(item.UIDspp);
                 }
@@ -238,80 +285,41 @@ namespace MainForm
             textBoxTypeMeasure.Text = properties.TypeMeasure;
         }
 
-        ///// <summary>
-        ///// Контроль ввода значения исходной мощности.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void ControlValue_KeyPress(object sender, KeyPressEventArgs e)
-        //{
-        //    ControlText.CheckInputDouble(e);
-        //}
+        /// <summary>
+        /// Контроль ввода значения исходной мощности.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ControlValue_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ControlText.CheckInputDouble(e);
+        }
 
-        ///// <summary>
-        ///// Присваивание искомого слова в класс где происходит работа с Excel.
-        ///// </summary>
-        ///// <returns></returns>
-        //public GetParamFromExcel AddFindText()
-        //{
-        //    var text = new GetParamFromExcel
-        //    {
-        //        TextToFind = ChoosEnergySystem_Combobox.Text
-        //    };
-        //    return text;
-        //}
+        /// <summary>
+        /// Присваивание искомого слова в класс где происходит работа с Excel.
+        /// </summary>
+        /// <returns></returns>
+        public GetParamFromExcel AddFindText()
+        {
+            var text = new GetParamFromExcel
+            {
+                TextToFind = ChoosEnergySystemCombobox.Text
+            };
+            return text;
+        }
 
-        ///// <summary>
-        ///// Присваивание исходной мощности в расчётный модуль.
-        ///// </summary>
-        ///// <returns></returns>
-        //public CalculPowerConsumption AddInitPower()
-        //{
-        //    var initP = new CalculPowerConsumption
-        //    {
-        //        InitPower = ControlText.CheckNumber(InputPower_textBox.Text)
-        //    };
+        /// <summary>
+        /// Присваивание исходной мощности в расчётный модуль.
+        /// </summary>
+        /// <returns></returns>
+        public CalculPowerConsumption AddInitPower()
+        {
+            var initP = new CalculPowerConsumption
+            {
+                InitPower = ControlText.CheckNumber(textBoxInitPower.Text)
+            };
 
-        //    return initP;
-        //}
-
-        ///// <summary>
-        ///// Запуск расчёта потрбления мощности для ЭС.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void Button_CalaulPower_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (ChoosEnergySystem_Combobox.SelectedIndex < 0)
-        //        {
-        //            MessageBox.Show("Вы не выбрали ЭС для расчёта!", "Внимание",
-        //            MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-
-        //        var initTextFind = AddFindText();
-        //        var initPower = AddInitPower();
-
-        //        double[] P = initPower.CalculatePowerConsumption(initTextFind);
-
-        //        listBox_PowerConsump.Items.Add($"P_max_0.92_зима: {Math.Round(P[0], 0)}");
-        //        listBox_PowerConsump.Items.Add($"P_max_ГОСТ_зима: {Math.Round(P[1], 0)}");
-
-        //        listBox_PowerConsump.Items.Add($"P_min_0.92_зима: {Math.Round(P[2], 0)}");
-        //        listBox_PowerConsump.Items.Add($"P_min_0.92_зима: {Math.Round(P[3], 0)}");
-
-        //        listBox_PowerConsump.Items.Add($"P_max_0.98_лето: {Math.Round(P[4], 0)}");
-        //        listBox_PowerConsump.Items.Add($"P_max_лето_норм: {Math.Round(P[5], 0)}");
-
-        //        listBox_PowerConsump.Items.Add($"P_min_лето_норм: {Math.Round(P[6], 0)}");
-
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
-        //            MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //    }
-        //}
+            return initP;
+        }
     }
 }

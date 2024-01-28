@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExcelHandler\ExcelHandler.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
     <ProjectReference Include="..\SCADAHandler\SCADAHandler.csproj" />
   </ItemGroup>
 

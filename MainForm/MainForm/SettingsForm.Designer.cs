@@ -40,21 +40,25 @@
             textBoxNameServer = new TextBox();
             label1 = new Label();
             groupBox2 = new GroupBox();
-            comboBox1 = new ComboBox();
+            ChoosEnergySystemCombobox = new ComboBox();
             labelPowerSystem = new Label();
             label_InitPower = new Label();
             textBoxInitPower = new TextBox();
             buttonOK = new Button();
-            groupBox3 = new GroupBox();
+            groupBox = new GroupBox();
+            labeltoTimeStampDateS = new Label();
+            labelfromTimeStampDateS = new Label();
+            labelToTimeStampW = new Label();
+            labelFromTimeStampW = new Label();
+            dateTimePicker4 = new DateTimePicker();
+            dateTimePicker3 = new DateTimePicker();
             dateTimePicker2 = new DateTimePicker();
             dateTimePicker1 = new DateTimePicker();
+            labelSummer = new Label();
             labelWinter = new Label();
-            dateTimePicker3 = new DateTimePicker();
-            dateTimePicker4 = new DateTimePicker();
-            label2 = new Label();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
-            groupBox3.SuspendLayout();
+            groupBox.SuspendLayout();
             SuspendLayout();
             // 
             // labelVersionAccess
@@ -158,24 +162,24 @@
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(comboBox1);
+            groupBox2.Controls.Add(ChoosEnergySystemCombobox);
             groupBox2.Controls.Add(labelPowerSystem);
             groupBox2.Controls.Add(label_InitPower);
             groupBox2.Controls.Add(textBoxInitPower);
-            groupBox2.Location = new Point(12, 370);
+            groupBox2.Location = new Point(12, 393);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(460, 114);
             groupBox2.TabIndex = 6;
             groupBox2.TabStop = false;
             groupBox2.Text = "Исходные данные для расчёта потребления мощности";
             // 
-            // comboBox1
+            // ChoosEnergySystemCombobox
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(235, 70);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(214, 28);
-            comboBox1.TabIndex = 3;
+            ChoosEnergySystemCombobox.FormattingEnabled = true;
+            ChoosEnergySystemCombobox.Location = new Point(240, 70);
+            ChoosEnergySystemCombobox.Name = "ChoosEnergySystemCombobox";
+            ChoosEnergySystemCombobox.Size = new Size(214, 28);
+            ChoosEnergySystemCombobox.TabIndex = 3;
             // 
             // labelPowerSystem
             // 
@@ -197,91 +201,135 @@
             // 
             // textBoxInitPower
             // 
-            textBoxInitPower.Location = new Point(235, 32);
+            textBoxInitPower.Location = new Point(240, 32);
             textBoxInitPower.Name = "textBoxInitPower";
-            textBoxInitPower.Size = new Size(219, 27);
+            textBoxInitPower.Size = new Size(214, 27);
             textBoxInitPower.TabIndex = 1;
             // 
             // buttonOK
             // 
-            buttonOK.Location = new Point(12, 490);
+            buttonOK.Location = new Point(12, 513);
             buttonOK.Name = "buttonOK";
-            buttonOK.Size = new Size(441, 29);
+            buttonOK.Size = new Size(460, 29);
             buttonOK.TabIndex = 7;
             buttonOK.Text = "ОК";
             buttonOK.UseVisualStyleBackColor = true;
             buttonOK.Click += ButtonOK_Click;
             // 
-            // groupBox3
+            // groupBox
             // 
-            groupBox3.Controls.Add(label2);
-            groupBox3.Controls.Add(dateTimePicker3);
-            groupBox3.Controls.Add(dateTimePicker4);
-            groupBox3.Controls.Add(dateTimePicker2);
-            groupBox3.Controls.Add(dateTimePicker1);
-            groupBox3.Controls.Add(labelWinter);
-            groupBox3.Location = new Point(12, 231);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(460, 133);
-            groupBox3.TabIndex = 10;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Интервал времени";
+            groupBox.Controls.Add(labeltoTimeStampDateS);
+            groupBox.Controls.Add(labelfromTimeStampDateS);
+            groupBox.Controls.Add(labelToTimeStampW);
+            groupBox.Controls.Add(labelFromTimeStampW);
+            groupBox.Controls.Add(dateTimePicker4);
+            groupBox.Controls.Add(dateTimePicker3);
+            groupBox.Controls.Add(dateTimePicker2);
+            groupBox.Controls.Add(dateTimePicker1);
+            groupBox.Controls.Add(labelSummer);
+            groupBox.Controls.Add(labelWinter);
+            groupBox.Location = new Point(12, 231);
+            groupBox.Name = "groupBox";
+            groupBox.Size = new Size(460, 156);
+            groupBox.TabIndex = 8;
+            groupBox.TabStop = false;
+            groupBox.Text = "Интервал времени ";
+            // 
+            // labeltoTimeStampDateS
+            // 
+            labeltoTimeStampDateS.AutoSize = true;
+            labeltoTimeStampDateS.Location = new Point(240, 108);
+            labeltoTimeStampDateS.Name = "labeltoTimeStampDateS";
+            labeltoTimeStampDateS.Size = new Size(28, 20);
+            labeltoTimeStampDateS.TabIndex = 10;
+            labeltoTimeStampDateS.Text = "До";
+            // 
+            // labelfromTimeStampDateS
+            // 
+            labelfromTimeStampDateS.AutoSize = true;
+            labelfromTimeStampDateS.Location = new Point(240, 69);
+            labelfromTimeStampDateS.Name = "labelfromTimeStampDateS";
+            labelfromTimeStampDateS.Size = new Size(26, 20);
+            labelfromTimeStampDateS.TabIndex = 9;
+            labelfromTimeStampDateS.Text = "От";
+            // 
+            // labelToTimeStampW
+            // 
+            labelToTimeStampW.AutoSize = true;
+            labelToTimeStampW.Location = new Point(6, 108);
+            labelToTimeStampW.Name = "labelToTimeStampW";
+            labelToTimeStampW.Size = new Size(28, 20);
+            labelToTimeStampW.TabIndex = 8;
+            labelToTimeStampW.Text = "До";
+            // 
+            // labelFromTimeStampW
+            // 
+            labelFromTimeStampW.AutoSize = true;
+            labelFromTimeStampW.Location = new Point(6, 69);
+            labelFromTimeStampW.Name = "labelFromTimeStampW";
+            labelFromTimeStampW.Size = new Size(26, 20);
+            labelFromTimeStampW.TabIndex = 7;
+            labelFromTimeStampW.Text = "От";
+            // 
+            // dateTimePicker4
+            // 
+            dateTimePicker4.Location = new Point(274, 100);
+            dateTimePicker4.Margin = new Padding(3, 4, 3, 4);
+            dateTimePicker4.Name = "dateTimePicker4";
+            dateTimePicker4.Size = new Size(175, 27);
+            dateTimePicker4.TabIndex = 6;
+            // 
+            // dateTimePicker3
+            // 
+            dateTimePicker3.Location = new Point(274, 61);
+            dateTimePicker3.Margin = new Padding(3, 4, 3, 4);
+            dateTimePicker3.Name = "dateTimePicker3";
+            dateTimePicker3.Size = new Size(175, 27);
+            dateTimePicker3.TabIndex = 5;
             // 
             // dateTimePicker2
             // 
-            dateTimePicker2.Location = new Point(15, 84);
+            dateTimePicker2.Location = new Point(38, 100);
+            dateTimePicker2.Margin = new Padding(3, 4, 3, 4);
             dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(214, 27);
-            dateTimePicker2.TabIndex = 8;
+            dateTimePicker2.Size = new Size(175, 27);
+            dateTimePicker2.TabIndex = 4;
             // 
             // dateTimePicker1
             // 
-            dateTimePicker1.Location = new Point(15, 51);
+            dateTimePicker1.Location = new Point(38, 61);
+            dateTimePicker1.Margin = new Padding(3, 4, 3, 4);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(214, 27);
-            dateTimePicker1.TabIndex = 7;
+            dateTimePicker1.Size = new Size(175, 27);
+            dateTimePicker1.TabIndex = 3;
+            // 
+            // labelSummer
+            // 
+            labelSummer.AutoSize = true;
+            labelSummer.Location = new Point(310, 37);
+            labelSummer.Name = "labelSummer";
+            labelSummer.Size = new Size(116, 20);
+            labelSummer.TabIndex = 2;
+            labelSummer.Text = "Летний период";
             // 
             // labelWinter
             // 
             labelWinter.AutoSize = true;
-            labelWinter.Location = new Point(58, 28);
+            labelWinter.Location = new Point(55, 37);
             labelWinter.Name = "labelWinter";
-            labelWinter.Size = new Size(121, 20);
-            labelWinter.TabIndex = 6;
-            labelWinter.Text = "Зимние месяцы";
-            // 
-            // dateTimePicker3
-            // 
-            dateTimePicker3.Location = new Point(240, 84);
-            dateTimePicker3.Name = "dateTimePicker3";
-            dateTimePicker3.Size = new Size(214, 27);
-            dateTimePicker3.TabIndex = 10;
-            // 
-            // dateTimePicker4
-            // 
-            dateTimePicker4.Location = new Point(240, 51);
-            dateTimePicker4.Name = "dateTimePicker4";
-            dateTimePicker4.Size = new Size(214, 27);
-            dateTimePicker4.TabIndex = 9;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(288, 28);
-            label2.Name = "label2";
-            label2.Size = new Size(117, 20);
-            label2.TabIndex = 11;
-            label2.Text = "Летние месяцы";
+            labelWinter.Size = new Size(120, 20);
+            labelWinter.TabIndex = 0;
+            labelWinter.Text = "Зимний период";
             // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(484, 540);
-            Controls.Add(groupBox3);
+            ClientSize = new Size(484, 556);
             Controls.Add(buttonOK);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
+            Controls.Add(groupBox);
             Name = "SettingsForm";
             Text = "SettingsForm";
             Load += SettingsForm_Load;
@@ -289,8 +337,8 @@
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
+            groupBox.ResumeLayout(false);
+            groupBox.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -304,7 +352,7 @@
         private TextBox textBoxNameServer;
         private Label label1;
         private GroupBox groupBox2;
-        private ComboBox comboBox1;
+        private ComboBox ChoosEnergySystemCombobox;
         private Label labelPowerSystem;
         private Label label_InitPower;
         private TextBox textBoxInitPower;
@@ -313,12 +361,16 @@
         private Label labelUIDPowerConsump;
         private TextBox textBoxTypeMeasure;
         private Label label_TypeMeasure;
-        private GroupBox groupBox3;
+        private GroupBox groupBox;
+        private Label labeltoTimeStampDateS;
+        private Label labelfromTimeStampDateS;
+        private Label labelToTimeStampW;
+        private Label labelFromTimeStampW;
+        private DateTimePicker dateTimePicker4;
+        private DateTimePicker dateTimePicker3;
         private DateTimePicker dateTimePicker2;
         private DateTimePicker dateTimePicker1;
+        private Label labelSummer;
         private Label labelWinter;
-        private Label label2;
-        private DateTimePicker dateTimePicker3;
-        private DateTimePicker dateTimePicker4;
     }
 }

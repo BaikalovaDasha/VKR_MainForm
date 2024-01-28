@@ -44,6 +44,14 @@
             MenuItemStartCalculation = new ToolStripMenuItem();
             остановитьРасчётToolStripMenuItem = new ToolStripMenuItem();
             tabPage3 = new TabPage();
+            dataGridView2 = new DataGridView();
+            nameSPPDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            installedCapacityDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            enteredOutputSPPMaxWDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            enteredOutputSPPMaxSDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            enteredOutputSPPMinWDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            enteredOutputSPPMinSDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            solarPowerPlantBindingSource5 = new BindingSource(components);
             dataGridViewKoefAverage = new DataGridView();
             koefAverageOutputPowerDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             averageOutputPerHourBindingSource1 = new BindingSource(components);
@@ -68,11 +76,14 @@
             powerSystemDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             installedCapacityDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             uIDsppDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            solarPowerPlantBindingSource4 = new BindingSource(components);
             solarPowerPlantBindingSource = new BindingSource(components);
             tabControl1 = new TabControl();
             solarPowerPlantBindingSource2 = new BindingSource(components);
             toolStrip1.SuspendLayout();
             tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewKoefAverage).BeginInit();
             ((System.ComponentModel.ISupportInitialize)averageOutputPerHourBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSPP).BeginInit();
@@ -83,6 +94,7 @@
             tabPage2.SuspendLayout();
             editingTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource).BeginInit();
             tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource2).BeginInit();
@@ -186,16 +198,91 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(dataGridView2);
             tabPage3.Controls.Add(dataGridViewKoefAverage);
             tabPage3.Controls.Add(dataGridViewSPP);
             tabPage3.Controls.Add(dataGridView_TimeForKoefAverage);
             tabPage3.Location = new Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(958, 408);
+            tabPage3.Size = new Size(962, 409);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Результаты расчёта";
             tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView2
+            // 
+            dataGridView2.AllowUserToAddRows = false;
+            dataGridView2.AllowUserToDeleteRows = false;
+            dataGridView2.AutoGenerateColumns = false;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { nameSPPDataGridViewTextBoxColumn2, installedCapacityDataGridViewTextBoxColumn2, enteredOutputSPPMaxWDataGridViewTextBoxColumn, enteredOutputSPPMaxSDataGridViewTextBoxColumn, enteredOutputSPPMinWDataGridViewTextBoxColumn, enteredOutputSPPMinSDataGridViewTextBoxColumn });
+            dataGridView2.DataSource = solarPowerPlantBindingSource5;
+            dataGridView2.Location = new Point(21, 504);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.ReadOnly = true;
+            dataGridView2.RowHeadersWidth = 51;
+            dataGridView2.RowTemplate.Height = 29;
+            dataGridView2.Size = new Size(896, 254);
+            dataGridView2.TabIndex = 3;
+            // 
+            // nameSPPDataGridViewTextBoxColumn2
+            // 
+            nameSPPDataGridViewTextBoxColumn2.DataPropertyName = "NameSPP";
+            nameSPPDataGridViewTextBoxColumn2.HeaderText = "Наименование СЭС";
+            nameSPPDataGridViewTextBoxColumn2.MinimumWidth = 6;
+            nameSPPDataGridViewTextBoxColumn2.Name = "nameSPPDataGridViewTextBoxColumn2";
+            nameSPPDataGridViewTextBoxColumn2.ReadOnly = true;
+            nameSPPDataGridViewTextBoxColumn2.Width = 125;
+            // 
+            // installedCapacityDataGridViewTextBoxColumn2
+            // 
+            installedCapacityDataGridViewTextBoxColumn2.DataPropertyName = "InstalledCapacity";
+            installedCapacityDataGridViewTextBoxColumn2.HeaderText = "Установленная мощность СЭС";
+            installedCapacityDataGridViewTextBoxColumn2.MinimumWidth = 6;
+            installedCapacityDataGridViewTextBoxColumn2.Name = "installedCapacityDataGridViewTextBoxColumn2";
+            installedCapacityDataGridViewTextBoxColumn2.ReadOnly = true;
+            installedCapacityDataGridViewTextBoxColumn2.Width = 125;
+            // 
+            // enteredOutputSPPMaxWDataGridViewTextBoxColumn
+            // 
+            enteredOutputSPPMaxWDataGridViewTextBoxColumn.DataPropertyName = "EnteredOutputSPPMaxW";
+            enteredOutputSPPMaxWDataGridViewTextBoxColumn.HeaderText = "Зима max";
+            enteredOutputSPPMaxWDataGridViewTextBoxColumn.MinimumWidth = 6;
+            enteredOutputSPPMaxWDataGridViewTextBoxColumn.Name = "enteredOutputSPPMaxWDataGridViewTextBoxColumn";
+            enteredOutputSPPMaxWDataGridViewTextBoxColumn.ReadOnly = true;
+            enteredOutputSPPMaxWDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // enteredOutputSPPMaxSDataGridViewTextBoxColumn
+            // 
+            enteredOutputSPPMaxSDataGridViewTextBoxColumn.DataPropertyName = "EnteredOutputSPPMaxS";
+            enteredOutputSPPMaxSDataGridViewTextBoxColumn.HeaderText = "Лето max";
+            enteredOutputSPPMaxSDataGridViewTextBoxColumn.MinimumWidth = 6;
+            enteredOutputSPPMaxSDataGridViewTextBoxColumn.Name = "enteredOutputSPPMaxSDataGridViewTextBoxColumn";
+            enteredOutputSPPMaxSDataGridViewTextBoxColumn.ReadOnly = true;
+            enteredOutputSPPMaxSDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // enteredOutputSPPMinWDataGridViewTextBoxColumn
+            // 
+            enteredOutputSPPMinWDataGridViewTextBoxColumn.DataPropertyName = "EnteredOutputSPPMinW";
+            enteredOutputSPPMinWDataGridViewTextBoxColumn.HeaderText = "Зима min";
+            enteredOutputSPPMinWDataGridViewTextBoxColumn.MinimumWidth = 6;
+            enteredOutputSPPMinWDataGridViewTextBoxColumn.Name = "enteredOutputSPPMinWDataGridViewTextBoxColumn";
+            enteredOutputSPPMinWDataGridViewTextBoxColumn.ReadOnly = true;
+            enteredOutputSPPMinWDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // enteredOutputSPPMinSDataGridViewTextBoxColumn
+            // 
+            enteredOutputSPPMinSDataGridViewTextBoxColumn.DataPropertyName = "EnteredOutputSPPMinS";
+            enteredOutputSPPMinSDataGridViewTextBoxColumn.HeaderText = "Лето min";
+            enteredOutputSPPMinSDataGridViewTextBoxColumn.MinimumWidth = 6;
+            enteredOutputSPPMinSDataGridViewTextBoxColumn.Name = "enteredOutputSPPMinSDataGridViewTextBoxColumn";
+            enteredOutputSPPMinSDataGridViewTextBoxColumn.ReadOnly = true;
+            enteredOutputSPPMinSDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // solarPowerPlantBindingSource5
+            // 
+            solarPowerPlantBindingSource5.DataSource = typeof(Model.SolarPowerPlant);
             // 
             // dataGridViewKoefAverage
             // 
@@ -210,7 +297,7 @@
             dataGridViewKoefAverage.ReadOnly = true;
             dataGridViewKoefAverage.RowHeadersWidth = 51;
             dataGridViewKoefAverage.RowTemplate.Height = 29;
-            dataGridViewKoefAverage.Size = new Size(125, 380);
+            dataGridViewKoefAverage.Size = new Size(125, 415);
             dataGridViewKoefAverage.TabIndex = 2;
             // 
             // koefAverageOutputPowerDataGridViewTextBoxColumn
@@ -239,7 +326,7 @@
             dataGridViewSPP.ReadOnly = true;
             dataGridViewSPP.RowHeadersWidth = 51;
             dataGridViewSPP.RowTemplate.Height = 29;
-            dataGridViewSPP.Size = new Size(648, 380);
+            dataGridViewSPP.Size = new Size(648, 415);
             dataGridViewSPP.TabIndex = 1;
             // 
             // nameSPPDataGridViewTextBoxColumn1
@@ -295,7 +382,7 @@
             dataGridView_TimeForKoefAverage.ReadOnly = true;
             dataGridView_TimeForKoefAverage.RowHeadersWidth = 51;
             dataGridView_TimeForKoefAverage.RowTemplate.Height = 29;
-            dataGridView_TimeForKoefAverage.Size = new Size(125, 380);
+            dataGridView_TimeForKoefAverage.Size = new Size(125, 415);
             dataGridView_TimeForKoefAverage.TabIndex = 0;
             // 
             // timeDataGridViewTextBoxColumn
@@ -322,18 +409,19 @@
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(958, 408);
+            tabPage2.Size = new Size(962, 967);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Таблица СЭС";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // editingTable
             // 
+            editingTable.Dock = DockStyle.None;
             editingTable.ImageScalingSize = new Size(20, 20);
             editingTable.Items.AddRange(new ToolStripItem[] { AddNewSPP, DeleteSPP });
             editingTable.Location = new Point(3, 3);
             editingTable.Name = "editingTable";
-            editingTable.Size = new Size(952, 27);
+            editingTable.Size = new Size(71, 27);
             editingTable.TabIndex = 1;
             editingTable.Text = "toolStrip2";
             // 
@@ -364,12 +452,12 @@
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { nameSPPDataGridViewTextBoxColumn, statusSPPDataGridViewTextBoxColumn, nodeSPPDataGridViewTextBoxColumn, powerSystemDataGridViewTextBoxColumn, installedCapacityDataGridViewTextBoxColumn, uIDsppDataGridViewTextBoxColumn });
-            dataGridView1.DataSource = solarPowerPlantBindingSource;
+            dataGridView1.DataSource = solarPowerPlantBindingSource4;
             dataGridView1.Location = new Point(3, 33);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(952, 367);
+            dataGridView1.Size = new Size(951, 346);
             dataGridView1.TabIndex = 0;
             // 
             // nameSPPDataGridViewTextBoxColumn
@@ -420,6 +508,10 @@
             uIDsppDataGridViewTextBoxColumn.Name = "uIDsppDataGridViewTextBoxColumn";
             uIDsppDataGridViewTextBoxColumn.Width = 125;
             // 
+            // solarPowerPlantBindingSource4
+            // 
+            solarPowerPlantBindingSource4.DataSource = typeof(Model.SolarPowerPlant);
+            // 
             // solarPowerPlantBindingSource
             // 
             solarPowerPlantBindingSource.DataSource = typeof(Model.SolarPowerPlant);
@@ -428,11 +520,11 @@
             // 
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
-            tabControl1.Location = new Point(4, 27);
+            tabControl1.Location = new Point(0, 30);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.ShowToolTips = true;
-            tabControl1.Size = new Size(966, 441);
+            tabControl1.Size = new Size(970, 1000);
             tabControl1.TabIndex = 0;
             // 
             // solarPowerPlantBindingSource2
@@ -443,7 +535,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(970, 475);
+            ClientSize = new Size(970, 953);
             Controls.Add(toolStrip1);
             Controls.Add(tabControl1);
             Name = "Form1";
@@ -452,6 +544,8 @@
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource5).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewKoefAverage).EndInit();
             ((System.ComponentModel.ISupportInitialize)averageOutputPerHourBindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSPP).EndInit();
@@ -464,6 +558,7 @@
             editingTable.ResumeLayout(false);
             editingTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource4).EndInit();
             ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource).EndInit();
             tabControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource2).EndInit();
@@ -515,5 +610,14 @@
         private DataGridViewTextBoxColumn averageOutputDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn installedCapacityDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn koefAveragepowerSPPDataGridViewTextBoxColumn;
+        private BindingSource solarPowerPlantBindingSource4;
+        private DataGridView dataGridView2;
+        private DataGridViewTextBoxColumn nameSPPDataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn installedCapacityDataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn enteredOutputSPPMaxWDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn enteredOutputSPPMaxSDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn enteredOutputSPPMinWDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn enteredOutputSPPMinSDataGridViewTextBoxColumn;
+        private BindingSource solarPowerPlantBindingSource5;
     }
 }

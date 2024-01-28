@@ -50,8 +50,8 @@ namespace MainForm
 
             _comboBoxStatusSPP = new Dictionary<string, StatusSPP>()
             {
-                { typeStatus[0], StatusSPP.operating },
-                { typeStatus[1], StatusSPP.entered }
+                { typeStatus[0], StatusSPP.putIntoOperation },
+                { typeStatus[1], StatusSPP.willBePutIntoOperation }
             };
 
             _comboBoxPowerSystem = new Dictionary<string, PowerSystem>()
@@ -101,7 +101,7 @@ namespace MainForm
                 {
                     _statusSPP = statusSPP;
 
-                    if (_statusSPP == StatusSPP.entered)
+                    if (_statusSPP == StatusSPP.willBePutIntoOperation)
                     {
                         labelUIDSPP.Enabled = false;
                         textBoxUIDSPP.Enabled = false;
