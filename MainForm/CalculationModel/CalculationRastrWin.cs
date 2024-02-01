@@ -290,12 +290,27 @@ namespace CalculationModel
         }
 
         /// <summary>
+        /// Сечения Забайкальской ЭС.
+        /// </summary>
+        private Dictionary<string, int> _sec { get; }
+        = new Dictionary<string, int>
+        {
+            {"Иркутск-Бурятия", 60011},
+            {"Юг - выдача", 60301},
+            {"Восток", 60304},
+            {"Запад", 60306},
+            {"Маккавеево", 60307},
+            {"Бурятия - Иркутск", 60290},
+            {"Чита", 60311},
+        };
+
+        /// <summary>
         /// Определение запертых сечений.
         /// </summary>
         /// <returns>Список запертых сечений.</returns>
         private List<int> LockedSecs()
         {
-            List<int> troubleSec = new List<int>();
+            List<int> troubleSec = new();
             ITable Sec = (ITable)_rastr.Tables.Item("sechen");
             ICol PSec = (ICol)Sec.Cols.Item("psech");
             ICol PMax = (ICol)Sec.Cols.Item("pmax");
@@ -310,20 +325,7 @@ namespace CalculationModel
             return troubleSec;
         }
 
-        /// <summary>
-        /// Сечения Забайкальской ЭС.
-        /// </summary>
-        private Dictionary<string, int> _sec { get; }
-        = new Dictionary<string, int>
-        {
-            {"Иркутск-Бурятия", 60011},
-            {"Юг - выдача", 60301},
-            {"Восток", 60304},
-            {"Запад", 60306},
-            {"Маккавеево", 60307},
-            {"Бурятия - Иркутск", 60290},
-            {"Чита", 60311},
-        };
+       
 
 
 

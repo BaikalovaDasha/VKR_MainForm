@@ -339,13 +339,20 @@ namespace MainForm
             Microsoft.Office.Interop.Word.Range range2 = document.Range(document.Content.End - 1, document.Content.End - 1);
             Table table = document.Tables.Add(range2, rowCount + 1, colCount);
 
+            
             table.Cell(1, 1).Range.Text = "Время";
             table.Cell(1, 2).Range.Text = "Наименование СЭС";
             table.Cell(1, 3).Range.Text = "Средняя выработка СЭС, МВт";
             table.Cell(1, 4).Range.Text = "Установленная мощность СЭС, МВт";
             table.Cell(1, 5).Range.Text = "k_СЭС, МВт";
             table.Cell(1, 6).Range.Text = "k_СЭС_ср, МВт";
-            table.Range.Font.Size = 14;
+
+            for (int i = 1; i < 7; i++)
+            {
+                table.Cell(1, i).Range.Bold = 1;
+            }
+
+            table.Range.Font.Size = 12;
             table.Range.Font.Name = "Times New Roman";
             table.Borders.Enable = 1;
 
@@ -353,9 +360,28 @@ namespace MainForm
             {
                 for (int j = 0; j < colCount - 2; j++)
                 {
-                    table.Cell(i + 2, j + 2).Range.Text = dataGridViewSPP[i, j].Value.ToString();
+                    string str = dataGridViewSPP[j, i].Value.ToString();
+
+                    table.Cell(i + 2, j + 2).Range.Text = str;
                 }
             }
+
+            //for (int i = 2; i < rowCount; i += rowCount / 4)
+            //{
+            //    table.Cell(i, 1).Merge(table.Cell(i + (rowCount / 4), 1));
+            //}
+
+            table.Cell(2, 1).Merge(table.Cell(5, 1));
+            table.Cell(6, 1).Merge(table.Cell(9, 1));
+            table.Cell(10, 1).Merge(table.Cell(13, 1));
+            table.Cell(14, 1).Merge(table.Cell(17, 1));
+
+            //table.Cell(2, 7).Merge(table.Cell(5, 7));
+            //table.Cell(6, 7).Merge(table.Cell(9, 7));
+            //table.Cell(10, 7).Merge(table.Cell(13, 7));
+            //table.Cell(14, 7).Merge(table.Cell(17, 7));
+
+
             application.Quit();
         }
     }
