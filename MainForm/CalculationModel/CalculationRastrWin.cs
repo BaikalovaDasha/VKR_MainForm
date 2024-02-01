@@ -337,6 +337,9 @@ namespace CalculationModel
             // когда все ограничения в КС сняты
             bool IsSecUnlocked = false;
 
+            ITable Sec = (ITable)_rastr.Tables.Item("sechen");
+            ICol PSec = (ICol)Sec.Cols.Item("psech");
+
             ITable tableNode = (ITable)_rastr.Tables.Item("node");
             ICol columnNa = (ICol)tableNode.Cols.Item("na");
             ICol columnNy = (ICol)tableNode.Cols.Item("ny");
@@ -347,6 +350,8 @@ namespace CalculationModel
             ICol columnNum = (ICol)tableGenerator.Cols.Item("Num");
             ICol columnNode = (ICol)tableGenerator.Cols.Item("Node");
             ICol columnP = (ICol)tableGenerator.Cols.Item("P");
+            ICol columnPMax = (ICol)tableGenerator.Cols.Item("Pmax");
+            ICol columnPMin = (ICol)tableGenerator.Cols.Item("Pmin");
 
             // См. описание метода
             List<int> sppGens = GetNumSPP(solarPowerPlant);
@@ -376,12 +381,45 @@ namespace CalculationModel
                 // Создаем внутренний список,
                 // чтобы исключать из него генераторы
                 // по мерер достижения границ эксплуатационной характерстики
-                List<int> _gens = basedGens;
                 foreach (var gen in basedGens)
                 {
+                    var pMax = columnPMax.get_ZN(GetIndexByNumber("Generator", "Num", gen));
+                    var pMin = columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen));
+
                     // Делаем проверку границ у генератора
                     // если границы нарушены, удаляем генератор
                     // и переходим к следующему (continue?)
+                    double initSecLoad = PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()));
+                    columnPg.set_ZN(GetIndexByNumber("Generator", "Num", gen),
+                        columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * 0.02);
+
+                    Regime();
+
+                    if (Math.Abs(initSecLoad) > Math.Abs(PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()))) &&
+                       columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMax)
+                    {
+                        continue;
+                    }
+                    else if (columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMax)
+                    {
+                        columnPg.set_ZN(GetIndexByNumber("Generator", "Num", gen),
+                        columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * 0.02);
+                        Regime();
+                        basedGens.Remove(gen);
+                    }
+                    else if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMin)
+                    {
+                        columnPg.set_ZN(GetIndexByNumber("Generator", "Num", gen),
+                        columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * 0.02 * 2);
+                        Regime();
+                        if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMin)
+                        {
+                            columnPg.set_ZN(GetIndexByNumber("Generator", "Num", gen),
+                            columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * 0.02 * 2);
+                            Regime();
+                            basedGens.Remove(gen);
+                        }
+                    }
 
                 }
 
@@ -394,7 +432,7 @@ namespace CalculationModel
                 {
                     IsSecUnlocked = true;
                 }
-                else if (_gens.Count() == 0)
+                else if (basedGens.Count() == 0)
                 {
                     return IsSecUnlocked;
                 }
