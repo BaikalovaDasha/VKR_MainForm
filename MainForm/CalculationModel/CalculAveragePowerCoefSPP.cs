@@ -257,12 +257,14 @@ namespace CalculationModel
         /// <returns>список со среднеми значениями выработки каждой СЭС по определённому часу.</returns>
         private static List<double> GetAveragePowerSPP(List<ValuesMeasurementExtend> listSPP, DateTime hours)
         {
-            double sumPowerSPP = 0;
+            double sumPowerSPP = new();
+
             List<double> averagePowerSPP = new();
 
             foreach (var item in listSPP)
             {
                 int count = 0;
+                sumPowerSPP = 0;
 
                 foreach (var item1 in item.Value)
                 {

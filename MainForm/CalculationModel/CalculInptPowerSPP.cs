@@ -29,12 +29,13 @@ namespace CalculationModel
 
             foreach (var itemspp in solarPowerPlant)
             {
-                if (itemspp.StatusSPP == StatusSPP.willBePutIntoOperation)
+                if (itemspp.StatusSPP == StatusSPP.вводимая)
                 {
                     SolarPowerPlant newSpp = new()
                     {
                         NameSPP = itemspp.NameSPP,
-                        InstalledCapacity = itemspp.InstalledCapacity
+                        InstalledCapacity = itemspp.InstalledCapacity,
+                        NodeSPP = itemspp.NodeSPP,
                     };
                     newSpp.EnteredOutputSPPMaxW = Math.Round(newSpp.InstalledCapacity * ResultOutputPerHour[0].KoefAverageOutputPower, 5);
                     newSpp.EnteredOutputSPPMaxS = Math.Round(newSpp.InstalledCapacity * ResultOutputPerHour[1].KoefAverageOutputPower, 5);

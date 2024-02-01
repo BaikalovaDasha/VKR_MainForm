@@ -36,13 +36,10 @@
             LoadCalaulModel = new ToolStripMenuItem();
             LoadTableSPP = new ToolStripMenuItem();
             LoadFileExcel = new ToolStripMenuItem();
-            LoadKoefandTempExcel = new ToolStripMenuItem();
-            LoadKoefPoerPSExcel = new ToolStripMenuItem();
             сохранитьToolStripMenuItem = new ToolStripMenuItem();
             Save_TableSPP = new ToolStripMenuItem();
             toolStripDropDownButton2 = new ToolStripDropDownButton();
             MenuItemStartCalculation = new ToolStripMenuItem();
-            остановитьРасчётToolStripMenuItem = new ToolStripMenuItem();
             tabPage3 = new TabPage();
             dataGridView2 = new DataGridView();
             nameSPPDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
@@ -80,6 +77,8 @@
             solarPowerPlantBindingSource = new BindingSource(components);
             tabControl1 = new TabControl();
             solarPowerPlantBindingSource2 = new BindingSource(components);
+            folderBrowserDialog1 = new FolderBrowserDialog();
+            SaveResultCalculation = new ToolStripMenuItem();
             toolStrip1.SuspendLayout();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -124,7 +123,7 @@
             // 
             LoadFile.DropDownItems.AddRange(new ToolStripItem[] { LoadCalaulModel, LoadTableSPP, LoadFileExcel });
             LoadFile.Name = "LoadFile";
-            LoadFile.Size = new Size(166, 26);
+            LoadFile.Size = new Size(224, 26);
             LoadFile.Text = "Загрузить";
             // 
             // LoadCalaulModel
@@ -132,6 +131,7 @@
             LoadCalaulModel.Name = "LoadCalaulModel";
             LoadCalaulModel.Size = new Size(221, 26);
             LoadCalaulModel.Text = "Расчётную модель";
+            LoadCalaulModel.Click += LoadCalaulModel_Click;
             // 
             // LoadTableSPP
             // 
@@ -142,41 +142,29 @@
             // 
             // LoadFileExcel
             // 
-            LoadFileExcel.DropDownItems.AddRange(new ToolStripItem[] { LoadKoefandTempExcel, LoadKoefPoerPSExcel });
             LoadFileExcel.Name = "LoadFileExcel";
             LoadFileExcel.Size = new Size(221, 26);
             LoadFileExcel.Text = "Файлы Excel";
-            // 
-            // LoadKoefandTempExcel
-            // 
-            LoadKoefandTempExcel.Name = "LoadKoefandTempExcel";
-            LoadKoefandTempExcel.Size = new Size(651, 26);
-            LoadKoefandTempExcel.Text = "Значение коэффициентов и температур наружного воздуха ЭС";
-            // 
-            // LoadKoefPoerPSExcel
-            // 
-            LoadKoefPoerPSExcel.Name = "LoadKoefPoerPSExcel";
-            LoadKoefPoerPSExcel.Size = new Size(651, 26);
-            LoadKoefPoerPSExcel.Text = "Коэффициенты зависимости изменения максимума потребления мощности ЭС";
+            LoadFileExcel.Click += LoadFileExcel_Click;
             // 
             // сохранитьToolStripMenuItem
             // 
-            сохранитьToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { Save_TableSPP });
+            сохранитьToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { Save_TableSPP, SaveResultCalculation });
             сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            сохранитьToolStripMenuItem.Size = new Size(166, 26);
+            сохранитьToolStripMenuItem.Size = new Size(224, 26);
             сохранитьToolStripMenuItem.Text = "Сохранить";
             // 
             // Save_TableSPP
             // 
             Save_TableSPP.Name = "Save_TableSPP";
-            Save_TableSPP.Size = new Size(181, 26);
+            Save_TableSPP.Size = new Size(227, 26);
             Save_TableSPP.Text = "Таблицу СЭС";
             Save_TableSPP.Click += Save_TableSPP_Click;
             // 
             // toolStripDropDownButton2
             // 
             toolStripDropDownButton2.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripDropDownButton2.DropDownItems.AddRange(new ToolStripItem[] { MenuItemStartCalculation, остановитьРасчётToolStripMenuItem });
+            toolStripDropDownButton2.DropDownItems.AddRange(new ToolStripItem[] { MenuItemStartCalculation });
             toolStripDropDownButton2.Image = (Image)resources.GetObject("toolStripDropDownButton2.Image");
             toolStripDropDownButton2.ImageTransparentColor = Color.Magenta;
             toolStripDropDownButton2.Name = "toolStripDropDownButton2";
@@ -186,15 +174,9 @@
             // MenuItemStartCalculation
             // 
             MenuItemStartCalculation.Name = "MenuItemStartCalculation";
-            MenuItemStartCalculation.Size = new Size(223, 26);
+            MenuItemStartCalculation.Size = new Size(224, 26);
             MenuItemStartCalculation.Text = "Начать расчёт";
             MenuItemStartCalculation.Click += MenuItemStartCalculation_Click;
-            // 
-            // остановитьРасчётToolStripMenuItem
-            // 
-            остановитьРасчётToolStripMenuItem.Name = "остановитьРасчётToolStripMenuItem";
-            остановитьРасчётToolStripMenuItem.Size = new Size(223, 26);
-            остановитьРасчётToolStripMenuItem.Text = "Остановить расчёт";
             // 
             // tabPage3
             // 
@@ -205,7 +187,7 @@
             tabPage3.Location = new Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(962, 409);
+            tabPage3.Size = new Size(962, 385);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Результаты расчёта";
             tabPage3.UseVisualStyleBackColor = true;
@@ -409,7 +391,7 @@
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(962, 967);
+            tabPage2.Size = new Size(962, 385);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Таблица СЭС";
             tabPage2.UseVisualStyleBackColor = true;
@@ -432,7 +414,7 @@
             AddNewSPP.ImageTransparentColor = Color.Magenta;
             AddNewSPP.Name = "AddNewSPP";
             AddNewSPP.Size = new Size(29, 24);
-            AddNewSPP.Text = "toolStripButton1";
+            AddNewSPP.Text = "Добавить СЭС";
             AddNewSPP.Click += AddNewSPP_Click;
             // 
             // DeleteSPP
@@ -442,7 +424,7 @@
             DeleteSPP.ImageTransparentColor = Color.Magenta;
             DeleteSPP.Name = "DeleteSPP";
             DeleteSPP.Size = new Size(29, 24);
-            DeleteSPP.Text = "toolStripButton2";
+            DeleteSPP.Text = "Удалить СЭС";
             DeleteSPP.Click += DeleteSPP_Click;
             // 
             // dataGridView1
@@ -503,7 +485,7 @@
             // uIDsppDataGridViewTextBoxColumn
             // 
             uIDsppDataGridViewTextBoxColumn.DataPropertyName = "UIDspp";
-            uIDsppDataGridViewTextBoxColumn.HeaderText = "UID СЭС в ОИК";
+            uIDsppDataGridViewTextBoxColumn.HeaderText = "UID СЭС ";
             uIDsppDataGridViewTextBoxColumn.MinimumWidth = 6;
             uIDsppDataGridViewTextBoxColumn.Name = "uIDsppDataGridViewTextBoxColumn";
             uIDsppDataGridViewTextBoxColumn.Width = 125;
@@ -524,18 +506,25 @@
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.ShowToolTips = true;
-            tabControl1.Size = new Size(970, 1000);
+            tabControl1.Size = new Size(970, 418);
             tabControl1.TabIndex = 0;
             // 
             // solarPowerPlantBindingSource2
             // 
             solarPowerPlantBindingSource2.DataSource = typeof(Model.SolarPowerPlant);
             // 
+            // SaveResultCalculation
+            // 
+            SaveResultCalculation.Name = "SaveResultCalculation";
+            SaveResultCalculation.Size = new Size(227, 26);
+            SaveResultCalculation.Text = "Результаты расчёта";
+            SaveResultCalculation.Click += SaveResultCalculation_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(970, 953);
+            ClientSize = new Size(970, 453);
             Controls.Add(toolStrip1);
             Controls.Add(tabControl1);
             Name = "Form1";
@@ -573,8 +562,6 @@
         private ToolStripMenuItem LoadCalaulModel;
         private ToolStripMenuItem LoadTableSPP;
         private ToolStripMenuItem LoadFileExcel;
-        private ToolStripMenuItem LoadKoefandTempExcel;
-        private ToolStripMenuItem LoadKoefPoerPSExcel;
         private ToolStripMenuItem сохранитьToolStripMenuItem;
         private ToolStripMenuItem Save_TableSPP;
         private TabPage tabPage3;
@@ -587,13 +574,6 @@
         private DataGridViewTextBoxColumn numberSPPDataGridViewTextBoxColumn;
         private ToolStripDropDownButton toolStripDropDownButton2;
         private ToolStripMenuItem MenuItemStartCalculation;
-        private ToolStripMenuItem остановитьРасчётToolStripMenuItem;
-        private DataGridViewTextBoxColumn nameSPPDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn statusSPPDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn nodeSPPDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn powerSystemDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn installedCapacityDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn uIDsppDataGridViewTextBoxColumn;
         private BindingSource solarPowerPlantBindingSource;
         private BindingSource solarPowerPlantBindingSource1;
         private DataGridView dataGridViewKoefAverage;
@@ -619,5 +599,13 @@
         private DataGridViewTextBoxColumn enteredOutputSPPMinWDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn enteredOutputSPPMinSDataGridViewTextBoxColumn;
         private BindingSource solarPowerPlantBindingSource5;
+        private FolderBrowserDialog folderBrowserDialog1;
+        private DataGridViewTextBoxColumn nameSPPDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn statusSPPDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn nodeSPPDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn powerSystemDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn installedCapacityDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn uIDsppDataGridViewTextBoxColumn;
+        private ToolStripMenuItem SaveResultCalculation;
     }
 }

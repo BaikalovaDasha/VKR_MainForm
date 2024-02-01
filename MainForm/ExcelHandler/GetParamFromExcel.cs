@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Microsoft.Office.Interop.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 
 namespace ExcelHandler
@@ -15,29 +9,20 @@ namespace ExcelHandler
     /// Получение параметров из Excel для расчёта потребления мощности.
     /// </summary>
     public class GetParamFromExcel
-    { 
+    {
+
+        public string PathFile1;
+
         private readonly string _pathFile1 = "C:\\Users\\Дарья\\Desktop" +
                             "\\1. ВКР\\ИТ\\Excel\\power_consum_max_coefficient_2023_140623.xlsx";
 
         private readonly string _pathFile2 = "C:\\Users\\Дарья\\Desktop" +
                             "\\1. ВКР\\ИТ\\Excel\\temp_coefficient_2023_140623.xlsx";
 
-        private string _textToFind;
-
         /// <summary>
         /// Чтение и запись искомой ЭС.
         /// </summary>
-        public string TextToFind
-        {
-            get
-            {
-                return _textToFind;
-            }
-            set
-            {
-                _textToFind = value;
-            }
-        }
+        public string TextToFind{ get; set; }
 
 
         /// <summary>
@@ -70,7 +55,7 @@ namespace ExcelHandler
         }
 
         /// <summary>
-        /// Метод позволяющий искать ЭС в Excel.
+        /// Метод позволяющий искать номер строки ЭС в Excel.
         /// </summary>
         /// <param name="textToFind">Искомое слово.</param>
         /// <param name="xlSht">Лист в Excel.</param>

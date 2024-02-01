@@ -10,13 +10,6 @@ namespace SCADAHandler.AccessAPI_CK11
 {
     public class AccessRequestToken
     {
-
-        /// <summary>
-        /// Экземпляр класса AccessAdressesAPI, 
-        /// содержащий список публичных адрессов API CK-11
-        /// </summary>
-        private AccessAddressesAPI _addresesAPI;
-
         /// <summary>
         /// Токен (ключ доступа) запрошенный с API CK-11.
         /// </summary>

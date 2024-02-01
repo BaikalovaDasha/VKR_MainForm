@@ -50,13 +50,13 @@ namespace MainForm
 
             _comboBoxStatusSPP = new Dictionary<string, StatusSPP>()
             {
-                { typeStatus[0], StatusSPP.putIntoOperation },
-                { typeStatus[1], StatusSPP.willBePutIntoOperation }
+                { typeStatus[0], StatusSPP.действующая },
+                { typeStatus[1], StatusSPP.вводимая }
             };
 
             _comboBoxPowerSystem = new Dictionary<string, PowerSystem>()
             {
-                { powerSystem[0], PowerSystem.Zabaikalskaya },
+                { powerSystem[0], PowerSystem.Забайкальская },
                 { powerSystem[1], PowerSystem.Novosibirskaya }
             };
         }
@@ -101,7 +101,7 @@ namespace MainForm
                 {
                     _statusSPP = statusSPP;
 
-                    if (_statusSPP == StatusSPP.willBePutIntoOperation)
+                    if (_statusSPP == StatusSPP.вводимая)
                     {
                         labelUIDSPP.Enabled = false;
                         textBoxUIDSPP.Enabled = false;

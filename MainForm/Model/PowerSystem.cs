@@ -12,9 +12,9 @@ namespace Model
     public enum PowerSystem
     {
         /// <summary>
-        /// Забайкальская ЭС.
+        /// Забайкальская ЭС. Zabaikalskaya
         /// </summary>
-        Zabaikalskaya,
+        Забайкальская,
 
         /// <summary>
         /// Новосибирская ЭС.

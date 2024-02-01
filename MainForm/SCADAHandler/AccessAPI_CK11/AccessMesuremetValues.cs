@@ -28,12 +28,6 @@ namespace SCADAHandler.AccessAPI_CK11
         private DateTime _dateEnd;
 
         /// <summary>
-        /// Экземпляр класса ListMeasurementValues, содержащий
-        /// информаицию о собранных измерениях за период.
-        /// </summary>
-        private ListMeasurementValues _listMeasurementValues = null;
-
-        /// <summary>
         /// Экземпляр класса ListMeasurementValuesExtend, содержащий
         /// информаицию о собранных измерениях за период.
         /// </summary>

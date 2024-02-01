@@ -32,7 +32,7 @@ namespace CalculationModel
         /// <returns>проверенное число.</returns>
         /// <exception cref="ArgumentException">отбрасывает отрицательные...
         /// ...числа и пустые значения</exception>
-        protected double CheckingNumber(double number)
+        private double CheckingNumber(double number)
         {
             return number <= 0
                 ? throw new ArgumentException("Мощность не должна равняться 0!")
@@ -58,7 +58,7 @@ namespace CalculationModel
         /// <param name="tempCalcul">расчётное значение температуры.</param>
         /// <param name="tempInit">исходное значение температуры.</param>
         /// <param name="pInit">исходное значение мощности.</param>
-        public static double GetPowerMax(double tempCalcul, double tempInit,
+        private static double GetPowerMax(double tempCalcul, double tempInit,
             double pInit, Dictionary<string, double> dictionaryKoef,
             List<double[]> excelarray)
         {

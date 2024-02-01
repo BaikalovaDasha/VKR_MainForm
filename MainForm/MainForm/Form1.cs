@@ -2,6 +2,9 @@ using System.ComponentModel;
 using Model;
 using System.Xml.Serialization;
 using System.Windows.Forms;
+using CalculationModel;
+using ExcelHandler;
+using Microsoft.Office.Interop.Word;
 
 namespace MainForm
 {
@@ -193,7 +196,7 @@ namespace MainForm
 
             foreach (var item in SPPDataList)
             {
-                if (item.StatusSPP == StatusSPP.putIntoOperation)
+                if (item.StatusSPP == StatusSPP.действующая)
                 {
                     operSPPList.Add(item);
                 }
@@ -285,6 +288,75 @@ namespace MainForm
             CreateTable(ResultOutputPowerSPPCalcul, dataGridView2);
 
             tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
+        }
+
+        /// <summary>
+        /// Загрузка РМ.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadCalaulModel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Указание директории где лежат excel файлы.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadFileExcel_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                LoadFileExcel.Text = folderBrowserDialog1.SelectedPath;
+
+                GetParamFromExcel _pathFile = new()
+                {
+                    PathFile1 = LoadFileExcel.Text
+                };
+            }
+        }
+
+        /// <summary>
+        /// Сохранение результатов в файл Word
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveResultCalculation_Click(object sender, EventArgs e)
+        {
+            Microsoft.Office.Interop.Word.Application application = new();
+            Document document = application.Documents.Add();
+
+            Microsoft.Office.Interop.Word.Range range1 = document.Range(document.Content.Start, document.Content.Start);
+            range1.Text = "Таблица 1. Определение коэффициента средней выработки мощности СЭС";
+            range1.Font.Size = 14;
+            range1.Font.Name = "Times New Roman";
+
+            int rowCount = dataGridViewSPP.RowCount;
+            int colCount = dataGridView_TimeForKoefAverage.ColumnCount + dataGridViewSPP.ColumnCount + dataGridViewKoefAverage.ColumnCount;
+
+            Microsoft.Office.Interop.Word.Range range2 = document.Range(document.Content.End - 1, document.Content.End - 1);
+            Table table = document.Tables.Add(range2, rowCount + 1, colCount);
+
+            table.Cell(1, 1).Range.Text = "Время";
+            table.Cell(1, 2).Range.Text = "Наименование СЭС";
+            table.Cell(1, 3).Range.Text = "Средняя выработка СЭС, МВт";
+            table.Cell(1, 4).Range.Text = "Установленная мощность СЭС, МВт";
+            table.Cell(1, 5).Range.Text = "k_СЭС, МВт";
+            table.Cell(1, 6).Range.Text = "k_СЭС_ср, МВт";
+            table.Range.Font.Size = 14;
+            table.Range.Font.Name = "Times New Roman";
+            table.Borders.Enable = 1;
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                for (int j = 0; j < colCount - 2; j++)
+                {
+                    table.Cell(i + 2, j + 2).Range.Text = dataGridViewSPP[i, j].Value.ToString();
+                }
+            }
+            application.Quit();
         }
     }
 }

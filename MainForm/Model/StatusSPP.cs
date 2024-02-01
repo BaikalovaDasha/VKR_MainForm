@@ -14,13 +14,15 @@ namespace Model
     public enum StatusSPP
     {
         /// <summary>
-        /// вводимая СЭС.
+        /// вводимая СЭС. willBePutIntoOperation
         /// </summary>
-        willBePutIntoOperation,
+        [Description("вводимая")]
+        вводимая,
 
         /// <summary>
-        /// действующая СЭС.
+        /// действующая СЭС.putIntoOperation
         /// </summary>
-        putIntoOperation
+        [Description("действующая")]
+        действующая
     }
 }

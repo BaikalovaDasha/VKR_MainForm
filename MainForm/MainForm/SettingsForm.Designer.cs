@@ -331,7 +331,7 @@
             Controls.Add(groupBox1);
             Controls.Add(groupBox);
             Name = "SettingsForm";
-            Text = "SettingsForm";
+            Text = "Предварительные настройки";
             Load += SettingsForm_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

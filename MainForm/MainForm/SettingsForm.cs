@@ -47,6 +47,11 @@ namespace MainForm
         /// </summary>
         public BindingList<AverageOutputPerHour> ResultOutputPerHour = new();
 
+        /// <summary>
+        /// Список СЭС для Form1 с рассчитанным коэффициентом средней выработки.
+        /// </summary>
+        public BindingList<SolarPowerPlant> InputPowerSPPWithNum = new();
+
         public double[] powerConsumption;
 
         /// <summary>
@@ -82,32 +87,22 @@ namespace MainForm
                 ownerForm.KoefDataList = AddKoefOutputResult();
 
                 CalculInptPowerSPP outputPowerSPPCalcul = new();
-                ownerForm.ResultOutputPowerSPPCalcul = outputPowerSPPCalcul.
+                InputPowerSPPWithNum = outputPowerSPPCalcul.
                     GetInputPower(solarPowerPlant, ResultOutputPerHour);
 
-                powerConsumption = AddInitPower().CalculatePowerConsumption(AddFindText());
+                ownerForm.ResultOutputPowerSPPCalcul = InputPowerSPPWithNum;
 
-                
+                //powerConsumption = AddInitPower().CalculatePowerConsumption(AddFindText());
+
+                //CalculationRastrWin.SettingPowerGeneratorsSPPWinter(InputPowerSPPWithNum);
+                //CalculationRastrWin.SettingPowerGeneratorsSPPSummer(InputPowerSPPWithNum);
+                //CalculationRastrWin.GetValueRastr(603, solarPowerPlant);
             }
             catch (ArgumentException ex)
             {
                 MessageBox.Show(ex.Message, "Внимание",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            
-
-            
-
-            try
-            {
-                
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
             Close();
         }
 
@@ -127,12 +122,13 @@ namespace MainForm
             {
                 foreach (var itemSPP in operSPPList)
                 {
-                    SolarPowerPlant sppItem = new();
-
-                    sppItem.NameSPP = itemSPP.NameSPP;
-                    sppItem.NodeSPP = itemSPP.NodeSPP;
-                    sppItem.AverageOutput = Math.Round(itemOutput[operSPPList.IndexOf(itemSPP)], 5);
-                    sppItem.InstalledCapacity = itemSPP.InstalledCapacity;
+                    SolarPowerPlant sppItem = new()
+                    {
+                        NameSPP = itemSPP.NameSPP,
+                        NodeSPP = itemSPP.NodeSPP,
+                        AverageOutput = Math.Round(itemOutput[operSPPList.IndexOf(itemSPP)], 5),
+                        InstalledCapacity = itemSPP.InstalledCapacity
+                    };
                     sppItem.KoefAveragepowerSPP = Math.Round(sppItem.AverageOutput / sppItem.InstalledCapacity, 5);
                     ResultSPPCalcul.Add(sppItem);
                 }
@@ -197,7 +193,7 @@ namespace MainForm
 
             foreach (var item in solarPowerPlant)
             {
-                if (item.StatusSPP == StatusSPP.putIntoOperation)
+                if (item.StatusSPP == StatusSPP.действующая)
                 {
                     operSPPList.Add(item);
                 }
@@ -259,7 +255,7 @@ namespace MainForm
 
             foreach (var item in listspp)
             {
-                if (item.StatusSPP == StatusSPP.putIntoOperation)
+                if (item.StatusSPP == StatusSPP.действующая)
                 {
                     list.Add(item.UIDspp);
                 }
