@@ -223,6 +223,7 @@ namespace CalculationModel
             return str1;
         }
 
+        
         public static BindingList<OperatingModes> GetValueRastr(int na, BindingList<SolarPowerPlant> solarPowerPlant)
         {
             BindingList<OperatingModes> listOperModes = new();
@@ -288,15 +289,6 @@ namespace CalculationModel
             return listOperModes;
         }
 
-        public void ChangeLoad()
-        {
-            foreach (var item in _pathFileOperModes)
-            {
-                LoadFile(item, _pathSablon);
-                
-            }
-        }
-
         /// <summary>
         /// Определение запертых сечений.
         /// </summary>
@@ -332,6 +324,8 @@ namespace CalculationModel
             {"Бурятия - Иркутск", 60290},
             {"Чита", 60311},
         };
+
+
 
     }
 }
