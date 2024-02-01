@@ -97,6 +97,7 @@ namespace MainForm
                 //CalculationRastrWin.SettingPowerGeneratorsSPPWinter(InputPowerSPPWithNum);
                 //CalculationRastrWin.SettingPowerGeneratorsSPPSummer(InputPowerSPPWithNum);
                 //CalculationRastrWin.GetValueRastr(603, solarPowerPlant);
+                CalculationRastrWin.BaseGenChangeToUnlockSecs(603, CalculationRastrWin.LockedSecs(), solarPowerPlant);
             }
             catch (ArgumentException ex)
             {

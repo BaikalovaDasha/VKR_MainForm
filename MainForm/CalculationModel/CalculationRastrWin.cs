@@ -28,6 +28,18 @@ namespace CalculationModel
             "RastrWin3\\RastrWin3\\SHABLON\\режим.rg2";
 
         /// <summary>
+        /// Загрузка файла .rg2. "C:\Users\Дарья\Desktop\1. ВКР\ИТ\РМ"
+        /// </summary>
+        private static readonly string _pathFileSec = "C:\\Users\\Дарья\\Desktop" +
+            "\\1. ВКР\\ИТ\\РМ\\OES Sibiri.sch";
+
+        /// <summary>
+        /// Шаблон .rg2. "C:\Program Files\RastrWin3\RastrWin3\SHABLON\режим.rg2"
+        /// </summary>
+        private static readonly string _pathSablonSec = "C:\\Program Files\\" +
+            "RastrWin3\\RastrWin3\\SHABLON\\сечения.sch";
+
+        /// <summary>
         /// Создание указателя на экземпляр RastrWin и его запуск.
         /// </summary>
         private static IRastr _rastr = new Rastr();
@@ -292,7 +304,7 @@ namespace CalculationModel
         /// <summary>
         /// Сечения Забайкальской ЭС.
         /// </summary>
-        private Dictionary<string, int> _sec { get; }
+        private static Dictionary<string, int> _sec { get; }
         = new Dictionary<string, int>
         {
             {"Иркутск-Бурятия", 60011},
@@ -308,8 +320,11 @@ namespace CalculationModel
         /// Определение запертых сечений.
         /// </summary>
         /// <returns>Список запертых сечений.</returns>
-        private List<int> LockedSecs()
+        public static List<int> LockedSecs()
         {
+            LoadFile(_pathFileOperModes[5], _pathSablon);
+            LoadFile(_pathFileSec, _pathSablonSec);
+
             List<int> troubleSec = new();
             ITable Sec = (ITable)_rastr.Tables.Item("sechen");
             ICol PSec = (ICol)Sec.Cols.Item("psech");
@@ -331,8 +346,11 @@ namespace CalculationModel
         /// </summary>
         /// <returns>Разгружены ли КС
         /// базовой генерацией.</returns>
-        private bool BaseGenChangeToUnlockSecs(int na, List<int> secs, BindingList<SolarPowerPlant> solarPowerPlant)
+        public static bool BaseGenChangeToUnlockSecs(int na, List<int> secs, BindingList<SolarPowerPlant> solarPowerPlant)
         {
+            LoadFile(_pathFileOperModes[5], _pathSablon);
+            LoadFile(_pathFileSec, _pathSablonSec);
+
             // Переменная меняет значение на true в случае,
             // когда все ограничения в КС сняты
             bool IsSecUnlocked = false;
@@ -390,32 +408,32 @@ namespace CalculationModel
                     // если границы нарушены, удаляем генератор
                     // и переходим к следующему (continue?)
                     double initSecLoad = PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()));
-                    columnPg.set_ZN(GetIndexByNumber("Generator", "Num", gen),
-                        columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * 0.02);
+                    columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen),
+                        columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * 0.02);
 
                     Regime();
 
                     if (Math.Abs(initSecLoad) > Math.Abs(PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()))) &&
-                       columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMax)
+                       columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMax)
                     {
                         continue;
                     }
-                    else if (columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMax)
+                    else if (columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMax)
                     {
-                        columnPg.set_ZN(GetIndexByNumber("Generator", "Num", gen),
-                        columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * 0.02);
+                        columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen),
+                        columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * 0.02);
                         Regime();
                         basedGens.Remove(gen);
                     }
                     else if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMin)
                     {
-                        columnPg.set_ZN(GetIndexByNumber("Generator", "Num", gen),
-                        columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * 0.02 * 2);
+                        columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen),
+                        columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * 0.02 * 2);
                         Regime();
                         if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMin)
                         {
-                            columnPg.set_ZN(GetIndexByNumber("Generator", "Num", gen),
-                            columnPg.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * 0.02 * 2);
+                            columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen),
+                            columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * 0.02 * 2);
                             Regime();
                             basedGens.Remove(gen);
                         }
@@ -437,6 +455,8 @@ namespace CalculationModel
                     return IsSecUnlocked;
                 }
             }
+
+            SaveRegime(_pathFileOperModes[4], _pathSablon);
 
             return IsSecUnlocked;
         }
