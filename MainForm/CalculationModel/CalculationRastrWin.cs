@@ -325,6 +325,83 @@ namespace CalculationModel
             return troubleSec;
         }
 
+        /// <summary>
+        /// Загрузка/разгрузка базовой
+        /// генерации для разгрузки КС.
+        /// </summary>
+        /// <returns>Разгружены ли КС
+        /// базовой генерацией.</returns>
+        private bool BaseGenChangeToUnlockSecs(int na, List<int> secs, BindingList<SolarPowerPlant> solarPowerPlant)
+        {
+            // Переменная меняет значение на true в случае,
+            // когда все ограничения в КС сняты
+            bool IsSecUnlocked = false;
+
+            ITable tableNode = (ITable)_rastr.Tables.Item("node");
+            ICol columnNa = (ICol)tableNode.Cols.Item("na");
+            ICol columnNy = (ICol)tableNode.Cols.Item("ny");
+            ICol columnSta = (ICol)tableNode.Cols.Item("sta");
+            ICol columnPg = (ICol)tableNode.Cols.Item("pg");
+
+            ITable tableGenerator = (ITable)_rastr.Tables.Item("Generator");
+            ICol columnNum = (ICol)tableGenerator.Cols.Item("Num");
+            ICol columnNode = (ICol)tableGenerator.Cols.Item("Node");
+            ICol columnP = (ICol)tableGenerator.Cols.Item("P");
+
+            // См. описание метода
+            List<int> sppGens = GetNumSPP(solarPowerPlant);
+
+            // Формируем список номеров (из таблицы Генераторы) включенных генераторов в районе
+            List<int> basedGens = new List<int>();
+
+            for (int index = 0; index < tableNode.Count; index++)
+            {
+                if (columnNa.get_ZN(index) == na && columnSta.get_ZN(index) == false && columnPg.get_ZN(index) > 0)
+                {
+                    int node = columnNy.get_ZN(index);
+
+                    for (int i = 0; i < tableGenerator.Count; i++)
+                    {
+                        if (columnNode.get_ZN(i) == node && sppGens.IndexOf(columnNum.get_ZN(i)) == -1)
+                        {
+                            basedGens.Add(columnNum.get_ZN(i));
+                        }
+                    }
+                }
+            }
+
+            // Разгружаем генераторы 
+            while (!IsSecUnlocked)
+            {
+                // Создаем внутренний список,
+                // чтобы исключать из него генераторы
+                // по мерер достижения границ эксплуатационной характерстики
+                List<int> _gens = basedGens;
+                foreach (var gen in basedGens)
+                {
+                    // Делаем проверку границ у генератора
+                    // если границы нарушены, удаляем генератор
+                    // и переходим к следующему (continue?)
+
+                }
+
+                // Если кол-во запертых КС = 0,
+                // то true.
+                // Иначе если не осталось генераторов,
+                // то false.
+                // Иначе продолжаем работу в цикле while...
+                if (LockedSecs().Count() == 0)
+                {
+                    IsSecUnlocked = true;
+                }
+                else if (_gens.Count() == 0)
+                {
+                    return IsSecUnlocked;
+                }
+            }
+
+            return IsSecUnlocked;
+        }
        
 
 
