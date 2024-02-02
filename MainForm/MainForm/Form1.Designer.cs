@@ -38,9 +38,22 @@
             LoadFileExcel = new ToolStripMenuItem();
             сохранитьToolStripMenuItem = new ToolStripMenuItem();
             Save_TableSPP = new ToolStripMenuItem();
+            SaveResultCalculation = new ToolStripMenuItem();
             toolStripDropDownButton2 = new ToolStripDropDownButton();
             MenuItemStartCalculation = new ToolStripMenuItem();
             tabPage3 = new TabPage();
+            dataGridViewMaxModeOutput = new DataGridView();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            MaxOutput = new DataGridViewTextBoxColumn();
+            solarPowerPlantBindingSource5 = new BindingSource(components);
+            dataGridViewModesOper = new DataGridView();
+            operatingModesWithConsumptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            powerReservesDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            outputBaseGenerationDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            outputSolarPlantDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            proportionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            operatingModesBindingSource = new BindingSource(components);
             dataGridView2 = new DataGridView();
             nameSPPDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
             installedCapacityDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
@@ -48,7 +61,6 @@
             enteredOutputSPPMaxSDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             enteredOutputSPPMinWDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             enteredOutputSPPMinSDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            solarPowerPlantBindingSource5 = new BindingSource(components);
             dataGridViewKoefAverage = new DataGridView();
             koefAverageOutputPowerDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             averageOutputPerHourBindingSource1 = new BindingSource(components);
@@ -78,11 +90,13 @@
             tabControl1 = new TabControl();
             solarPowerPlantBindingSource2 = new BindingSource(components);
             folderBrowserDialog1 = new FolderBrowserDialog();
-            SaveResultCalculation = new ToolStripMenuItem();
             toolStrip1.SuspendLayout();
             tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewMaxModeOutput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewModesOper).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)operatingModesBindingSource).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewKoefAverage).BeginInit();
             ((System.ComponentModel.ISupportInitialize)averageOutputPerHourBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSPP).BeginInit();
@@ -123,7 +137,7 @@
             // 
             LoadFile.DropDownItems.AddRange(new ToolStripItem[] { LoadCalaulModel, LoadTableSPP, LoadFileExcel });
             LoadFile.Name = "LoadFile";
-            LoadFile.Size = new Size(224, 26);
+            LoadFile.Size = new Size(166, 26);
             LoadFile.Text = "Загрузить";
             // 
             // LoadCalaulModel
@@ -151,7 +165,7 @@
             // 
             сохранитьToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { Save_TableSPP, SaveResultCalculation });
             сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            сохранитьToolStripMenuItem.Size = new Size(224, 26);
+            сохранитьToolStripMenuItem.Size = new Size(166, 26);
             сохранитьToolStripMenuItem.Text = "Сохранить";
             // 
             // Save_TableSPP
@@ -160,6 +174,13 @@
             Save_TableSPP.Size = new Size(227, 26);
             Save_TableSPP.Text = "Таблицу СЭС";
             Save_TableSPP.Click += Save_TableSPP_Click;
+            // 
+            // SaveResultCalculation
+            // 
+            SaveResultCalculation.Name = "SaveResultCalculation";
+            SaveResultCalculation.Size = new Size(227, 26);
+            SaveResultCalculation.Text = "Результаты расчёта";
+            SaveResultCalculation.Click += SaveResultCalculation_Click;
             // 
             // toolStripDropDownButton2
             // 
@@ -174,12 +195,14 @@
             // MenuItemStartCalculation
             // 
             MenuItemStartCalculation.Name = "MenuItemStartCalculation";
-            MenuItemStartCalculation.Size = new Size(224, 26);
+            MenuItemStartCalculation.Size = new Size(191, 26);
             MenuItemStartCalculation.Text = "Начать расчёт";
             MenuItemStartCalculation.Click += MenuItemStartCalculation_Click;
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(dataGridViewMaxModeOutput);
+            tabPage3.Controls.Add(dataGridViewModesOper);
             tabPage3.Controls.Add(dataGridView2);
             tabPage3.Controls.Add(dataGridViewKoefAverage);
             tabPage3.Controls.Add(dataGridViewSPP);
@@ -191,6 +214,118 @@
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Результаты расчёта";
             tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewMaxModeOutput
+            // 
+            dataGridViewMaxModeOutput.AllowUserToAddRows = false;
+            dataGridViewMaxModeOutput.AllowUserToDeleteRows = false;
+            dataGridViewMaxModeOutput.AutoGenerateColumns = false;
+            dataGridViewMaxModeOutput.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewMaxModeOutput.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, MaxOutput });
+            dataGridViewMaxModeOutput.DataSource = solarPowerPlantBindingSource5;
+            dataGridViewMaxModeOutput.Location = new Point(21, 1055);
+            dataGridViewMaxModeOutput.Name = "dataGridViewMaxModeOutput";
+            dataGridViewMaxModeOutput.ReadOnly = true;
+            dataGridViewMaxModeOutput.RowHeadersWidth = 51;
+            dataGridViewMaxModeOutput.RowTemplate.Height = 29;
+            dataGridViewMaxModeOutput.Size = new Size(896, 254);
+            dataGridViewMaxModeOutput.TabIndex = 5;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.DataPropertyName = "NameSPP";
+            dataGridViewTextBoxColumn1.HeaderText = "Наименование СЭС";
+            dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            dataGridViewTextBoxColumn1.Width = 125;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewTextBoxColumn2.DataPropertyName = "InstalledCapacity";
+            dataGridViewTextBoxColumn2.HeaderText = "Установленная мощность СЭС";
+            dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
+            dataGridViewTextBoxColumn2.Width = 125;
+            // 
+            // MaxOutput
+            // 
+            MaxOutput.DataPropertyName = "MaxOutput";
+            MaxOutput.HeaderText = "Ограничение по объёму, МВт";
+            MaxOutput.MinimumWidth = 6;
+            MaxOutput.Name = "MaxOutput";
+            MaxOutput.ReadOnly = true;
+            MaxOutput.Width = 125;
+            // 
+            // solarPowerPlantBindingSource5
+            // 
+            solarPowerPlantBindingSource5.DataSource = typeof(Model.SolarPowerPlant);
+            // 
+            // dataGridViewModesOper
+            // 
+            dataGridViewModesOper.AllowUserToAddRows = false;
+            dataGridViewModesOper.AllowUserToDeleteRows = false;
+            dataGridViewModesOper.AutoGenerateColumns = false;
+            dataGridViewModesOper.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewModesOper.Columns.AddRange(new DataGridViewColumn[] { operatingModesWithConsumptionDataGridViewTextBoxColumn, powerReservesDataGridViewTextBoxColumn, outputBaseGenerationDataGridViewTextBoxColumn, outputSolarPlantDataGridViewTextBoxColumn, proportionDataGridViewTextBoxColumn });
+            dataGridViewModesOper.DataSource = operatingModesBindingSource;
+            dataGridViewModesOper.Location = new Point(21, 803);
+            dataGridViewModesOper.Name = "dataGridViewModesOper";
+            dataGridViewModesOper.ReadOnly = true;
+            dataGridViewModesOper.RowHeadersWidth = 51;
+            dataGridViewModesOper.RowTemplate.Height = 29;
+            dataGridViewModesOper.Size = new Size(896, 210);
+            dataGridViewModesOper.TabIndex = 4;
+            // 
+            // operatingModesWithConsumptionDataGridViewTextBoxColumn
+            // 
+            operatingModesWithConsumptionDataGridViewTextBoxColumn.DataPropertyName = "OperatingModesWithConsumption";
+            operatingModesWithConsumptionDataGridViewTextBoxColumn.HeaderText = "Режим работы";
+            operatingModesWithConsumptionDataGridViewTextBoxColumn.MinimumWidth = 6;
+            operatingModesWithConsumptionDataGridViewTextBoxColumn.Name = "operatingModesWithConsumptionDataGridViewTextBoxColumn";
+            operatingModesWithConsumptionDataGridViewTextBoxColumn.ReadOnly = true;
+            operatingModesWithConsumptionDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // powerReservesDataGridViewTextBoxColumn
+            // 
+            powerReservesDataGridViewTextBoxColumn.DataPropertyName = "PowerReserves";
+            powerReservesDataGridViewTextBoxColumn.HeaderText = "Резервирование СЭС";
+            powerReservesDataGridViewTextBoxColumn.MinimumWidth = 6;
+            powerReservesDataGridViewTextBoxColumn.Name = "powerReservesDataGridViewTextBoxColumn";
+            powerReservesDataGridViewTextBoxColumn.ReadOnly = true;
+            powerReservesDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // outputBaseGenerationDataGridViewTextBoxColumn
+            // 
+            outputBaseGenerationDataGridViewTextBoxColumn.DataPropertyName = "OutputBaseGeneration";
+            outputBaseGenerationDataGridViewTextBoxColumn.HeaderText = "Выработка базовой генерации, МВт";
+            outputBaseGenerationDataGridViewTextBoxColumn.MinimumWidth = 6;
+            outputBaseGenerationDataGridViewTextBoxColumn.Name = "outputBaseGenerationDataGridViewTextBoxColumn";
+            outputBaseGenerationDataGridViewTextBoxColumn.ReadOnly = true;
+            outputBaseGenerationDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // outputSolarPlantDataGridViewTextBoxColumn
+            // 
+            outputSolarPlantDataGridViewTextBoxColumn.DataPropertyName = "OutputSolarPlant";
+            outputSolarPlantDataGridViewTextBoxColumn.HeaderText = "Выработка СЭС, МВТ";
+            outputSolarPlantDataGridViewTextBoxColumn.MinimumWidth = 6;
+            outputSolarPlantDataGridViewTextBoxColumn.Name = "outputSolarPlantDataGridViewTextBoxColumn";
+            outputSolarPlantDataGridViewTextBoxColumn.ReadOnly = true;
+            outputSolarPlantDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // proportionDataGridViewTextBoxColumn
+            // 
+            proportionDataGridViewTextBoxColumn.DataPropertyName = "Proportion";
+            proportionDataGridViewTextBoxColumn.HeaderText = "Соотношение СЭС к тазовой генерации, %";
+            proportionDataGridViewTextBoxColumn.MinimumWidth = 6;
+            proportionDataGridViewTextBoxColumn.Name = "proportionDataGridViewTextBoxColumn";
+            proportionDataGridViewTextBoxColumn.ReadOnly = true;
+            proportionDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // operatingModesBindingSource
+            // 
+            operatingModesBindingSource.DataSource = typeof(Model.OperatingModes);
             // 
             // dataGridView2
             // 
@@ -261,10 +396,6 @@
             enteredOutputSPPMinSDataGridViewTextBoxColumn.Name = "enteredOutputSPPMinSDataGridViewTextBoxColumn";
             enteredOutputSPPMinSDataGridViewTextBoxColumn.ReadOnly = true;
             enteredOutputSPPMinSDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // solarPowerPlantBindingSource5
-            // 
-            solarPowerPlantBindingSource5.DataSource = typeof(Model.SolarPowerPlant);
             // 
             // dataGridViewKoefAverage
             // 
@@ -391,7 +522,7 @@
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(962, 385);
+            tabPage2.Size = new Size(962, 1967);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Таблица СЭС";
             tabPage2.UseVisualStyleBackColor = true;
@@ -513,13 +644,6 @@
             // 
             solarPowerPlantBindingSource2.DataSource = typeof(Model.SolarPowerPlant);
             // 
-            // SaveResultCalculation
-            // 
-            SaveResultCalculation.Name = "SaveResultCalculation";
-            SaveResultCalculation.Size = new Size(227, 26);
-            SaveResultCalculation.Text = "Результаты расчёта";
-            SaveResultCalculation.Click += SaveResultCalculation_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -533,8 +657,11 @@
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewMaxModeOutput).EndInit();
             ((System.ComponentModel.ISupportInitialize)solarPowerPlantBindingSource5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewModesOper).EndInit();
+            ((System.ComponentModel.ISupportInitialize)operatingModesBindingSource).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewKoefAverage).EndInit();
             ((System.ComponentModel.ISupportInitialize)averageOutputPerHourBindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSPP).EndInit();
@@ -607,5 +734,16 @@
         private DataGridViewTextBoxColumn installedCapacityDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn uIDsppDataGridViewTextBoxColumn;
         private ToolStripMenuItem SaveResultCalculation;
+        private DataGridView dataGridViewModesOper;
+        private DataGridViewTextBoxColumn operatingModesWithConsumptionDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn powerReservesDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn outputBaseGenerationDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn outputSolarPlantDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn proportionDataGridViewTextBoxColumn;
+        private BindingSource operatingModesBindingSource;
+        private DataGridView dataGridViewMaxModeOutput;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn MaxOutput;
     }
 }

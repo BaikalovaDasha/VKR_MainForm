@@ -61,25 +61,24 @@ namespace MainForm
         /// <param name="e"></param>
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            try
+
+            if (string.IsNullOrEmpty(textBoxUIDPowerConsump.Text))
             {
-                //if (string.IsNullOrEmpty(textBoxUIDPowerConsump.Text))
-                //{
-                //    MessageBox.Show("Вы не ввели UID потребления ЭС", "Внимание",
-                //        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //}
-
-                //if (ChoosEnergySystemCombobox.SelectedIndex < 0)
-                //{
-                //    MessageBox.Show("Вы не выбрали ЭС для расчёта!", "Внимание",
-                //    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //}
-
-                //if (string.IsNullOrEmpty(textBoxInitPower.Text))
-                //{
-                //    MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
-                //        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //}
+                MessageBox.Show("Вы не ввели UID потребления ЭС", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (ChoosEnergySystemCombobox.SelectedIndex < 0)
+            {
+                MessageBox.Show("Вы не выбрали ЭС для расчёта!", "Внимание",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (string.IsNullOrEmpty(textBoxInitPower.Text))
+            {
+                MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
 
                 OverwiteFile();
 
@@ -96,15 +95,59 @@ namespace MainForm
 
                 //CalculationRastrWin.SettingPowerGeneratorsSPPWinter(InputPowerSPPWithNum);
                 //CalculationRastrWin.SettingPowerGeneratorsSPPSummer(InputPowerSPPWithNum);
-                //CalculationRastrWin.GetValueRastr(603, solarPowerPlant);
-                CalculationRastrWin.BaseGenChangeToUnlockSecs(603, CalculationRastrWin.LockedSecs(), solarPowerPlant);
+                ownerForm.DatalistMode = CalculationRastrWin.GetValueRastr(603, solarPowerPlant);
+                //CalculationRastrWin.BaseGenChangeToUnlockSecs(603, CalculationRastrWin.LockedSecs(), solarPowerPlant);
+                ownerForm.solarPowerPlantMaxMode = CalculationRastrWin.GetAcceptableValue(solarPowerPlant, ResultOutputPerHour);
+
+
+                Close();
             }
-            catch (ArgumentException ex)
-            {
-                MessageBox.Show(ex.Message, "Внимание",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            Close();
+
+            //try
+            //{
+            //    if (string.IsNullOrEmpty(textBoxUIDPowerConsump.Text))
+            //    {
+            //        MessageBox.Show("Вы не ввели UID потребления ЭС", "Внимание",
+            //            MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    }
+
+            //    //if (ChoosEnergySystemCombobox.SelectedIndex < 0)
+            //    //{
+            //    //    MessageBox.Show("Вы не выбрали ЭС для расчёта!", "Внимание",
+            //    //    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    //}
+
+            //    //if (string.IsNullOrEmpty(textBoxInitPower.Text))
+            //    //{
+            //    //    MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
+            //    //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    //}
+
+            //    OverwiteFile();
+
+            //    ownerForm.SPPDataListWithKoefs = AddSPPResultList();
+            //    ownerForm.KoefDataList = AddKoefOutputResult();
+
+            //    CalculInptPowerSPP outputPowerSPPCalcul = new();
+            //    InputPowerSPPWithNum = outputPowerSPPCalcul.
+            //        GetInputPower(solarPowerPlant, ResultOutputPerHour);
+
+            //    ownerForm.ResultOutputPowerSPPCalcul = InputPowerSPPWithNum;
+
+            //    //powerConsumption = AddInitPower().CalculatePowerConsumption(AddFindText());
+
+            //    //CalculationRastrWin.SettingPowerGeneratorsSPPWinter(InputPowerSPPWithNum);
+            //    //CalculationRastrWin.SettingPowerGeneratorsSPPSummer(InputPowerSPPWithNum);
+            //    ownerForm.DatalistMode = CalculationRastrWin.GetValueRastr(603, solarPowerPlant);
+            //    //CalculationRastrWin.BaseGenChangeToUnlockSecs(603, CalculationRastrWin.LockedSecs(), solarPowerPlant);
+            //    ownerForm.solarPowerPlantMaxMode = CalculationRastrWin.GetAcceptableValue(solarPowerPlant, ResultOutputPerHour);
+            //}
+            //catch (ArgumentException ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Внимание",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ////}
+            //Close();
         }
 
         /// <summary>

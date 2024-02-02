@@ -38,9 +38,19 @@ namespace MainForm
         public BindingList<SolarPowerPlant> ResultOutputPowerSPPCalcul;
 
         /// <summary>
+        /// Список СЭС с допустимой выработкой по ЭС.
+        /// </summary>
+        public BindingList<SolarPowerPlant> solarPowerPlantMaxMode;
+
+        /// <summary>
         /// Список коэффициентов средней выработки в каждый час.
         /// </summary>
         public BindingList<AverageOutputPerHour> KoefDataList;
+
+        /// <summary>
+        /// Список коэффициентов средней выработки в каждый час.
+        /// </summary>
+        public BindingList<OperatingModes> DatalistMode;
 
         /// <summary>
         /// Для файлов.
@@ -63,6 +73,8 @@ namespace MainForm
             tabControl1.TabPages[1].Controls.Add(dataGridView_TimeForKoefAverage);
             tabControl1.TabPages[1].Controls.Add(dataGridViewKoefAverage);
             tabControl1.TabPages[1].Controls.Add(dataGridView2);
+            tabControl1.TabPages[1].Controls.Add(dataGridViewModesOper);
+            tabControl1.TabPages[1].Controls.Add(dataGridViewMaxModeOutput);
 
             // Your code
             foreach (TabPage _Page in tabControl1.TabPages)
@@ -187,6 +199,37 @@ namespace MainForm
         }
 
         /// <summary>
+        /// Создание таблицы DataGrid.
+        /// </summary>
+        /// <param name="sppList">Список СЭС.</param>
+        /// <param name="dataGridView">таблица СЭС.</param>
+        public static void CreateTableModeOper(BindingList<OperatingModes> datalistMode,
+            DataGridView dataGridView)
+        {
+            dataGridView.AllowUserToResizeColumns = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.RowHeadersVisible = false;
+
+            var source = new BindingSource(datalistMode, null);
+            dataGridView.DataSource = source;
+
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dataGridView.ColumnHeadersHeight = 45;
+
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            dataGridView.DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleCenter;
+            dataGridView.ColumnHeadersDefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleCenter;
+            dataGridView.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+
+        }
+
+        /// <summary>
         /// Получение списка действующих СЭС.
         /// </summary>
         /// <returns></returns>
@@ -286,6 +329,8 @@ namespace MainForm
             CreateTableWithKoef(KoefDataList, dataGridView_TimeForKoefAverage, SPPDataList);
             CreateTableWithKoef(KoefDataList, dataGridViewKoefAverage, SPPDataList);
             CreateTable(ResultOutputPowerSPPCalcul, dataGridView2);
+            CreateTableModeOper(DatalistMode, dataGridViewModesOper);
+            CreateTable(solarPowerPlantMaxMode, dataGridViewMaxModeOutput);
 
             tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
         }
@@ -339,7 +384,7 @@ namespace MainForm
             Microsoft.Office.Interop.Word.Range range2 = document.Range(document.Content.End - 1, document.Content.End - 1);
             Table table = document.Tables.Add(range2, rowCount + 1, colCount);
 
-            
+
             table.Cell(1, 1).Range.Text = "Время";
             table.Cell(1, 2).Range.Text = "Наименование СЭС";
             table.Cell(1, 3).Range.Text = "Средняя выработка СЭС, МВт";

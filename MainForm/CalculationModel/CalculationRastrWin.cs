@@ -196,24 +196,6 @@ namespace CalculationModel
         }
 
         /// <summary>
-        /// Получить значение из любой ячейки любой таблицы
-        /// </summary>
-        /// <param name="tableName">название таблицы, в которой ведется поиск></param>
-        /// <param name="parameterName">название параметра, по которому ищется индекс></param>
-        /// <param name="number">номер узла (может быть так же номером сечения)></param>
-        /// <param name="chosenParameter">любой параметр, значение из ячеек которого нужно получить
-        /// (например, модуль текущего напряжения в узле)
-        public static double GetValue(string tableName, string parameterName,
-            int number, string chosenParameter)
-        {
-            ITable table = _rastr.Tables.Item(tableName);
-            ICol columnItem = table.Cols.Item(chosenParameter);
-
-            int index = GetIndexByNumber(tableName, parameterName, number);
-            return columnItem.get_ZN(index);
-        }
-
-        /// <summary>
         /// Сохранение файла .rg2.
         /// </summary>
         private static readonly List<string> _pathFileOperModes = new()
@@ -235,7 +217,12 @@ namespace CalculationModel
             return str1;
         }
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="na"></param>
+        /// <param name="solarPowerPlant"></param>
+        /// <returns></returns>
         public static BindingList<OperatingModes> GetValueRastr(int na, BindingList<SolarPowerPlant> solarPowerPlant)
         {
             BindingList<OperatingModes> listOperModes = new();
@@ -244,6 +231,7 @@ namespace CalculationModel
             {
                 
                 LoadFile(item, _pathSablon);
+                LoadFile(_pathFileSec, _pathSablonSec);
                 ITable tableNode = (ITable)_rastr.Tables.Item("node");
                 ICol columnNa = (ICol)tableNode.Cols.Item("na");
                 ICol columnNy = (ICol)tableNode.Cols.Item("ny");
@@ -257,15 +245,16 @@ namespace CalculationModel
 
                 double pgBaseGen = 0;
 
+                List<int> sppGens = GetNumSPP(solarPowerPlant);
                 for (int index = 0; index < tableNode.Count; index++)
                 {
-                    if (columnNa.get_ZN(index) == na && columnSta.get_ZN(index) == false  && columnPg.get_ZN(index) > 0)
+                    if (columnNa.get_ZN(index) == na && columnSta.get_ZN(index) == false && columnPg.get_ZN(index) > 0)
                     {
                         int node = columnNy.get_ZN(index);
 
                         for (int i = 0; i < tableGenerator.Count; i++)
                         {
-                            if (columnNode.get_ZN(i) == node)
+                            if (columnNode.get_ZN(i) == node && sppGens.IndexOf(columnNum.get_ZN(i)) == -1)
                             {
                                 pgBaseGen += (double)columnP.get_ZN(i);
                             }
@@ -289,16 +278,68 @@ namespace CalculationModel
                 OperatingModes operMode = new()
                 {
                     OperatingModesWithConsumption = GetNameRegime(item),
+                    PowerReserves = "внешний переток",
                     OutputBaseGeneration = pgBaseGen,
-                    OutputSolarPlant = pgSolarPlant
+                    OutputSolarPlant = Math.Round(pgSolarPlant, 3)
                 };
 
-                operMode.Proportion = operMode.OutputSolarPlant / operMode.OutputBaseGeneration * 100;
+                operMode.Proportion = Math.Round(operMode.OutputSolarPlant / operMode.OutputBaseGeneration * 100, 3);
 
                 listOperModes.Add(operMode);
             }
 
             return listOperModes;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="solarPowerPlant"></param>
+        /// <param name="listkoef"></param>
+        /// <returns></returns>
+        public static BindingList<SolarPowerPlant> GetAcceptableValue
+            (BindingList<SolarPowerPlant> solarPowerPlant, BindingList<AverageOutputPerHour> listkoef)
+        {
+            BindingList<SolarPowerPlant> listMaxMode = new();
+
+            LoadFile(_pathFileOperModes[4], _pathSablon);
+
+            ITable tableGenerator = (ITable)_rastr.Tables.Item("Generator");
+            ICol columnNum = (ICol)tableGenerator.Cols.Item("Num");
+            ICol columnP = (ICol)tableGenerator.Cols.Item("P");
+
+            List<double> sppOutput = new();
+
+            foreach (var num in GetNumSPP(solarPowerPlant))
+            {
+                for (int i = 0; i < tableGenerator.Count; i++)
+                {
+                    if ((int)columnNum.get_ZN(i) == num)
+                    {
+                        sppOutput.Add(columnP.get_ZN(i));
+                    }
+                }
+            }
+
+            foreach (var item in solarPowerPlant)
+            {
+                if (item.StatusSPP == StatusSPP.вводимая)
+                {
+                    SolarPowerPlant sppMaxMode = new()
+                    {
+                        NameSPP = item.NameSPP,
+                        InstalledCapacity = item.InstalledCapacity,
+                    };
+
+                    var maxOutput = sppOutput[solarPowerPlant.IndexOf(item)];
+
+                    sppMaxMode.MaxOutput = $"{sppOutput[solarPowerPlant.IndexOf(item)]} / {Math.Round(maxOutput / 0.47063, 5)}";
+                    listMaxMode.Add(sppMaxMode);
+                }
+            }
+
+            return listMaxMode;
+
         }
 
         /// <summary>
@@ -393,6 +434,11 @@ namespace CalculationModel
                 }
             }
 
+
+            double peremenConst = 0.02;
+
+            List<int> newBasedGens = new List<int>(basedGens);
+
             // Разгружаем генераторы 
             while (!IsSecUnlocked)
             {
@@ -401,44 +447,53 @@ namespace CalculationModel
                 // по мерер достижения границ эксплуатационной характерстики
                 foreach (var gen in basedGens)
                 {
-                    var pMax = columnPMax.get_ZN(GetIndexByNumber("Generator", "Num", gen));
-                    var pMin = columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen));
-
-                    // Делаем проверку границ у генератора
-                    // если границы нарушены, удаляем генератор
-                    // и переходим к следующему (continue?)
-                    double initSecLoad = PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()));
-                    columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen),
-                        columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * 0.02);
-
-                    Regime();
-
-                    if (Math.Abs(initSecLoad) > Math.Abs(PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()))) &&
-                       columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMax)
+                    if (newBasedGens.IndexOf(gen) == -1)
                     {
                         continue;
                     }
-                    else if (columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMax)
+                    else
                     {
+                        var pMax = columnPMax.get_ZN(GetIndexByNumber("Generator", "Num", gen));
+                        var pMin = columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen));
+
+                        // Делаем проверку границ у генератора
+                        // если границы нарушены, удаляем генератор
+                        // и переходим к следующему (continue?)
+                        double initSecLoad = PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()));
+
+                        double peremen = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * peremenConst;
+
                         columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen),
-                        columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * 0.02);
+                            peremen);
+
                         Regime();
-                        basedGens.Remove(gen);
-                    }
-                    else if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMin)
-                    {
-                        columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen),
-                        columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * 0.02 * 2);
-                        Regime();
-                        if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMin)
+
+                        if (Math.Abs(initSecLoad) > Math.Abs(PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()))) &&
+                           columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMax)
                         {
-                            columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen),
-                            columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * 0.02 * 2);
+                            continue;
+                        }
+                        else if (columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMax)
+                        {
+                            double peremen1 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * peremenConst;
+                            columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen1);
                             Regime();
-                            basedGens.Remove(gen);
+                            newBasedGens.Remove(gen);
+                        }
+                        else if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMin)
+                        {
+                            double peremen2 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * peremenConst * 2;
+                            columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen2);
+                            Regime();
+                            if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMin)
+                            {
+                                double peremen3 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * peremenConst * 2;
+                                columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen3);
+                                Regime();
+                                newBasedGens.Remove(gen);
+                            }
                         }
                     }
-
                 }
 
                 // Если кол-во запертых КС = 0,
@@ -450,19 +505,16 @@ namespace CalculationModel
                 {
                     IsSecUnlocked = true;
                 }
-                else if (basedGens.Count() == 0)
+                else if (newBasedGens.Count() == 0)
                 {
                     return IsSecUnlocked;
                 }
             }
 
-            SaveRegime(_pathFileOperModes[4], _pathSablon);
+            SaveRegime(_pathFileOperModes[5], _pathSablon);
 
             return IsSecUnlocked;
         }
-       
-
-
 
     }
 }

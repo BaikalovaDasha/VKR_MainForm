@@ -105,6 +105,7 @@ namespace MainForm
                     {
                         labelUIDSPP.Enabled = false;
                         textBoxUIDSPP.Enabled = false;
+                        textBoxUIDSPP.Text = null;
                     }
                     else
                     {

@@ -11,6 +11,12 @@ namespace Model
     /// </summary>
     public class OperatingModes
     {
+
+        /// <summary>
+        /// Выработка базовой генерации.
+        /// </summary>
+        private double _outputBaseGeneration;
+
         /// <summary>
         /// Gets or sets режимы работы формата .rg2.
         /// </summary>
@@ -24,7 +30,17 @@ namespace Model
         /// <summary>
         /// Выработка базовой генерации.
         /// </summary>
-        public double OutputBaseGeneration { get; set; }
+        public double OutputBaseGeneration 
+        { 
+            get
+            {
+                return _outputBaseGeneration;
+            }
+            set
+            {
+                _outputBaseGeneration = CheckingNumber(value);
+            }
+        }
 
         /// <summary>
         /// Выработка СЭС.
@@ -35,5 +51,20 @@ namespace Model
         /// Соотношение СЭС и базовой генерации.
         /// </summary>
         public double Proportion { get; set; }
+
+
+        /// <summary>
+        /// Проверка параметра.
+        /// </summary>
+        /// <param name="number">Число для проверки.</param>
+        /// <returns>проверенное число.</returns>
+        /// <exception cref="ArgumentException">отбрасывает отрицательные...
+        /// ...числа</exception>
+        private double CheckingNumber(double number)
+        {
+            return number <= 0
+                ? throw new ArgumentException("Число должно быть положительным.")
+                : double.IsNaN(number) ? throw new ArgumentException("Нечисловое значение!") : number;
+        }
     }
 }
