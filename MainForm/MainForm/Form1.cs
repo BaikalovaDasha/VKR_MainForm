@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using CalculationModel;
 using ExcelHandler;
 using Microsoft.Office.Interop.Word;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace MainForm
 {
@@ -51,6 +53,16 @@ namespace MainForm
         /// Список коэффициентов средней выработки в каждый час.
         /// </summary>
         public BindingList<OperatingModes> DatalistMode;
+
+        /// <summary>
+        /// Путь до директории режима.
+        /// </summary>
+        public string FileDirectoryRG;
+
+        /// <summary>
+        /// Путь до директории Excel.
+        /// </summary>
+        public string FileDirectoryExcel;
 
         /// <summary>
         /// Для файлов.
@@ -319,20 +331,40 @@ namespace MainForm
         /// <param name="e"></param>
         private void MenuItemStartCalculation_Click(object sender, EventArgs e)
         {
-            SettingsForm form = new(this)
+            if (string.IsNullOrEmpty(FileDirectoryRG))
             {
-                solarPowerPlant = SPPDataList
-            };
-            form.ShowDialog();
+                MessageBox.Show("Вы забыли указать путь к директории РМ!", "Внимание!",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (SPPDataList.Count == 0)
+            {
+                MessageBox.Show("Вы не ввели ни одной СЭС!", "Внимание!",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (string.IsNullOrEmpty(FileDirectoryExcel))
+            {
+                MessageBox.Show("Вы забыли указать путь к директории с файлами Excel!", "Внимание!",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                SettingsForm form = new(this)
+                {
+                    solarPowerPlant = SPPDataList
+                };
+                form.ShowDialog();
 
-            CreateTable(SPPDataListWithKoefs, dataGridViewSPP);
-            CreateTableWithKoef(KoefDataList, dataGridView_TimeForKoefAverage, SPPDataList);
-            CreateTableWithKoef(KoefDataList, dataGridViewKoefAverage, SPPDataList);
-            CreateTable(ResultOutputPowerSPPCalcul, dataGridView2);
-            CreateTableModeOper(DatalistMode, dataGridViewModesOper);
-            CreateTable(solarPowerPlantMaxMode, dataGridViewMaxModeOutput);
+                CreateTable(SPPDataListWithKoefs, dataGridViewSPP);
+                CreateTableWithKoef(KoefDataList,
+                    dataGridView_TimeForKoefAverage, SPPDataList);
+                CreateTableWithKoef(KoefDataList,
+                    dataGridViewKoefAverage, SPPDataList);
+                CreateTable(ResultOutputPowerSPPCalcul, dataGridView2);
+                CreateTableModeOper(DatalistMode, dataGridViewModesOper);
+                CreateTable(solarPowerPlantMaxMode, dataGridViewMaxModeOutput);
 
-            tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
+                tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
+            }
         }
 
         /// <summary>
@@ -342,7 +374,21 @@ namespace MainForm
         /// <param name="e"></param>
         private void LoadCalaulModel_Click(object sender, EventArgs e)
         {
+            var folderBrowserDialog = new FolderBrowserDialog();
 
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                FileDirectoryRG = folderBrowserDialog.SelectedPath;
+
+                _ = new CalculationRastrWin(FileDirectoryRG);
+            }
+            //foreach (var item in FileDirectoryRG)
+            //{
+            //    if (Regex.IsMatch(uid, @"\S{8}-\S{4}-\S{4}-\S{4}-\S{12}"))
+            //    {
+
+            //    }
+            //}
         }
 
         /// <summary>
@@ -352,14 +398,13 @@ namespace MainForm
         /// <param name="e"></param>
         private void LoadFileExcel_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                LoadFileExcel.Text = folderBrowserDialog1.SelectedPath;
+            var folderBrowserDialog = new FolderBrowserDialog();
 
-                GetParamFromExcel _pathFile = new()
-                {
-                    PathFile1 = LoadFileExcel.Text
-                };
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                FileDirectoryExcel = folderBrowserDialog.SelectedPath;
+
+                _ = new GetParamFromExcel(FileDirectoryExcel);
             }
         }
 
@@ -428,6 +473,37 @@ namespace MainForm
 
 
             application.Quit();
+        }
+
+        private void DebugRastrWin_Click(object sender, EventArgs e)
+        {
+            using (var file = new StreamReader(@"C:\Users\Дарья\Desktop\1. ВКР\json файлы\Таблица СЭС.json"))
+            {
+                SPPDataList = (BindingList<SolarPowerPlant>)_serializer.Deserialize(file);
+            }
+
+            dataGridView1.DataSource = SPPDataList;
+
+            FileDirectoryRG = "C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ";
+
+            _ = new CalculationRastrWin(FileDirectoryRG);
+
+            SettingsForm form = new(this)
+            {
+                solarPowerPlant = SPPDataList
+            };
+            form.ShowDialog();
+
+            CreateTable(SPPDataListWithKoefs, dataGridViewSPP);
+            CreateTableWithKoef(KoefDataList,
+                dataGridView_TimeForKoefAverage, SPPDataList);
+            CreateTableWithKoef(KoefDataList,
+                dataGridViewKoefAverage, SPPDataList);
+            CreateTable(ResultOutputPowerSPPCalcul, dataGridView2);
+            CreateTableModeOper(DatalistMode, dataGridViewModesOper);
+            CreateTable(solarPowerPlantMaxMode, dataGridViewMaxModeOutput);
+
+            tabControl1.SelectedTab = tabControl1.TabPages["TabPage3"];
         }
     }
 }

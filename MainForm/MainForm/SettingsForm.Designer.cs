@@ -56,6 +56,7 @@
             dateTimePicker1 = new DateTimePicker();
             labelSummer = new Label();
             labelWinter = new Label();
+            button1 = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox.SuspendLayout();
@@ -321,11 +322,22 @@
             labelWinter.TabIndex = 0;
             labelWinter.Text = "Зимний период";
             // 
+            // button1
+            // 
+            button1.Location = new Point(31, 513);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 11;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(484, 556);
+            Controls.Add(button1);
             Controls.Add(buttonOK);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -372,5 +384,6 @@
         private DateTimePicker dateTimePicker1;
         private Label labelSummer;
         private Label labelWinter;
+        private Button button1;
     }
 }

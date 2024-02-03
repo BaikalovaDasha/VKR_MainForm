@@ -13,17 +13,21 @@ namespace ExcelHandler
 
         public string PathFile1;
 
-        private readonly string _pathFile1 = "C:\\Users\\Дарья\\Desktop" +
-                            "\\1. ВКР\\ИТ\\Excel\\power_consum_max_coefficient_2023_140623.xlsx";
+        private readonly string _pathFile1;
 
-        private readonly string _pathFile2 = "C:\\Users\\Дарья\\Desktop" +
-                            "\\1. ВКР\\ИТ\\Excel\\temp_coefficient_2023_140623.xlsx";
+        private readonly string _pathFile2;
 
         /// <summary>
         /// Чтение и запись искомой ЭС.
         /// </summary>
         public string TextToFind{ get; set; }
 
+        public GetParamFromExcel(string value)
+        {
+            PathFile1 = value;
+            _pathFile1 = PathFile1 + "\\power_consum_max_coefficient_2023_140623.xlsx";
+            _pathFile2 = PathFile1 + "\\temp_coefficient_2023_140623.xlsx";
+        }
 
         /// <summary>
         /// Метод открывающий файл Excel.

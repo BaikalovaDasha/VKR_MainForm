@@ -67,19 +67,18 @@ namespace MainForm
                 MessageBox.Show("Вы не ввели UID потребления ЭС", "Внимание",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            if (ChoosEnergySystemCombobox.SelectedIndex < 0)
-            {
-                MessageBox.Show("Вы не выбрали ЭС для расчёта!", "Внимание",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            if (string.IsNullOrEmpty(textBoxInitPower.Text))
-            {
-                MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            //if (ChoosEnergySystemCombobox.SelectedIndex < 0)
+            //{
+            //    MessageBox.Show("Вы не выбрали ЭС для расчёта!", "Внимание",
+            //    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
+            //if (string.IsNullOrEmpty(textBoxInitPower.Text))
+            //{
+            //    MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
             else
             {
-
                 OverwiteFile();
 
                 ownerForm.SPPDataListWithKoefs = AddSPPResultList();
@@ -91,63 +90,28 @@ namespace MainForm
 
                 ownerForm.ResultOutputPowerSPPCalcul = InputPowerSPPWithNum;
 
-                //powerConsumption = AddInitPower().CalculatePowerConsumption(AddFindText());
+                CalculationRastrWin valueRastr = new(ownerForm.FileDirectoryRG);
+                //powerConsumption = AddInitPower().CalculatePowerConsumption(AddFindText(ownerForm.FileDirectoryExcel));
 
-                //CalculationRastrWin.SettingPowerGeneratorsSPPWinter(InputPowerSPPWithNum);
-                //CalculationRastrWin.SettingPowerGeneratorsSPPSummer(InputPowerSPPWithNum);
-                ownerForm.DatalistMode = CalculationRastrWin.GetValueRastr(603, solarPowerPlant);
-                //CalculationRastrWin.BaseGenChangeToUnlockSecs(603, CalculationRastrWin.LockedSecs(), solarPowerPlant);
-                ownerForm.solarPowerPlantMaxMode = CalculationRastrWin.GetAcceptableValue(solarPowerPlant, ResultOutputPerHour);
+                //valueRastr.SettingPowerGeneratorsSPPWinter(InputPowerSPPWithNum);
+                //valueRastr.SettingPowerGeneratorsSPPSummer(InputPowerSPPWithNum);
 
+                //ownerForm.DatalistMode = valueRastr.GetValueRastr(603, solarPowerPlant);
+                if(valueRastr.LockedSecs().Count != 0)
+                {
+                    valueRastr.BaseGenChangeToUnlockSecs(603, valueRastr.LockedSecs(), solarPowerPlant);
+                }
+                else
+                {
+                    Close();
+                }
+                
+
+                ownerForm.solarPowerPlantMaxMode =
+                    CalculationRastrWin.GetAcceptableValue(solarPowerPlant, ResultOutputPerHour);
 
                 Close();
             }
-
-            //try
-            //{
-            //    if (string.IsNullOrEmpty(textBoxUIDPowerConsump.Text))
-            //    {
-            //        MessageBox.Show("Вы не ввели UID потребления ЭС", "Внимание",
-            //            MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //    }
-
-            //    //if (ChoosEnergySystemCombobox.SelectedIndex < 0)
-            //    //{
-            //    //    MessageBox.Show("Вы не выбрали ЭС для расчёта!", "Внимание",
-            //    //    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //    //}
-
-            //    //if (string.IsNullOrEmpty(textBoxInitPower.Text))
-            //    //{
-            //    //    MessageBox.Show("Вы не указали исходную мощность!", "Внимание",
-            //    //        MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //    //}
-
-            //    OverwiteFile();
-
-            //    ownerForm.SPPDataListWithKoefs = AddSPPResultList();
-            //    ownerForm.KoefDataList = AddKoefOutputResult();
-
-            //    CalculInptPowerSPP outputPowerSPPCalcul = new();
-            //    InputPowerSPPWithNum = outputPowerSPPCalcul.
-            //        GetInputPower(solarPowerPlant, ResultOutputPerHour);
-
-            //    ownerForm.ResultOutputPowerSPPCalcul = InputPowerSPPWithNum;
-
-            //    //powerConsumption = AddInitPower().CalculatePowerConsumption(AddFindText());
-
-            //    //CalculationRastrWin.SettingPowerGeneratorsSPPWinter(InputPowerSPPWithNum);
-            //    //CalculationRastrWin.SettingPowerGeneratorsSPPSummer(InputPowerSPPWithNum);
-            //    ownerForm.DatalistMode = CalculationRastrWin.GetValueRastr(603, solarPowerPlant);
-            //    //CalculationRastrWin.BaseGenChangeToUnlockSecs(603, CalculationRastrWin.LockedSecs(), solarPowerPlant);
-            //    ownerForm.solarPowerPlantMaxMode = CalculationRastrWin.GetAcceptableValue(solarPowerPlant, ResultOutputPerHour);
-            //}
-            //catch (ArgumentException ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Внимание",
-            //        MessageBoxButtons.OK, MessageBoxIcon.Information);
-            ////}
-            //Close();
         }
 
         /// <summary>
@@ -339,9 +303,9 @@ namespace MainForm
         /// Присваивание искомого слова в класс где происходит работа с Excel.
         /// </summary>
         /// <returns></returns>
-        public GetParamFromExcel AddFindText()
+        public GetParamFromExcel AddFindText(string value)
         {
-            var text = new GetParamFromExcel
+            var text = new GetParamFromExcel(value)
             {
                 TextToFind = ChoosEnergySystemCombobox.Text
             };
@@ -360,6 +324,11 @@ namespace MainForm
             };
 
             return initP;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            textBoxUIDPowerConsump.Text = @"C9AC13B1-0A78-42C2-B344-C8DEA9749AC5";
         }
     }
 }

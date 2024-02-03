@@ -10,34 +10,44 @@ namespace CalculationModel
     public class CalculationRastrWin
     {
         /// <summary>
-        /// Загрузка файла .rg2. "C:\Users\Дарья\Desktop\1. ВКР\ИТ\РМ"
+        /// Директория файла РМ Зима.rg2.
         /// </summary>
-        private static readonly string _pathFileWinter = "C:\\Users\\Дарья\\Desktop" +
-            "\\1. ВКР\\ИТ\\РМ\\РМ_Зима.rg2";
+        private string _pathFileWinter;
 
         /// <summary>
-        /// Загрузка файла .rg2. "C:\Users\Дарья\Desktop\1. ВКР\ИТ\РМ"
+        /// Директория файла РМ Лето.rg2.
         /// </summary>
-        private static readonly string _pathFileSummer = "C:\\Users\\Дарья\\Desktop" +
-            "\\1. ВКР\\ИТ\\РМ\\РМ_Лето.rg2";
+        private string _pathFileSummer;
 
         /// <summary>
-        /// Шаблон .rg2. "C:\Program Files\RastrWin3\RastrWin3\SHABLON\режим.rg2"
+        /// Директория файла .sch. 
+        /// </summary>
+        private string _pathFileSec;
+
+        /// <summary>
+        /// Шаблон .rg2. 
         /// </summary>
         private static readonly string _pathSablon = "C:\\Program Files\\" +
             "RastrWin3\\RastrWin3\\SHABLON\\режим.rg2";
 
         /// <summary>
-        /// Загрузка файла .rg2. "C:\Users\Дарья\Desktop\1. ВКР\ИТ\РМ"
-        /// </summary>
-        private static readonly string _pathFileSec = "C:\\Users\\Дарья\\Desktop" +
-            "\\1. ВКР\\ИТ\\РМ\\OES Sibiri.sch";
-
-        /// <summary>
-        /// Шаблон .rg2. "C:\Program Files\RastrWin3\RastrWin3\SHABLON\режим.rg2"
+        /// Шаблон .rg2. 
         /// </summary>
         private static readonly string _pathSablonSec = "C:\\Program Files\\" +
             "RastrWin3\\RastrWin3\\SHABLON\\сечения.sch";
+
+        /// <summary>
+        /// Путь к директории указанный в Form1.
+        /// </summary>
+        public string PathDirectory { get; set; }
+
+        public CalculationRastrWin(string value)
+        {
+            PathDirectory = value;
+            _pathFileWinter = PathDirectory + "\\РМ_Зима.rg2";
+            _pathFileSummer = PathDirectory + "\\РМ_Лето.rg2";
+            _pathFileSec = PathDirectory + "\\OES Sibiri.sch";
+        }
 
         /// <summary>
         /// Создание указателя на экземпляр RastrWin и его запуск.
@@ -141,7 +151,6 @@ namespace CalculationModel
                 {
                     listNumSPP.Add(spp.NodeSPP);
                 }
-
             }
 
             return listNumSPP;
@@ -151,7 +160,7 @@ namespace CalculationModel
         /// Метод записывающий значение мощности вводимых СЭС.
         /// </summary>
         /// <param name="listSPP">список СЭС.</param>
-        public static void SettingPowerGeneratorsSPPWinter(BindingList<SolarPowerPlant> solarPowerPlant)
+        public void SettingPowerGeneratorsSPPWinter(BindingList<SolarPowerPlant> solarPowerPlant)
         {
             LoadFile(_pathFileWinter, _pathSablon);
 
@@ -175,7 +184,7 @@ namespace CalculationModel
         /// Метод записывающий значение мощности вводимых СЭС.
         /// </summary>
         /// <param name="listSPP">список СЭС.</param>
-        public static void SettingPowerGeneratorsSPPSummer(BindingList<SolarPowerPlant> solarPowerPlant)
+        public void SettingPowerGeneratorsSPPSummer(BindingList<SolarPowerPlant> solarPowerPlant)
         {
             LoadFile(_pathFileSummer, _pathSablon);
 
@@ -204,7 +213,7 @@ namespace CalculationModel
             "C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\РМ_Зима_max_ГОСТ.rg2",
             "C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\РМ_Зима_min_0.92.rg2",
             "C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\РМ_Зима_min_ГОСТ.rg2",
-            "C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\РМ_Лето_max_0.98.rg2",
+            "C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\исходник\\РМ_Лето_max_0.98.rg2",
             "C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\РМ_Лето_max_лето_норм.rg2",
             "C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\РМ_Лето_min_лето_норм.rg2",
         };
@@ -223,7 +232,7 @@ namespace CalculationModel
         /// <param name="na"></param>
         /// <param name="solarPowerPlant"></param>
         /// <returns></returns>
-        public static BindingList<OperatingModes> GetValueRastr(int na, BindingList<SolarPowerPlant> solarPowerPlant)
+        public BindingList<OperatingModes> GetValueRastr(int na, BindingList<SolarPowerPlant> solarPowerPlant)
         {
             BindingList<OperatingModes> listOperModes = new();
 
@@ -231,7 +240,6 @@ namespace CalculationModel
             {
                 
                 LoadFile(item, _pathSablon);
-                LoadFile(_pathFileSec, _pathSablonSec);
                 ITable tableNode = (ITable)_rastr.Tables.Item("node");
                 ICol columnNa = (ICol)tableNode.Cols.Item("na");
                 ICol columnNy = (ICol)tableNode.Cols.Item("ny");
@@ -286,6 +294,7 @@ namespace CalculationModel
                 operMode.Proportion = Math.Round(operMode.OutputSolarPlant / operMode.OutputBaseGeneration * 100, 3);
 
                 listOperModes.Add(operMode);
+                SaveRegime(item, _pathSablon);
             }
 
             return listOperModes;
@@ -361,9 +370,9 @@ namespace CalculationModel
         /// Определение запертых сечений.
         /// </summary>
         /// <returns>Список запертых сечений.</returns>
-        public static List<int> LockedSecs()
+        public List<int> LockedSecs()
         {
-            LoadFile(_pathFileOperModes[5], _pathSablon);
+            LoadFile(_pathFileOperModes[4], _pathSablon);
             LoadFile(_pathFileSec, _pathSablonSec);
 
             List<int> troubleSec = new();
@@ -387,9 +396,9 @@ namespace CalculationModel
         /// </summary>
         /// <returns>Разгружены ли КС
         /// базовой генерацией.</returns>
-        public static bool BaseGenChangeToUnlockSecs(int na, List<int> secs, BindingList<SolarPowerPlant> solarPowerPlant)
+        public bool BaseGenChangeToUnlockSecs(int na, List<int> secs, BindingList<SolarPowerPlant> solarPowerPlant)
         {
-            LoadFile(_pathFileOperModes[5], _pathSablon);
+            LoadFile(_pathFileOperModes[4], _pathSablon);
             LoadFile(_pathFileSec, _pathSablonSec);
 
             // Переменная меняет значение на true в случае,
@@ -438,7 +447,7 @@ namespace CalculationModel
             double peremenConst = 0.02;
 
             List<int> newBasedGens = new List<int>(basedGens);
-
+            int count = 0;
             // Разгружаем генераторы 
             while (!IsSecUnlocked)
             {
@@ -469,8 +478,10 @@ namespace CalculationModel
                         Regime();
 
                         if (Math.Abs(initSecLoad) > Math.Abs(PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()))) &&
-                           columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMax)
+                           columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) <= pMax)
                         {
+
+                            SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}_vse_ok.rg2", _pathSablon);
                             continue;
                         }
                         else if (columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMax)
@@ -478,6 +489,8 @@ namespace CalculationModel
                             double peremen1 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * peremenConst;
                             columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen1);
                             Regime();
+
+                            SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}_udalen_gen_{gen}_pmax.rg2", _pathSablon);
                             newBasedGens.Remove(gen);
                         }
                         else if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMin)
@@ -491,6 +504,8 @@ namespace CalculationModel
                                 columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen3);
                                 Regime();
                                 newBasedGens.Remove(gen);
+
+                                SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}_udalen_gen_{gen}_pmin.rg2", _pathSablon);
                             }
                         }
                     }
@@ -509,9 +524,13 @@ namespace CalculationModel
                 {
                     return IsSecUnlocked;
                 }
+
+                SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}.rg2", _pathSablon);
+                count++;
+
             }
 
-            SaveRegime(_pathFileOperModes[5], _pathSablon);
+            SaveRegime(_pathFileOperModes[4], _pathSablon);
 
             return IsSecUnlocked;
         }

@@ -90,6 +90,7 @@
             tabControl1 = new TabControl();
             solarPowerPlantBindingSource2 = new BindingSource(components);
             folderBrowserDialog1 = new FolderBrowserDialog();
+            DebugRastrWin = new Button();
             toolStrip1.SuspendLayout();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewMaxModeOutput).BeginInit();
@@ -522,7 +523,7 @@
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(962, 1967);
+            tabPage2.Size = new Size(962, 385);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Таблица СЭС";
             tabPage2.UseVisualStyleBackColor = true;
@@ -644,11 +645,22 @@
             // 
             solarPowerPlantBindingSource2.DataSource = typeof(Model.SolarPowerPlant);
             // 
+            // DebugRastrWin
+            // 
+            DebugRastrWin.Location = new Point(778, 12);
+            DebugRastrWin.Name = "DebugRastrWin";
+            DebugRastrWin.Size = new Size(180, 445);
+            DebugRastrWin.TabIndex = 2;
+            DebugRastrWin.Text = "button1";
+            DebugRastrWin.UseVisualStyleBackColor = true;
+            DebugRastrWin.Click += DebugRastrWin_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(970, 453);
+            Controls.Add(DebugRastrWin);
             Controls.Add(toolStrip1);
             Controls.Add(tabControl1);
             Name = "Form1";
@@ -745,5 +757,6 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private DataGridViewTextBoxColumn MaxOutput;
+        private Button DebugRastrWin;
     }
 }
