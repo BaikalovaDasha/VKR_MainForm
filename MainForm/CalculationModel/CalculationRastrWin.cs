@@ -477,38 +477,43 @@ namespace CalculationModel
 
                         Regime();
 
-                        if (Math.Abs(initSecLoad) > Math.Abs(PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()))) &&
-                           columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) <= pMax)
+                        if (Math.Abs(initSecLoad) > Math.Abs(PSec.get_ZN(GetIndexByNumber("sechen", "ns", secs.FirstOrDefault()))))
                         {
+                            if(columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) <= pMax)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                double peremen1 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * peremenConst;
+                                columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen1);
+                                Regime();
 
-                            SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}_vse_ok.rg2", _pathSablon);
-                            continue;
+                                SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}_udalen_gen_{gen}_pmax.rg2", _pathSablon);
+                                newBasedGens.Remove(gen);
+                            }
                         }
-                        else if (columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMax)
-                        {
-                            double peremen1 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * peremenConst;
-                            columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen1);
-                            Regime();
-
-                            SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}_udalen_gen_{gen}_pmax.rg2", _pathSablon);
-                            newBasedGens.Remove(gen);
-                        }
-                        else if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) > pMin)
+                        else
                         {
                             double peremen2 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) - pMax * peremenConst * 2;
                             columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen2);
                             Regime();
-                            if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) < pMin)
+                            if (columnPMin.get_ZN(GetIndexByNumber("Generator", "Num", gen)) >= pMin)
                             {
-                                double peremen3 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * peremenConst * 2;
-                                columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen3);
+                                continue;
+                            }
+                            else
+                            {
+                                double peremen228 = columnP.get_ZN(GetIndexByNumber("Generator", "Num", gen)) + pMax * peremenConst;
+                                columnP.set_ZN(GetIndexByNumber("Generator", "Num", gen), peremen228);
                                 Regime();
-                                newBasedGens.Remove(gen);
-
                                 SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}_udalen_gen_{gen}_pmin.rg2", _pathSablon);
+                                newBasedGens.Remove(gen);
                             }
                         }
                     }
+
+                    //SaveRegime($"C:\\Users\\Дарья\\Desktop\\1. ВКР\\ИТ\\РМ\\debug\\РМ_Лето_max_0.98_Deboug_step_{count}.rg2", _pathSablon);
                 }
 
                 // Если кол-во запертых КС = 0,
